@@ -65,7 +65,7 @@ export const metadata: Metadata = {
             }
         ],
     },
-    manifest: '/manifest.json',
+    // manifest: '/manifest.json',
     openGraph: {
         type: 'website',
         locale: 'en_US',

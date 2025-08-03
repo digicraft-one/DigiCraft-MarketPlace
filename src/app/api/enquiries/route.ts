@@ -25,12 +25,6 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
     try {
-        const session = await getServerSession(authOptions);
-        if (!session)
-            return NextResponse.json(errorResponse("Unauthorized access"), {
-                status: 401,
-            });
-
         await connectToDB();
         const body = await req.json();
 
