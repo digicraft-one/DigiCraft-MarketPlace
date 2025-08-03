@@ -34,7 +34,7 @@ const platforms = [
       "Google Play Store ready",
       "Performance optimized"
     ],
-    color: "from-green-500 to-emerald-500"
+    color: "from-cyan-500 to-blue-500"
   },
   {
     id: 3,
@@ -48,7 +48,7 @@ const platforms = [
       "Touch-friendly interface",
       "iOS ecosystem integration"
     ],
-    color: "from-blue-500 to-indigo-500"
+    color: "from-blue-500 to-sky-500"
   },
   {
     id: 4,
@@ -62,7 +62,7 @@ const platforms = [
       "Offline capabilities",
       "Auto-updates"
     ],
-    color: "from-purple-500 to-pink-500"
+    color: "from-sky-500 to-teal-500"
   }
 ]
 

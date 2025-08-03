@@ -147,7 +147,7 @@ const Hero = () => {
             className="mb-8 flex items-center justify-center gap-2"
           >
             <SparklesIcon className="w-5 h-5 text-teal-400" />
-            <span className="text-teal-400 font-mono">Premium Website Solutions</span>
+            <span className="text-teal-400 font-mono">Welcome to the future</span>
             <SparklesIcon className="w-5 h-5 text-teal-400" />
           </motion.div>
           
@@ -157,7 +157,7 @@ const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
           >
-            Premium Sol <br /> Ready to Use
+            Launch Before<br />You Blink
           </motion.h1>
           
           <motion.p 
@@ -166,8 +166,7 @@ const Hero = () => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
           >
-            Professional e-commerce and portfolio websites ready for immediate deployment.
-            Save time and money with our pre-built, customizable solutions.
+            Save time and money with professional, pre-built assets crafted for instant deployment and easy customization.
           </motion.p>
           
           <motion.div
@@ -181,7 +180,7 @@ const Hero = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Link href={'/hot-deals'} className="relative z-10">Hot Deals</Link>
+              <Link href={'/marketplace'} className="relative z-10">Marketplace</Link>
               <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-teal-500 opacity-0 group-hover:opacity-100 transition-opacity" />
             </motion.button>
             <motion.button 
@@ -189,7 +188,7 @@ const Hero = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Link href={'/top-picks'} className="relative z-10">Top Picks</Link>
+              <Link href={'/top-picks'} className="relative z-10">Let's Connect</Link>
               <div className="absolute inset-0 bg-gradient-to-r from-teal-500/10 to-cyan-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
             </motion.button>
           </motion.div>

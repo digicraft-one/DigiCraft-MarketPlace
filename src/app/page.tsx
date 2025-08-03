@@ -12,6 +12,9 @@ import MarketingBanner from '@/components/MarketingBanner'
 // import NewYearCelebration from '@/components/NewYearCelebration'
 import Link from 'next/link'
 import { FiArrowRight } from 'react-icons/fi'
+import HotDeals from '@/components/HotDeals'
+import TopPicks from '@/components/TopPicks'
+import Platforms from '@/components/Platforms'
 // import RepublicDayCelebration from '@/components/RepublicDayCelebration'
 
 // Background Components
@@ -129,7 +132,7 @@ export default function Home() {
           <Hero />
 
           {/* Services Quick Preview */}
-          <div className="max-w-7xl mx-auto px-4 py-20">
+          {/* <div className="max-w-7xl mx-auto px-4 py-20">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -174,7 +177,7 @@ export default function Home() {
                 </Link>
               </div>
             </motion.div>
-          </div>
+          </div> */}
           
           {/* Marketing Banner Section */}
           {marketingBanners.length > 0 && (
@@ -198,9 +201,12 @@ export default function Home() {
             </div>
           )}
 
-          <TechStack />
-          <Products />
-          <Projects />
+          {/* <TechStack /> */}
+          {/* <Products /> */}
+          {/* <Projects /> */}
+          <HotDeals />
+          <TopPicks />
+          <Platforms />
           <Testimonials />
           <Footer />
         </div>
