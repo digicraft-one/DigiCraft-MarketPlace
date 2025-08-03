@@ -69,17 +69,17 @@ const Navbar = () => {
                 alt="DigiCraft"
                 width={60}
                 height={60}
-                className="h-15 w-auto"
+                className="h-16 w-auto"
               />
             </Link>
             <div className="relative">
               <div onClick={() => setIsDropdownOpen((prev) => !prev)} ref={productButtonRef}>
                                  <button
                    id="product-button"
-                   title="Our Products"
+                   title="Others"
                    className="md:flex hidden items-center justify-center gap-1 bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 py-1 px-3 rounded-full transition-all text-sm"
                  >
-                   Our Products {isDropdownOpen ? <ChevronDownIcon className="rotate-180 transition-transform duration-300" /> : <ChevronDownIcon className="transition-transform duration-300" />}
+                   Others {isDropdownOpen ? <ChevronDownIcon className="rotate-180 transition-transform duration-300" /> : <ChevronDownIcon className="transition-transform duration-300" />}
                  </button>
               </div>
 
