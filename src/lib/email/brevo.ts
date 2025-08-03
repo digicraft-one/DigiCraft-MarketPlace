@@ -142,447 +142,194 @@ export async function testBrevoConfiguration() {
 
 export async function sendEnquiryConfirmationEmail(data: EnquiryEmailData) {
     try {
-        // Hardcoded HTML template
+        // Email-friendly HTML template with inline styles
         let htmlTemplate = `<!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thank You for Contacting DigiCraft</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #e2e8f0;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            padding: 20px;
-            min-height: 100vh;
-        }
-
-        .email-container {
-            max-width: 600px;
-            margin: 0 auto;
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(20, 184, 166, 0.1);
-        }
-
-        .header {
-            background: linear-gradient(135deg, #14b8a6 0%, #3b82f6 100%);
-            padding: 40px 30px;
-            text-align: center;
-            color: white;
-        }
-
-        .logo {
-            width: 80px;
-            height: 80px;
-            background: rgba(0, 0, 0, 0.933);
-            border-radius: 50%;
-            margin: 0 auto 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .logo img {
-            width: 100px;
-            height: 100px;
-            object-fit: contain;
-        }
-
-        .header h1 {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            font-size: 16px;
-            opacity: 0.9;
-        }
-
-        .content {
-            padding: 40px 30px;
-        }
-
-        .welcome-section {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .welcome-section h2 {
-            color: #14b8a6;
-            font-size: 24px;
-            margin-bottom: 15px;
-        }
-
-        .welcome-section p {
-            color: #94a3b8;
-            font-size: 16px;
-            line-height: 1.6;
-        }
-
-        .application-card {
-            background: linear-gradient(135deg, #334155 0%, #1e293b 100%);
-            border: 2px solid rgba(20, 184, 166, 0.2);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 25px;
-            backdrop-filter: blur(10px);
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .app-icon {
-            width: 45px;
-            height: 45px;
-            background: linear-gradient(135deg, #14b8a6 0%, #3b82f6 100%);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 18px;
-            margin-right: 12px;
-        }
-
-        .app-details h3 {
-            color: #f1f5f9;
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .app-details p {
-            color: #94a3b8;
-            font-size: 13px;
-        }
-
-        .details-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .detail-item {
-            background: linear-gradient(135deg, #475569 0%, #334155 100%);
-            padding: 12px;
-            border-radius: 8px;
-            border-left: 4px solid #14b8a6;
-            border: 1px solid rgba(20, 184, 166, 0.1);
-        }
-
-        .detail-item h4 {
-            color: #14b8a6;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 4px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .detail-item p {
-            color: #e2e8f0;
-            font-size: 13px;
-            font-weight: 500;
-        }
-
-        .customization-section {
-            background: linear-gradient(135deg, #451a03 0%, #78350f 100%);
-            border: 2px solid #f59e0b;
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 30px;
-            backdrop-filter: blur(10px);
-        }
-
-        .customization-section h3 {
-            color: #fbbf24;
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-        }
-
-        .customization-section h3::before {
-            content: "🎨";
-            margin-right: 10px;
-            font-size: 20px;
-        }
-
-        .customization-list {
-            list-style: none;
-        }
-
-        .customization-list li {
-            color: #fef3c7;
-            font-size: 14px;
-            margin-bottom: 8px;
-            padding-left: 20px;
-            position: relative;
-        }
-
-        .customization-list li::before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: #059669;
-            font-weight: bold;
-        }
-
-        .next-steps {
-            background: linear-gradient(135deg, #334155 0%, #475569 100%);
-            border: 2px solid #64748b;
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 30px;
-            backdrop-filter: blur(10px);
-        }
-
-        .next-steps h3 {
-            color: #cbd5e1;
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-        }
-
-        .steps-list {
-            list-style: none;
-            counter-reset: step-counter;
-        }
-
-        .steps-list li {
-            color: #dbeafe;
-            font-size: 14px;
-            margin-bottom: 10px;
-            padding-left: 25px;
-            position: relative;
-        }
-
-        .steps-list li::before {
-            content: counter(step-counter);
-            counter-increment: step-counter;
-            position: absolute;
-            left: 0;
-            top: 0;
-            background: #3b82f6;
-            color: white;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .contact-info {
-            background: linear-gradient(135deg, #334155 0%, #475569 100%);
-            border: 1px solid rgba(20, 184, 166, 0.1);
-            border-radius: 12px;
-            padding: 25px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-        }
-
-        .contact-info h3 {
-            color: #f1f5f9;
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-
-        .contact-links {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .contact-link {
-            display: inline-flex;
-            align-items: center;
-            padding: 10px 20px;
-            background: linear-gradient(135deg, #14b8a6 0%, #3b82f6 100%);
-            color: white;
-            text-decoration: none;
-            border-radius: 25px;
-            font-size: 14px;
-            font-weight: 500;
-            transition: transform 0.2s ease;
-        }
-
-        .contact-link:hover {
-            transform: translateY(-2px);
-        }
-
-        .footer {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            color: #94a3b8;
-            text-align: center;
-            padding: 30px;
-            font-size: 14px;
-            border-top: 1px solid rgba(20, 184, 166, 0.1);
-        }
-
-        .footer p {
-            margin-bottom: 10px;
-        }
-
-        .social-links {
-            margin-top: 20px;
-        }
-
-        .social-links a {
-            color: #94a3b8;
-            text-decoration: none;
-            margin: 0 10px;
-            font-size: 16px;
-        }
-
-        .social-links a:hover {
-            color: #14b8a6;
-        }
-
-        @media (max-width: 600px) {
-            .email-container {
-                margin: 10px;
-                border-radius: 12px;
-            }
-
-            .header,
-            .content {
-                padding: 25px 20px;
-            }
-
-            .details-grid {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-
-            .contact-links {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .contact-link {
-                width: 100%;
-                max-width: 200px;
-                justify-content: center;
-            }
-        }
-    </style>
+    <!--[if mso]>
+    <noscript>
+        <xml>
+            <o:OfficeDocumentSettings>
+                <o:PixelsPerInch>96</o:PixelsPerInch>
+            </o:OfficeDocumentSettings>
+        </xml>
+    </noscript>
+    <![endif]-->
 </head>
+<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4; line-height: 1.6;">
+    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #f4f4f4;">
+        <tr>
+            <td align="center" style="padding: 20px 0;">
+                <!-- Main Container -->
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" style="max-width: 600px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                    
+                    <!-- Header -->
+                    <tr>
+                        <td style="background: linear-gradient(135deg, #14b8a6 0%, #3b82f6 100%); padding: 40px 30px; text-align: center; border-radius: 8px 8px 0 0;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                <tr>
+                                    <td align="center">
+                                        <img src="https://marketplace.digicraft.one/logo.svg" alt="DigiCraft Logo" style="width: 80px; height: 80px; margin-bottom: 20px;">
+                                        <h1 style="color: #ffffff; font-size: 28px; font-weight: 700; margin: 0 0 10px 0;">Thank You for Reaching Out!</h1>
+                                        <p style="color: #ffffff; font-size: 16px; margin: 0; opacity: 0.9;">We're excited to work with you on your digital project</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
 
-<body>
-    <div class="email-container">
-        <!-- Header -->
-        <div class="header">
-            <div class="logo"><img src="https://marketplace.digicraft.one/logo.svg" alt="DigiCraft Logo" /></div>
-            <h1>Thank You for Reaching Out!</h1>
-            <p>We're excited to work with you on your digital project</p>
-        </div>
+                    <!-- Content -->
+                    <tr>
+                        <td style="padding: 40px 30px;">
+                            
+                            <!-- Welcome Section -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 30px;">
+                                <tr>
+                                    <td align="center">
+                                        <h2 style="color: #14b8a6; font-size: 24px; margin: 0 0 15px 0;">Welcome to DigiCraft!</h2>
+                                        <p style="color: #666666; font-size: 16px; margin: 0; line-height: 1.6;">Thank you for choosing us for your digital needs. We've received your inquiry and our team is already reviewing your requirements. We're committed to bringing your vision to life with our expertise and creativity.</p>
+                                    </td>
+                                </tr>
+                            </table>
 
-        <!-- Content -->
-        <div class="content">
-            <!-- Welcome Section -->
-            <div class="welcome-section">
-                <h2>Welcome to DigiCraft!</h2>
-                <p>Thank you for choosing us for your digital needs. We've received your inquiry and our team is already
-                    reviewing your requirements. We're committed to bringing your vision to life with our expertise and
-                    creativity.</p>
+                            <!-- Customer Message -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 30px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
+                                <tr>
+                                    <td style="padding: 20px;">
+                                        <h4 style="color: #14b8a6; margin: 0 0 10px 0; font-size: 16px;">Customer Message:</h4>
+                                        <p style="color: #333333; font-style: italic; line-height: 1.6; margin: 0;">{{message}}</p>
+                                    </td>
+                                </tr>
+                            </table>
 
-                <div class="message-section"
-                    style="margin-top: 20px; padding: 20px; background: rgba(20, 184, 166, 0.1); border-radius: 12px; border: 1px solid rgba(20, 184, 166, 0.2);">
-                    <h4 style="color: #14b8a6; margin-bottom: 10px; font-size: 16px;">Customer Message:</h4>
-                    <p style="color: #e2e8f0; font-style: italic; line-height: 1.6;">{{message}}</p>
-                </div>
-            </div>
+                            <!-- Application Details -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 30px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
+                                <tr>
+                                    <td style="padding: 25px;">
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                            <tr>
+                                                <td style="padding-bottom: 15px;">
+                                                    <h3 style="color: #333333; font-size: 18px; margin: 0;">🛒 {{productTitle}}</h3>
+                                                    <p style="color: #666666; font-size: 14px; margin: 5px 0 0 0;">{{productDescription}}</p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        
+                                        <!-- Details Grid -->
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                            <tr>
+                                                <td style="padding: 0;">
+                                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                                        <tr>
+                                                            <td style="padding: 12px; background-color: #ffffff; border-radius: 6px; border-left: 4px solid #14b8a6; margin-bottom: 10px;">
+                                                                <h4 style="color: #14b8a6; font-size: 12px; font-weight: 600; margin: 0 0 4px 0; text-transform: uppercase; letter-spacing: 0.5px;">Selected Plan</h4>
+                                                                <p style="color: #333333; font-size: 14px; margin: 0; font-weight: 500;">{{adjustmentType}} Plan</p>
+                                                            </td>
+                                                            <td style="width: 15px;"></td>
+                                                            <td style="padding: 12px; background-color: #ffffff; border-radius: 6px; border-left: 4px solid #14b8a6;">
+                                                                <h4 style="color: #14b8a6; font-size: 12px; font-weight: 600; margin: 0 0 4px 0; text-transform: uppercase; letter-spacing: 0.5px;">Customer Name</h4>
+                                                                <p style="color: #333333; font-size: 14px; margin: 0; font-weight: 500;">{{name}}</p>
+                                                            </td>
+                                                        </tr>
+                                                        <tr><td colspan="3" style="height: 10px;"></td></tr>
+                                                        <tr>
+                                                            <td style="padding: 12px; background-color: #ffffff; border-radius: 6px; border-left: 4px solid #14b8a6;">
+                                                                <h4 style="color: #14b8a6; font-size: 12px; font-weight: 600; margin: 0 0 4px 0; text-transform: uppercase; letter-spacing: 0.5px;">Email</h4>
+                                                                <p style="color: #333333; font-size: 14px; margin: 0; font-weight: 500;">{{email}}</p>
+                                                            </td>
+                                                            <td style="width: 15px;"></td>
+                                                            <td style="padding: 12px; background-color: #ffffff; border-radius: 6px; border-left: 4px solid #14b8a6;">
+                                                                <h4 style="color: #14b8a6; font-size: 12px; font-weight: 600; margin: 0 0 4px 0; text-transform: uppercase; letter-spacing: 0.5px;">Phone</h4>
+                                                                <p style="color: #333333; font-size: 14px; margin: 0; font-weight: 500;">{{phone}}</p>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
 
-            <!-- Application Card -->
-            <div class="application-card">
-                <div class="card-header">
-                    <div class="app-icon">🛒</div>
-                    <div class="app-details">
-                        <h3>{{productTitle}}</h3>
-                        <p>{{productDescription}}</p>
-                    </div>
-                </div>
+                            <!-- Next Steps -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 30px; background-color: #e3f2fd; border-radius: 8px; border: 1px solid #bbdefb;">
+                                <tr>
+                                    <td style="padding: 25px;">
+                                        <h3 style="color: #1976d2; font-size: 18px; margin: 0 0 15px 0;">What Happens Next?</h3>
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                            <tr>
+                                                <td style="padding: 8px 0;">
+                                                    <span style="display: inline-block; width: 20px; height: 20px; background-color: #1976d2; color: white; border-radius: 50%; text-align: center; line-height: 20px; font-size: 12px; font-weight: bold; margin-right: 10px;">1</span>
+                                                    <span style="color: #333333; font-size: 14px;">Our team will review your requirements within 24 hours</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 8px 0;">
+                                                    <span style="display: inline-block; width: 20px; height: 20px; background-color: #1976d2; color: white; border-radius: 50%; text-align: center; line-height: 20px; font-size: 12px; font-weight: bold; margin-right: 10px;">2</span>
+                                                    <span style="color: #333333; font-size: 14px;">We'll schedule a consultation call to discuss details</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 8px 0;">
+                                                    <span style="display: inline-block; width: 20px; height: 20px; background-color: #1976d2; color: white; border-radius: 50%; text-align: center; line-height: 20px; font-size: 12px; font-weight: bold; margin-right: 10px;">3</span>
+                                                    <span style="color: #333333; font-size: 14px;">You'll receive a detailed project proposal and timeline</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 8px 0;">
+                                                    <span style="display: inline-block; width: 20px; height: 20px; background-color: #1976d2; color: white; border-radius: 50%; text-align: center; line-height: 20px; font-size: 12px; font-weight: bold; margin-right: 10px;">4</span>
+                                                    <span style="color: #333333; font-size: 14px;">Once approved, we'll begin development immediately</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 8px 0;">
+                                                    <span style="display: inline-block; width: 20px; height: 20px; background-color: #1976d2; color: white; border-radius: 50%; text-align: center; line-height: 20px; font-size: 12px; font-weight: bold; margin-right: 10px;">5</span>
+                                                    <span style="color: #333333; font-size: 14px;">Regular updates and milestone reviews throughout the process</span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
 
-                <div class="details-grid">
-                    <div class="detail-item">
-                        <h4>Selected Plan</h4>
-                        <p>{{adjustmentType}} Plan</p>
-                    </div>
-                    <div class="detail-item">
-                        <h4>Customer Name</h4>
-                        <p>{{name}}</p>
-                    </div>
-                    <div class="detail-item">
-                        <h4>Email</h4>
-                        <p>{{email}}</p>
-                    </div>
-                    <div class="detail-item">
-                        <h4>Phone</h4>
-                        <p>{{phone}}</p>
-                    </div>
-                </div>
-            </div>
+                            <!-- Contact Information -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 30px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
+                                <tr>
+                                    <td style="padding: 25px; text-align: center;">
+                                        <h3 style="color: #333333; font-size: 18px; margin: 0 0 15px 0;">Need to Reach Us?</h3>
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                            <tr>
+                                                <td align="center">
+                                                    <a href="mailto:hello@digicraft.one" style="display: inline-block; padding: 12px 24px; background-color: #14b8a6; color: white; text-decoration: none; border-radius: 6px; font-size: 14px; font-weight: 500; margin: 5px;">📧 Email Us</a>
+                                                    <a href="https://digicraft.one" style="display: inline-block; padding: 12px 24px; background-color: #3b82f6; color: white; text-decoration: none; border-radius: 6px; font-size: 14px; font-weight: 500; margin: 5px;">🌐 Visit Website</a>
+                                                    <a href="tel:+1234567890" style="display: inline-block; padding: 12px 24px; background-color: #10b981; color: white; text-decoration: none; border-radius: 6px; font-size: 14px; font-weight: 500; margin: 5px;">📞 Call Us</a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
 
-            <!-- Next Steps -->
-            <div class="next-steps">
-                <h3>What Happens Next?</h3>
-                <ul class="steps-list">
-                    <li>Our team will review your requirements within 24 hours</li>
-                    <li>We'll schedule a consultation call to discuss details</li>
-                    <li>You'll receive a detailed project proposal and timeline</li>
-                    <li>Once approved, we'll begin development immediately</li>
-                    <li>Regular updates and milestone reviews throughout the process</li>
-                </ul>
-            </div>
+                        </td>
+                    </tr>
 
-            <!-- Contact Information -->
-            <div class="contact-info">
-                <h3>Need to Reach Us?</h3>
-                <div class="contact-links">
-                    <a href="mailto:hello@digicraft.one" class="contact-link">📧 Email Us</a>
-                    <a href="https://digicraft.one" class="contact-link">🌐 Visit Website</a>
-                    <a href="tel:+1234567890" class="contact-link">📞 Call Us</a>
-                </div>
-            </div>
-        </div>
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #f8f9fa; padding: 30px; text-align: center; border-radius: 0 0 8px 8px; border-top: 1px solid #e9ecef;">
+                            <p style="color: #666666; font-size: 14px; margin: 0 0 10px 0;"><strong>DigiCraft</strong> - Transforming Ideas into Digital Reality</p>
+                            <p style="color: #666666; font-size: 14px; margin: 0 0 20px 0;">Launch Before You Blink</p>
+                            <p style="color: #999999; font-size: 12px; margin: 0;">This email was sent from the DigiCraft contact form and is an automated response. If you have any questions, please don't hesitate to reach out.</p>
+                        </td>
+                    </tr>
 
-        <!-- Footer -->
-        <div class="footer">
-            <p><strong>DigiCraft <sub></sub></strong> - Transforming Ideas into Digital Reality</p>
-            <p>Launch Before You Blink</p>
-            <p style="margin-top: 20px; font-size: 12px; opacity: 0.7;">
-                This email was sent from the DigiCraft contact form and is an automated response. If you have any
-                questions, please don't hesitate to reach out.
-            </p>
-        </div>
-    </div>
+                </table>
+            </td>
+        </tr>
+    </table>
 </body>
-
 </html>`;
 
         // Replace template variables
@@ -611,44 +358,3 @@ export async function sendEnquiryConfirmationEmail(data: EnquiryEmailData) {
         return { success: false, error };
     }
 }
-
-// export async function sendAdminNotificationEmail(data: EnquiryEmailData) {
-//     try {
-//         const adminEmail = process.env.ADMIN_EMAIL;
-//         if (!adminEmail) {
-//             console.error("ADMIN_EMAIL environment variable not set");
-//             return { success: false, error: "Admin email not configured" };
-//         }
-
-//         const htmlContent = `
-//             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-//                 <h2 style="color: #14b8a6;">New Enquiry Received</h2>
-//                 <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
-//                     <h3>Customer Details:</h3>
-//                     <p><strong>Name:</strong> ${data.name}</p>
-//                     <p><strong>Email:</strong> ${data.email}</p>
-//                     <p><strong>Phone:</strong> ${data.phone}</p>
-//                     <p><strong>Message:</strong> ${data.message}</p>
-//                 </div>
-//                 <div style="background: #e3f2fd; padding: 20px; border-radius: 8px; margin: 20px 0;">
-//                     <h3>Product Details:</h3>
-//                     <p><strong>Product:</strong> ${data.productTitle}</p>
-//                     <p><strong>Description:</strong> ${data.productDescription}</p>
-//                     <p><strong>Plan:</strong> ${data.adjustmentType}</p>
-//                 </div>
-//                 <p style="color: #666; font-size: 14px;">
-//                     This enquiry was submitted through the DigiCraft marketplace contact form.
-//                 </p>
-//             </div>
-//         `;
-
-//         return sendEmail({
-//             to: [{ email: adminEmail, name: "DigiCraft Admin" }],
-//             subject: `New Enquiry: ${data.name} - ${data.productTitle}`,
-//             htmlContent: htmlContent,
-//         });
-//     } catch (error) {
-//         console.error("Error sending admin notification email:", error);
-//         return { success: false, error };
-//     }
-// }
