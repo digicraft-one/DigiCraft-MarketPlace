@@ -36,6 +36,7 @@ export async function POST(req: NextRequest) {
         const requiredFields = [
             "name",
             "email",
+            "phone",
             "message",
             "product",
             "adjustmentType",
@@ -54,6 +55,7 @@ export async function POST(req: NextRequest) {
             });
 
         const created = await Enquiry.create(body);
+
         return NextResponse.json(
             successResponse(created, "Enquiry submitted"),
             { status: 201 }
