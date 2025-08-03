@@ -559,10 +559,13 @@ export default function ProductDetail() {
         setSelectedFeature(null);
     };
 
-    const handlePurchase = (id: string, title: string, tier: PricingTier) =>
+    const handlePurchase = (id: string, title: string, tier: PricingTier) => {
+        // Store product ID in session storage
+        sessionStorage.setItem('selectedProductId', id);
         router.push(
             `/contact?product=${id}&title=${title}&adjustmentType=${tier.label}`
         );
+    };
 
     return (
         <main className="relative">

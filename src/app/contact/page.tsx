@@ -116,7 +116,12 @@ const ContactFormLoading = () => (
 function EnquiryFormContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
-    const product = searchParams.get("product") as string;
+    
+    // Get product ID from URL parameters first, then from session storage
+    const productFromParams = searchParams.get("product") as string;
+    const productFromSession = typeof window !== 'undefined' ? sessionStorage.getItem('selectedProductId') : null;
+    const product = productFromParams || productFromSession || undefined;
+    
     const title = searchParams.get("title") as string;
     const adjustmentType = searchParams.get("adjustmentType") as Plans;
 
@@ -165,18 +170,18 @@ function EnquiryFormContent() {
         }
     };
 
-    if (!product || !adjustmentType) {
+    // Check if product ID exists (from params or session storage)
+    if (!product) {
         Swal.fire({
-            title: "Redirecting...",
-            text: "You haven't selected a product or adjustment type. Redirecting to DigiCraft.",
+            title: "Product Selection Required",
+            text: "You must select a product first to contact us. Redirecting to marketplace...",
             icon: "info",
             showConfirmButton: false,
             timer: 3000,
         });
 
         setTimeout(() => {
-            window.open("https://digicraft.one/contact", "_blank");
-            router.push("/");
+            router.push("/marketplace");
         }, 3000);
 
         return null;
