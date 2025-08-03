@@ -11,7 +11,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
+import { fetchAPI } from "@/lib/api";
 import {
     PlanType,
     PricingOption as PricingTier,
@@ -19,10 +19,11 @@ import {
     Feature as ProductFeature,
 } from "@/lib/types";
 import { CategoryType } from "@/types/schemas";
-import { fetchAPI } from "@/lib/api";
+import { DeleteIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { ImageUploader } from "./ImageUploader";
-import { Delete, DeleteIcon } from "lucide-react";
+import { toast } from "sonner";
 const PRICING_TIERS: PlanType[] = ["base", "plus", "pro", "ultimate"];
 const CATEGORIES: CategoryType[] = [
     "ecommerce",
@@ -160,17 +161,32 @@ export default function ProductForm({
         handleChange("pricingOptions", updated);
     };
     const handleCreate = async (data: ProductFormState) => {
-        await fetchAPI("/products", {
-            method: "POST",
-            body: JSON.stringify(data),
-        });
+        try {
+            await fetchAPI("/products", {
+                method: "POST",
+                body: JSON.stringify(data),
+            });
+            toast.success("Product created");
+        } catch (error) {
+            toast.error("Failed to create product");
+            console.error("Failed to create product:", error);
+            setError("Failed to create product");
+        }
     };
 
     const handleUpdate = async (id: string, data: ProductFormState) => {
-        await fetchAPI<Product>(`/products/${id}`, {
-            method: "PUT",
-            body: JSON.stringify(data),
-        });
+        try {
+            await fetchAPI<Product>(`/products/${id}`, {
+                method: "PUT",
+                body: JSON.stringify(data),
+            });
+
+            toast.success("Product updated");
+        } catch (error) {
+            toast.error("Failed to update product");
+            console.error("Failed to update product:", error);
+            setError("Failed to update product");
+        }
     };
 
     const handleFormSubmit = async () => {
