@@ -21,7 +21,9 @@ export default async function EditProductPage({
 
     return (
         <main className="h-full w-full max-w-7xl space-y-6 px-4 sm:px-6 lg:px-8 my-12 py-6">
-            <h2 className="text-2xl font-bold">Edit Product</h2>
+            <div>
+                <h2 className="text-2xl font-bold">Edit Product</h2>
+            </div>
             <ProductForm productDetails={product} />
         </main>
     );

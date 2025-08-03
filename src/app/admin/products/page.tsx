@@ -74,7 +74,9 @@ export default function AdminProductsPage() {
             <div className="flex items-center justify-between">
                 <h2 className="text-2xl font-bold">Products</h2>
                 <div className="flex gap-2">
-                    <Button onClick={() => router.push("/admin")}>Go Back</Button>
+                    <Button onClick={() => router.push("/admin")}>
+                        Go Back
+                    </Button>
                     <Link href="/admin/products/new">
                         <Button>Create New Product</Button>
                     </Link>
@@ -91,7 +93,7 @@ export default function AdminProductsPage() {
                                 <div className="flex justify-between items-center">
                                     <div className="flex justify-center items-center gap-6 ">
                                         <Image
-                                            src={product.features[0].imageUrl}
+                                            src={product.coverImage}
                                             alt="sample product image"
                                             height={150}
                                             width={150}

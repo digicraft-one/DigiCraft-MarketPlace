@@ -7,7 +7,7 @@ export type CategoryType =
     | "landing"
     | "custom";
 
-export type Plans = "base" | "plus" | "pro" | "infinite";
+export type Plans = "base" | "plus" | "pro" | "ultimate";
 
 export interface PricingTier {
     label: Plans;
@@ -17,6 +17,7 @@ export interface PricingTier {
 
 export interface ProductFeature {
     imageUrl: string;
+    title: string;
     description: string;
 }
 

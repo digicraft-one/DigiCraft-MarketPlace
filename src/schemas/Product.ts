@@ -9,6 +9,8 @@ export interface ProductDocument extends Document {
     title: string;
     shortDescription: string;
     longDescription: string;
+    coverImage: string;
+    deliverables: string[];
     category: CategoryType;
     features: ProductFeature[];
     pricingOptions: PricingTier[];
@@ -20,7 +22,7 @@ const PricingTierSchema = new Schema<PricingTier>(
     {
         label: {
             type: String,
-            enum: ["base", "plus", "pro", "infinite"],
+            enum: ["base", "plus", "pro", "ultimate"],
             required: true,
         },
         price: { type: Number, required: true },
@@ -32,6 +34,7 @@ const PricingTierSchema = new Schema<PricingTier>(
 const FeatureSchema = new Schema<ProductFeature>(
     {
         imageUrl: { type: String, required: true },
+        title: { type: String, required: true },
         description: { type: String, required: true },
     },
     { _id: false }
@@ -42,6 +45,8 @@ const ProductSchema = new Schema<ProductDocument>(
         title: { type: String, required: true },
         shortDescription: { type: String, required: true },
         longDescription: { type: String, required: true },
+        coverImage: { type: String, required: true },
+        deliverables: { type: [String], required: true },
         category: {
             type: String,
             enum: ["ecommerce", "portfolio", "blog", "landing", "custom"],

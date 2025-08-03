@@ -8,6 +8,7 @@ export interface EnquiryDocument extends Document {
     message: string;
     product: Types.ObjectId;
     adjustmentType: Plans;
+    notes: string[];
     status: "pending" | "contacted" | "closed";
     createdAt: Date;
     updatedAt: Date;
@@ -26,9 +27,10 @@ const EnquirySchema = new Schema<EnquiryDocument>(
         },
         adjustmentType: {
             type: String,
-            enum: ["base", "plus", "pro", "infinite"],
+            enum: ["base", "plus", "pro", "ultimate"],
             required: true,
         },
+        notes: [{ type: String, default: "" }],
         status: {
             type: String,
             enum: ["pending", "contacted", "closed"],

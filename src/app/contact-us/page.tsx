@@ -18,7 +18,7 @@ import { Textarea } from "@/components/ui/textarea";
 import type { PlanType as Plans } from "@/lib/types";
 import { fetchAPI } from "@/lib/api";
 
-const PLAN_OPTIONS: Plans[] = ["base", "plus", "pro", "infinite"];
+const PLAN_OPTIONS: Plans[] = ["base", "plus", "pro", "ultimate"];
 
 interface EnquiryFormState {
     name: string;

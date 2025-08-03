@@ -34,6 +34,8 @@ export async function POST(req: Request) {
             "title",
             "shortDescription",
             "longDescription",
+            "coverImage",
+            "deliverables",
             "category",
             "features",
             "pricingOptions",

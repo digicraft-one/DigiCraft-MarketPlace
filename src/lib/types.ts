@@ -1,7 +1,8 @@
-export type PlanType = "base" | "plus" | "pro" | "infinite";
+export type PlanType = "base" | "plus" | "pro" | "ultimate";
 
 export interface Feature {
     imageUrl: string;
+    title: string;
     description: string;
 }
 
@@ -16,6 +17,8 @@ export interface Product {
     title: string;
     shortDescription: string;
     longDescription: string;
+    coverImage: string;
+    deliverables: string[];
     category: string;
     features: Feature[];
     pricingOptions: PricingOption[];
@@ -47,6 +50,7 @@ export interface Enquiry {
         title: string;
         category: string;
     };
+    notes: string[];
     adjustmentType: PlanType;
     status: "pending" | "contacted" | "closed";
     createdAt: string;

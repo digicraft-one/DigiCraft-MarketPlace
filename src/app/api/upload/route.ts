@@ -11,7 +11,6 @@ function bufferToStream(buffer: Buffer): Readable {
 export async function POST(req: NextRequest): Promise<NextResponse> {
     try {
         const formData = await req.formData();
-        console.log(formData);
         
         const file = formData.get("file");
 

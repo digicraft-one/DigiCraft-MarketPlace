@@ -22,8 +22,8 @@ import { CategoryType } from "@/types/schemas";
 import { fetchAPI } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import { ImageUploader } from "./ImageUploader";
-
-const PRICING_TIERS: PlanType[] = ["base", "plus", "pro", "infinite"];
+import { Delete, DeleteIcon } from "lucide-react";
+const PRICING_TIERS: PlanType[] = ["base", "plus", "pro", "ultimate"];
 const CATEGORIES: CategoryType[] = [
     "ecommerce",
     "portfolio",
@@ -36,6 +36,8 @@ export interface ProductFormState {
     title: string;
     shortDescription: string;
     longDescription: string;
+    coverImage: string;
+    deliverables: string[];
     category: CategoryType;
     features: ProductFeature[];
     pricingOptions: PricingTier[];
@@ -46,13 +48,22 @@ const DEFAULT_VALUES: ProductFormState = {
     shortDescription: "",
     longDescription: "",
     category: "custom",
+    coverImage: "",
+    deliverables: [],
     features: [
         {
             imageUrl: "",
+            title: "",
             description: "",
         },
     ],
-    pricingOptions: [],
+    pricingOptions: [
+        {
+            label: "base",
+            price: 5000,
+            discountPercentage: 0,
+        },
+    ],
 };
 
 export default function ProductForm({
@@ -72,6 +83,8 @@ export default function ProductForm({
             title: productDetails.title,
             shortDescription: productDetails.shortDescription,
             longDescription: productDetails.longDescription,
+            coverImage: productDetails.coverImage,
+            deliverables: productDetails.deliverables,
             category: productDetails.category as CategoryType,
             features: productDetails.features,
             pricingOptions: productDetails.pricingOptions,
@@ -112,7 +125,7 @@ export default function ProductForm({
     const addFeature = () => {
         handleChange("features", [
             ...formData.features,
-            { imageUrl: "", description: "" },
+            { imageUrl: "", title: "", description: "" },
         ]);
     };
 
@@ -123,6 +136,26 @@ export default function ProductForm({
         ]);
     };
 
+    const addDeliverable = () => {
+        handleChange("deliverables", [...formData.deliverables, ""]);
+    };
+    const updateDeliverable = (index: number, value: string) => {
+        const updated = [...formData.deliverables];
+        updated[index] = value;
+        handleChange("deliverables", updated);
+    };
+    const removeDeliverable = (index: number) => {
+        const updated = formData.deliverables.filter((_, i) => i !== index);
+        handleChange("deliverables", updated);
+    };
+    const removeFeature = (index: number) => {
+        const updated = formData.features.filter((_, i) => i !== index);
+        handleChange("features", updated);
+    };
+    const removePricing = (index: number) => {
+        const updated = formData.pricingOptions.filter((_, i) => i !== index);
+        handleChange("pricingOptions", updated);
+    };
     const handleCreate = async (data: ProductFormState) => {
         await fetchAPI("/products", {
             method: "POST",
@@ -142,6 +175,8 @@ export default function ProductForm({
             "title",
             "shortDescription",
             "longDescription",
+            "coverImage",
+            "deliverables",
             "category",
             "features",
             "pricingOptions",
@@ -175,7 +210,7 @@ export default function ProductForm({
     };
 
     return (
-        <div className="grid gap-5 *:space-y-2">
+        <div className="grid grid-cols-2 gap-5 *:space-y-2">
             <div>
                 <Label>Title</Label>
                 <Input
@@ -184,7 +219,6 @@ export default function ProductForm({
                     onChange={(e) => handleChange("title", e.target.value)}
                 />
             </div>
-
             <div>
                 <Label>Short Description</Label>
                 <Input
@@ -195,8 +229,7 @@ export default function ProductForm({
                     }
                 />
             </div>
-
-            <div>
+            <div className="col-start-1 col-end-3">
                 <Label>Long Description</Label>
                 <Textarea
                     value={formData.longDescription}
@@ -226,49 +259,76 @@ export default function ProductForm({
                 </Select>
             </div>
 
-            <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                    <Label>Features</Label>
-                    <Button variant="secondary" onClick={addFeature}>
-                        Add Feature
-                    </Button>
+            <div>
+                <Label>Cover Image</Label>
+                <div className="flex gap-2">
+                    <ImageUploader
+                        onUpload={(url: string) =>
+                            handleChange("coverImage", url)
+                        }
+                    />
+                    <Input
+                        required
+                        disabled
+                        hidden={formData.coverImage === ""}
+                        placeholder="Enter image URL"
+                        value={formData.coverImage}
+                        onChange={(e) =>
+                            handleChange("coverImage", e.target.value)
+                        }
+                    />
                 </div>
-                {formData.features.map((feat, i) => (
-                    <div key={i} className="grid grid-cols-3 gap-2">
-                        <ImageUploader
-                            onUpload={(url: string) =>
-                                updateFeature(i, "imageUrl", url)
-                            }
-                        />
-                        <Input
-                            required
-                            placeholder="Image URL"
-                            value={feat.imageUrl}
-                            onChange={(e) =>
-                                updateFeature(i, "imageUrl", e.target.value)
-                            }
-                        />
-                        <Input
-                            required
-                            placeholder="Description"
-                            value={feat.description}
-                            onChange={(e) =>
-                                updateFeature(i, "description", e.target.value)
-                            }
-                        />
-                    </div>
-                ))}
             </div>
 
-            <div className="space-y-2">
+            <div className="col-span-2">
+                <div className="space-y-2">
+                    <div className="flex justify-between items-center">
+                        <Label>Deliverables</Label>
+                        <Button
+                            variant="secondary"
+                            onClick={addDeliverable}
+                            className="w-35">
+                            Add Deliverable
+                        </Button>
+                    </div>
+
+                    {formData.deliverables?.map((item, i) => (
+                        <div key={i} className="flex gap-2">
+                            <Input
+                                required
+                                placeholder={`Deliverable ${i + 1}`}
+                                value={item}
+                                onChange={(e) =>
+                                    updateDeliverable(i, e.target.value)
+                                }
+                            />
+                            <Button
+                                type="button"
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => removeDeliverable(i)}
+                                className="text-red-500 hover:text-red-700">
+                                <DeleteIcon />
+                            </Button>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            <div className="space-y-2 col-span-2">
                 <div className="flex justify-between items-center">
                     <Label>Pricing Options</Label>
-                    <Button variant="secondary" onClick={addPricing}>
+                    <Button
+                        variant="secondary"
+                        onClick={addPricing}
+                        className="w-35">
                         Add Tier
                     </Button>
                 </div>
-                {formData.pricingOptions.map((tier, i) => (
-                    <div key={i} className="grid grid-cols-3 gap-2">
+                {formData.pricingOptions?.map((tier, i) => (
+                    <div
+                        key={i}
+                        className="grid grid-cols-3 gap-2 items-center">
                         <Select
                             value={tier.label}
                             onValueChange={(val) =>
@@ -302,28 +362,109 @@ export default function ProductForm({
                                 )
                             }
                         />
-                        <Input
-                            required
-                            type="number"
-                            placeholder="Discount %"
-                            value={tier.discountPercentage}
-                            onChange={(e) =>
-                                updatePricing(
-                                    i,
-                                    "discountPercentage",
-                                    Number(e.target.value)
-                                )
-                            }
-                        />
+                        <div className="flex gap-2">
+                            <Input
+                                required
+                                type="number"
+                                placeholder="Discount %"
+                                value={tier.discountPercentage}
+                                onChange={(e) =>
+                                    updatePricing(
+                                        i,
+                                        "discountPercentage",
+                                        Number(e.target.value)
+                                    )
+                                }
+                            />
+                            <Button
+                                type="button"
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => removePricing(i)}
+                                className="text-red-500 hover:text-red-700">
+                                <DeleteIcon />
+                            </Button>
+                        </div>
                     </div>
                 ))}
             </div>
+            <div className="space-y-2 col-start-1 col-end-3">
+                <div className="flex justify-between items-center">
+                    <Label>Features</Label>
+                    <Button
+                        variant="secondary"
+                        onClick={addFeature}
+                        className="w-35">
+                        Add Feature
+                    </Button>
+                </div>
+                {formData.features.map((feat, i) => (
+                    <div
+                        key={i}
+                        className="grid grid-cols-5 gap-2 items-center">
+                        <Input
+                            required
+                            placeholder="Title"
+                            value={feat.title}
+                            onChange={(e) =>
+                                updateFeature(i, "title", e.target.value)
+                            }
+                        />
+                        <ImageUploader
+                            onUpload={(url: string) =>
+                                updateFeature(i, "imageUrl", url)
+                            }
+                        />
+                        <Input
+                            required
+                            placeholder="Description"
+                            value={feat.description}
+                            onChange={(e) =>
+                                updateFeature(i, "description", e.target.value)
+                            }
+                            className="col-span-2"
+                        />
+                        <div className="flex gap-1">
+                            <Input
+                                hidden={feat.imageUrl === ""}
+                                disabled
+                                required
+                                placeholder="Image URL"
+                                value={feat.imageUrl}
+                                onChange={(e) =>
+                                    updateFeature(i, "imageUrl", e.target.value)
+                                }
+                            />
+                            <Button
+                                type="button"
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => removeFeature(i)}
+                                className="text-red-500 hover:text-red-700">
+                                <DeleteIcon />
+                            </Button>
+                        </div>
+                    </div>
+                ))}
+            </div>
+            {error && <p className="text-red-500 col-span-2">{error}</p>}
 
-            {error && <p className="text-red-500">{error}</p>}
+            <div className="flex col-span-2 items-center gap-4 justify-center">
+                <Button
+                    onClick={() => router.back()}
+                    variant="default"
+                    disabled={loading}
+                    className="w-30 m-0">
+                    Go Back
+                </Button>
 
-            <Button onClick={handleFormSubmit} disabled={loading}>
-                {loading ? "Submitting..." : "Submit"}
-            </Button>
+                <Button
+                    onClick={handleFormSubmit}
+                    disabled={loading}
+                    className="w-30">
+                    {loading ? "Submitting..." : "Submit"}
+                </Button>
+            </div>
         </div>
     );
 }
