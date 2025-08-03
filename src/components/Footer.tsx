@@ -79,7 +79,7 @@ const Footer = () => {
           {/* Company Info */}
           <div>
             <Link href="/" className="text-2xl font-bold mb-6 block">
-              <span className="text-teal-400">Digi</span>Craft
+              <span className="text-purple-500">Digi</span>Craft <span className="text-teal-400 text-base">Marketplace</span>
             </Link>
             <p className="text-gray-400 mb-6">
               Crafting digital experiences that inspire, innovate, and impact.

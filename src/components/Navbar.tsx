@@ -9,7 +9,8 @@ import { ChevronDownIcon } from 'lucide-react'
 const navItems = [
   { name: 'Home', path: '/' },
   { name: 'Marketplace', path: '/marketplace' },
-  { name: 'Offers', path: '/offers' }
+  { name: 'Offers', path: '/offers' },
+  { name: 'FaQ', path: '/faq' }
 ]
 const productDropdownItems = [
   { name: "Digicraft Tech", href: "https://digicraft.one", logo: "https://www.digicraft.one/logo.svg" },

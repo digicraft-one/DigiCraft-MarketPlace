@@ -81,32 +81,6 @@ interface BannerImage {
 export default function Home() {
   const { scrollYProgress } = useScroll()
   const y = useTransform(scrollYProgress, [0, 1], ['0%', '100%'])
-  const [marketingBanners, setMarketingBanners] = useState<BannerImage[]>([])
-
-  useEffect(() => {
-    const fetchMarketingBanners = async () => {
-      try {
-        const response = await fetch('/api/marketing');
-        const result: MarketingBannerData = await response.json();
-        
-        if (result.success && Array.isArray(result.data)) {
-          // Filter active banners and map to the required format
-          const activeBanners = result.data
-            .filter(banner => banner.isActive)
-            .map(banner => ({
-              url: banner.imageUrl,
-              alt: 'Marketing Banner',
-              link: banner.link
-            }));
-          setMarketingBanners(activeBanners);
-        }
-      } catch (error) {
-        console.error('Failed to fetch marketing banners:', error);
-      }
-    };
-
-    fetchMarketingBanners();
-  }, []);
 
   return (
     <main className="relative">
@@ -126,76 +100,6 @@ export default function Home() {
         <Navbar />
         <div className="relative">
           <Hero />
-
-          {/* Services Quick Preview */}
-          {/* <div className="max-w-7xl mx-auto px-4 py-20">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-            >
-              <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-5xl font-bold mb-4">Our Services</h2>
-                <p className="text-xl text-gray-400 mb-8">
-                  Comprehensive tech solutions tailored to your needs
-                </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {services.map((service, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.1 * index }}
-                      className="group"
-                    >
-                      <Link href="/services" className="block">
-                        <div className="glass-effect p-6 rounded-xl border border-white/10 group-hover:border-purple-500/50 transition-all h-full">
-                          <div className="text-3xl mb-4">{service.icon}</div>
-                          <h3 className="text-xl font-bold mb-2 group-hover:text-gradient transition-all">
-                            {service.name}
-                          </h3>
-                          <p className="text-gray-400 text-sm mb-4">
-                            {service.description}
-                          </p>
-                          <div className="text-purple-400 font-semibold text-sm">
-                            {service.price}
-                          </div>
-                        </div>
-                      </Link>
-                    </motion.div>
-                  ))}
-                </div>
-                <Link
-                  href="/services"
-                  className="inline-flex items-center px-8 py-3 mt-12 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full font-semibold hover:shadow-lg hover:shadow-purple-500/25 transition-all"
-                >
-                  View All Services
-                  <FiArrowRight className="ml-2 group-hover:translate-x-2 transition-transform" />
-                </Link>
-              </div>
-            </motion.div>
-          </div> */}
-          
-          {/* Marketing Banner Section */}
-          {marketingBanners.length > 0 && (
-            <div className="max-w-7xl mx-auto px-4 pb-20">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-              >
-                <div className="text-center mb-8">
-                  <h2 className="text-3xl md:text-4xl font-bold mb-4">Featured Promotions</h2>
-                  <p className="text-xl text-gray-400">
-                    Check out our latest offers and special deals
-                  </p>
-                </div>
-                <MarketingBanner 
-                  images={marketingBanners}
-                  autoPlayInterval={5000}
-                />
-              </motion.div>
-            </div>
-          )}
 
           {/* <TechStack /> */}
           {/* <Products /> */}

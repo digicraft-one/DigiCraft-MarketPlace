@@ -101,7 +101,7 @@ const PlatformCard = ({ name, icon: Icon, description, features, color, index }:
       ))}
     </div>
 
-    <div className="mt-6 pt-4 border-t border-teal-500/20">
+    {/* <div className="mt-6 pt-4 border-t border-teal-500/20">
       <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold bg-gradient-to-r ${color} hover:shadow-lg transition-all`}>
         Learn More
         <motion.div
@@ -112,7 +112,7 @@ const PlatformCard = ({ name, icon: Icon, description, features, color, index }:
           →
         </motion.div>
       </div>
-    </div>
+    </div> */}
   </motion.div>
 )
 
