@@ -7,7 +7,7 @@ export type CategoryType =
     | "landing"
     | "custom";
 
-export type Plans = "base" | "plus" | "pro" | "infinite";
+export type Plans = "base" | "plus" | "pro" | "";
 
 export interface PricingTier {
     label: Plans;

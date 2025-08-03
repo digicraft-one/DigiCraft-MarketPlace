@@ -1,10 +1,9 @@
 import { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter } from 'next/font/google'
 import "./globals.css";
 import { ReactNode } from "react";
 import { Toaster } from "@/components/ui/sonner";
-
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
     title: "Digicraft Marketplace",
@@ -14,8 +13,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
     return (
         <html lang="en">
-            <body
-                className={`${inter.className} bg-background text-foreground dark min-h-screen flex justify-center items-center`}>
+            <body className={`${inter.className} bg-[#0f0f0f] text-primary`}>
                 {children}
                 <Toaster />
             </body>
