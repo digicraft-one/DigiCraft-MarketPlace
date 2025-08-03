@@ -27,6 +27,7 @@ import {
     FaPhoneAlt,
 } from "react-icons/fa";
 import Footer from "@/components/Footer";
+import ProductCard from "@/components/ProductCard";
 
 const PLAN_OPTIONS: Plans[] = ["base", "plus", "pro", "ultimate"];
 
@@ -173,22 +174,18 @@ function EnquiryFormContent() {
             timer: 3000,
         });
 
+        setTimeout(() => {
+            window.open("https://digicraft.one/contact", "_blank");
+            router.push("/");
+        }, 3000);
 
-        const timeout = setTimeout(
-            () => {
-                window.open("https://digicraft.one/contact", "_blank");
-                router.push("/");
-            },
-            3000
-        );
-        return () => clearTimeout(timeout);
+        return null;
     }
 
     return (
         <div className="relative">
             <Navbar />
-
-            <main className="relative h-screen bg-[#0a0f1c] overflow-hidden flex items-center justify-center">
+            <main className="relative h-auto bg-[#0a0f1c] overflow-hidden flex items-center justify-center pt-20 pb-10">
                 {/* Background Elements */}
                 <Starfield />
                 <GeometricPattern />
@@ -225,6 +222,8 @@ function EnquiryFormContent() {
                                     connect you with the perfect solution.
                                 </motion.p>
                             </motion.h1>
+
+
 
                             {/* Reach Us Section */}
                             <motion.div
@@ -345,95 +344,73 @@ function EnquiryFormContent() {
 
                                         {/* Product Details Section */}
                                         <div className="space-y-6">
-                                            <div className="grid md:grid-cols-3 gap-6">
-                                                <div className="space-y-3">
-                                                    <Label
-                                                        htmlFor="product"
-                                                        className="text-gray-300 font-medium">
-                                                        Product
-                                                    </Label>
-                                                    <Input
-                                                        id="product"
-                                                        name="product"
-                                                        value={formData.product}
-                                                        disabled
-                                                        className="bg-[#0a0f1c]/40 border-gray-700/30 text-gray-400 rounded-xl h-10"
-                                                    />
+                                            <div className="space-y-3">
+                                                <Label className="text-gray-300 font-medium">
+                                                    Selected Product
+                                                </Label>
+                                                <div className="bg-[#0a0f1c]/40 border border-gray-700/30 rounded-xl p-3">
+                                                    <ProductCard productId={product} />
                                                 </div>
-                                                <div className="space-y-3">
-                                                    <Label
-                                                        htmlFor="product"
-                                                        className="text-gray-300 font-medium">
-                                                        Product Title
-                                                    </Label>
-                                                    <Input
-                                                        id="product"
-                                                        name="product"
-                                                        value={title}
-                                                        disabled
-                                                        className="bg-[#0a0f1c]/40 border-gray-700/30 text-gray-400 rounded-xl h-10"
-                                                    />
-                                                </div>
+                                            </div>
 
-                                                <div className="space-y-3">
-                                                    <Label
-                                                        htmlFor="adjustmentType"
-                                                        className="text-gray-300 font-medium">
-                                                        Plan Type
-                                                    </Label>
-                                                    <Select
-                                                        value={
-                                                            formData.adjustmentType
-                                                        }
-                                                        onValueChange={(val) =>
-                                                            handleChange(
-                                                                "adjustmentType",
-                                                                val as Plans
-                                                            )
-                                                        }>
-                                                        <SelectTrigger className="bg-[#0a0f1c]/60 border-gray-600/30 text-white focus:border-cyan-400 focus:ring-cyan-400/20 rounded-xl h-10 hover:border-gray-500/50 transition-all duration-300">
-                                                            <SelectValue placeholder="Select a plan" />
-                                                        </SelectTrigger>
-                                                        <SelectContent className="bg-[#1a2332] border-gray-600/30 rounded-xl">
-                                                            {PLAN_OPTIONS.map(
-                                                                (plan) => (
-                                                                    <SelectItem
-                                                                        key={
-                                                                            plan
-                                                                        }
-                                                                        value={
-                                                                            plan
-                                                                        }
-                                                                        className="text-white hover:bg-[#0a0f1c]/60 focus:bg-[#0a0f1c]/60 rounded-lg">
-                                                                        <span className="flex items-center">
-                                                                            <div
-                                                                                className={`w-2 h-2 rounded-full mr-3 ${plan ===
-                                                                                        "base"
-                                                                                        ? "bg-green-400"
+                                            <div className="space-y-3">
+                                                <Label
+                                                    htmlFor="adjustmentType"
+                                                    className="text-gray-300 font-medium">
+                                                    Plan Type
+                                                </Label>
+                                                <Select
+                                                    value={
+                                                        formData.adjustmentType
+                                                    }
+                                                    onValueChange={(val) =>
+                                                        handleChange(
+                                                            "adjustmentType",
+                                                            val as Plans
+                                                        )
+                                                    }>
+                                                    <SelectTrigger className="bg-[#0a0f1c]/60 border-gray-600/30 text-white focus:border-cyan-400 focus:ring-cyan-400/20 rounded-xl h-10 hover:border-gray-500/50 transition-all duration-300">
+                                                        <SelectValue placeholder="Select a plan" />
+                                                    </SelectTrigger>
+                                                    <SelectContent className="bg-[#1a2332] border-gray-600/30 rounded-xl">
+                                                        {PLAN_OPTIONS.map(
+                                                            (plan) => (
+                                                                <SelectItem
+                                                                    key={
+                                                                        plan
+                                                                    }
+                                                                    value={
+                                                                        plan
+                                                                    }
+                                                                    className="text-white hover:bg-[#0a0f1c]/60 focus:bg-[#0a0f1c]/60 rounded-lg">
+                                                                    <span className="flex items-center">
+                                                                        <div
+                                                                            className={`w-2 h-2 rounded-full mr-3 ${plan ===
+                                                                                    "base"
+                                                                                    ? "bg-green-400"
+                                                                                    : plan ===
+                                                                                        "plus"
+                                                                                        ? "bg-blue-400"
                                                                                         : plan ===
-                                                                                            "plus"
-                                                                                            ? "bg-blue-400"
-                                                                                            : plan ===
-                                                                                                "pro"
-                                                                                                ? "bg-cyan-400"
-                                                                                                : "bg-yellow-400"
-                                                                                    }`}
-                                                                            />
-                                                                            {plan
-                                                                                .charAt(
-                                                                                    0
-                                                                                )
-                                                                                .toUpperCase() +
-                                                                                plan.slice(
-                                                                                    1
-                                                                                )}
-                                                                        </span>
-                                                                    </SelectItem>
-                                                                )
-                                                            )}
-                                                        </SelectContent>
-                                                    </Select>
-                                                </div>
+                                                                                            "pro"
+                                                                                            ? "bg-cyan-400"
+                                                                                            : "bg-yellow-400"
+                                                                                }`}
+                                                                        />
+                                                                        {plan
+                                                                            .charAt(
+                                                                                0
+                                                                            )
+                                                                            .toUpperCase() +
+                                                                            plan.slice(
+                                                                                1
+                                                                            )}
+                                                                    </span>
+                                                                </SelectItem>
+                                                            )
+                                                        )}
+                                                    </SelectContent>
+                                                </Select>
                                             </div>
                                         </div>
 

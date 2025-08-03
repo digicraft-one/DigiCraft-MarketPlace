@@ -31,6 +31,7 @@ export interface EnquiryEmailData {
     productTitle: string;
     productDescription: string;
     adjustmentType: string;
+    productId: string;
 }
 
 export async function sendEmail(options: SendEmailPayload) {
@@ -168,13 +169,13 @@ export async function sendEnquiryConfirmationEmail(data: EnquiryEmailData) {
                     
                     <!-- Header -->
                     <tr>
-                        <td style="background: linear-gradient(135deg, #14b8a6 0%, #3b82f6 100%); padding: 40px 30px; text-align: center; border-radius: 8px 8px 0 0;">
+                        <td style="background: linear-gradient(135deg, #14b8a6 0%, #3b82f6 100%); padding: 25px 20px; text-align: center; border-radius: 8px 8px 0 0;">
                             <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                                 <tr>
                                     <td align="center">
-                                        <img src="https://marketplace.digicraft.one/logo.svg" alt="DigiCraft Logo" style="width: 80px; height: 80px; margin-bottom: 20px;">
-                                        <h1 style="color: #ffffff; font-size: 28px; font-weight: 700; margin: 0 0 10px 0;">Thank You for Reaching Out!</h1>
-                                        <p style="color: #ffffff; font-size: 16px; margin: 0; opacity: 0.9;">We're excited to work with you on your digital project</p>
+                                        <img src="https://marketplace.digicraft.one/logo.png" alt="DigiCraft Logo" style="width: 60px; height: 60px; margin-bottom: 15px;">
+                                        <h1 style="color: #ffffff; font-size: 24px; font-weight: 700; margin: 0 0 8px 0;">Thank You for Reaching Out!</h1>
+                                        <p style="color: #ffffff; font-size: 14px; margin: 0; opacity: 0.9;">We're excited to work with you on your digital project</p>
                                     </td>
                                 </tr>
                             </table>
@@ -183,37 +184,37 @@ export async function sendEnquiryConfirmationEmail(data: EnquiryEmailData) {
 
                     <!-- Content -->
                     <tr>
-                        <td style="padding: 40px 30px;">
+                        <td style="padding: 25px 20px;">
                             
                             <!-- Welcome Section -->
-                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 30px;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 20px;">
                                 <tr>
                                     <td align="center">
-                                        <h2 style="color: #14b8a6; font-size: 24px; margin: 0 0 15px 0;">Welcome to DigiCraft!</h2>
-                                        <p style="color: #666666; font-size: 16px; margin: 0; line-height: 1.6;">Thank you for choosing us for your digital needs. We've received your inquiry and our team is already reviewing your requirements. We're committed to bringing your vision to life with our expertise and creativity.</p>
+                                        <h2 style="color: #14b8a6; font-size: 20px; margin: 0 0 10px 0;">Welcome to DigiCraft!</h2>
+                                        <p style="color: #666666; font-size: 14px; margin: 0; line-height: 1.5;">Thank you for choosing us for your digital needs. We've received your inquiry and our team is already reviewing your requirements. We're committed to bringing your vision to life with our expertise and creativity.</p>
                                     </td>
                                 </tr>
                             </table>
 
                             <!-- Customer Message -->
-                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 30px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 20px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
                                 <tr>
-                                    <td style="padding: 20px;">
-                                        <h4 style="color: #14b8a6; margin: 0 0 10px 0; font-size: 16px;">Customer Message:</h4>
-                                        <p style="color: #333333; font-style: italic; line-height: 1.6; margin: 0;">{{message}}</p>
+                                    <td style="padding: 15px;">
+                                        <h4 style="color: #14b8a6; margin: 0 0 8px 0; font-size: 14px;">Customer Message:</h4>
+                                        <p style="color: #333333; font-style: italic; line-height: 1.5; margin: 0;">{{message}}</p>
                                     </td>
                                 </tr>
                             </table>
 
                             <!-- Application Details -->
-                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 30px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 20px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
                                 <tr>
-                                    <td style="padding: 25px;">
+                                    <td style="padding: 18px;">
                                         <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                                             <tr>
-                                                <td style="padding-bottom: 15px;">
-                                                    <h3 style="color: #333333; font-size: 18px; margin: 0;">🛒 {{productTitle}}</h3>
-                                                    <p style="color: #666666; font-size: 14px; margin: 5px 0 0 0;">{{productDescription}}</p>
+                                                <td style="padding-bottom: 12px;">
+                                                    <h3 style="color: #333333; font-size: 16px; margin: 0;">🛒 <a href="https://marketplace.digicraft.one/marketplace/{{productId}}" style="color: #14b8a6; text-decoration: none; font-weight: 600;">{{productTitle}}</a></h3>
+                                                    <p style="color: #666666; font-size: 13px; margin: 4px 0 0 0;">{{productDescription}}</p>
                                                 </td>
                                             </tr>
                                         </table>
@@ -224,26 +225,26 @@ export async function sendEnquiryConfirmationEmail(data: EnquiryEmailData) {
                                                 <td style="padding: 0;">
                                                     <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                                                         <tr>
-                                                            <td style="padding: 12px; background-color: #ffffff; border-radius: 6px; border-left: 4px solid #14b8a6; margin-bottom: 10px;">
-                                                                <h4 style="color: #14b8a6; font-size: 12px; font-weight: 600; margin: 0 0 4px 0; text-transform: uppercase; letter-spacing: 0.5px;">Selected Plan</h4>
-                                                                <p style="color: #333333; font-size: 14px; margin: 0; font-weight: 500;">{{adjustmentType}} Plan</p>
+                                                            <td style="padding: 10px; background-color: #ffffff; border-radius: 6px; border-left: 4px solid #14b8a6; margin-bottom: 8px;">
+                                                                <h4 style="color: #14b8a6; font-size: 11px; font-weight: 600; margin: 0 0 3px 0; text-transform: uppercase; letter-spacing: 0.5px;">Selected Plan</h4>
+                                                                <p style="color: #333333; font-size: 13px; margin: 0; font-weight: 500;">{{adjustmentType}} Plan</p>
                                                             </td>
-                                                            <td style="width: 15px;"></td>
-                                                            <td style="padding: 12px; background-color: #ffffff; border-radius: 6px; border-left: 4px solid #14b8a6;">
-                                                                <h4 style="color: #14b8a6; font-size: 12px; font-weight: 600; margin: 0 0 4px 0; text-transform: uppercase; letter-spacing: 0.5px;">Customer Name</h4>
-                                                                <p style="color: #333333; font-size: 14px; margin: 0; font-weight: 500;">{{name}}</p>
+                                                            <td style="width: 12px;"></td>
+                                                            <td style="padding: 10px; background-color: #ffffff; border-radius: 6px; border-left: 4px solid #14b8a6;">
+                                                                <h4 style="color: #14b8a6; font-size: 11px; font-weight: 600; margin: 0 0 3px 0; text-transform: uppercase; letter-spacing: 0.5px;">Customer Name</h4>
+                                                                <p style="color: #333333; font-size: 13px; margin: 0; font-weight: 500;">{{name}}</p>
                                                             </td>
                                                         </tr>
-                                                        <tr><td colspan="3" style="height: 10px;"></td></tr>
+                                                        <tr><td colspan="3" style="height: 8px;"></td></tr>
                                                         <tr>
-                                                            <td style="padding: 12px; background-color: #ffffff; border-radius: 6px; border-left: 4px solid #14b8a6;">
-                                                                <h4 style="color: #14b8a6; font-size: 12px; font-weight: 600; margin: 0 0 4px 0; text-transform: uppercase; letter-spacing: 0.5px;">Email</h4>
-                                                                <p style="color: #333333; font-size: 14px; margin: 0; font-weight: 500;">{{email}}</p>
+                                                            <td style="padding: 10px; background-color: #ffffff; border-radius: 6px; border-left: 4px solid #14b8a6;">
+                                                                <h4 style="color: #14b8a6; font-size: 11px; font-weight: 600; margin: 0 0 3px 0; text-transform: uppercase; letter-spacing: 0.5px;">Email</h4>
+                                                                <p style="color: #333333; font-size: 13px; margin: 0; font-weight: 500;">{{email}}</p>
                                                             </td>
-                                                            <td style="width: 15px;"></td>
-                                                            <td style="padding: 12px; background-color: #ffffff; border-radius: 6px; border-left: 4px solid #14b8a6;">
-                                                                <h4 style="color: #14b8a6; font-size: 12px; font-weight: 600; margin: 0 0 4px 0; text-transform: uppercase; letter-spacing: 0.5px;">Phone</h4>
-                                                                <p style="color: #333333; font-size: 14px; margin: 0; font-weight: 500;">{{phone}}</p>
+                                                            <td style="width: 12px;"></td>
+                                                            <td style="padding: 10px; background-color: #ffffff; border-radius: 6px; border-left: 4px solid #14b8a6;">
+                                                                <h4 style="color: #14b8a6; font-size: 11px; font-weight: 600; margin: 0 0 3px 0; text-transform: uppercase; letter-spacing: 0.5px;">Phone</h4>
+                                                                <p style="color: #333333; font-size: 13px; margin: 0; font-weight: 500;">{{phone}}</p>
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -255,39 +256,39 @@ export async function sendEnquiryConfirmationEmail(data: EnquiryEmailData) {
                             </table>
 
                             <!-- Next Steps -->
-                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 30px; background-color: #e3f2fd; border-radius: 8px; border: 1px solid #bbdefb;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 20px; background-color: #e3f2fd; border-radius: 8px; border: 1px solid #bbdefb;">
                                 <tr>
-                                    <td style="padding: 25px;">
-                                        <h3 style="color: #1976d2; font-size: 18px; margin: 0 0 15px 0;">What Happens Next?</h3>
+                                    <td style="padding: 18px;">
+                                        <h3 style="color: #1976d2; font-size: 16px; margin: 0 0 12px 0;">What Happens Next?</h3>
                                         <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                                             <tr>
-                                                <td style="padding: 8px 0;">
-                                                    <span style="display: inline-block; width: 20px; height: 20px; background-color: #1976d2; color: white; border-radius: 50%; text-align: center; line-height: 20px; font-size: 12px; font-weight: bold; margin-right: 10px;">1</span>
-                                                    <span style="color: #333333; font-size: 14px;">Our team will review your requirements within 24 hours</span>
+                                                <td style="padding: 6px 0;">
+                                                    <span style="display: inline-block; width: 18px; height: 18px; background-color: #1976d2; color: white; border-radius: 50%; text-align: center; line-height: 18px; font-size: 11px; font-weight: bold; margin-right: 8px;">1</span>
+                                                    <span style="color: #333333; font-size: 13px;">Our team will review your requirements within 24 hours</span>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td style="padding: 8px 0;">
-                                                    <span style="display: inline-block; width: 20px; height: 20px; background-color: #1976d2; color: white; border-radius: 50%; text-align: center; line-height: 20px; font-size: 12px; font-weight: bold; margin-right: 10px;">2</span>
-                                                    <span style="color: #333333; font-size: 14px;">We'll schedule a consultation call to discuss details</span>
+                                                <td style="padding: 6px 0;">
+                                                    <span style="display: inline-block; width: 18px; height: 18px; background-color: #1976d2; color: white; border-radius: 50%; text-align: center; line-height: 18px; font-size: 11px; font-weight: bold; margin-right: 8px;">2</span>
+                                                    <span style="color: #333333; font-size: 13px;">We'll schedule a consultation call to discuss details</span>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td style="padding: 8px 0;">
-                                                    <span style="display: inline-block; width: 20px; height: 20px; background-color: #1976d2; color: white; border-radius: 50%; text-align: center; line-height: 20px; font-size: 12px; font-weight: bold; margin-right: 10px;">3</span>
-                                                    <span style="color: #333333; font-size: 14px;">You'll receive a detailed project proposal and timeline</span>
+                                                <td style="padding: 6px 0;">
+                                                    <span style="display: inline-block; width: 18px; height: 18px; background-color: #1976d2; color: white; border-radius: 50%; text-align: center; line-height: 18px; font-size: 11px; font-weight: bold; margin-right: 8px;">3</span>
+                                                    <span style="color: #333333; font-size: 13px;">You'll receive a detailed project proposal and timeline</span>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td style="padding: 8px 0;">
-                                                    <span style="display: inline-block; width: 20px; height: 20px; background-color: #1976d2; color: white; border-radius: 50%; text-align: center; line-height: 20px; font-size: 12px; font-weight: bold; margin-right: 10px;">4</span>
-                                                    <span style="color: #333333; font-size: 14px;">Once approved, we'll begin development immediately</span>
+                                                <td style="padding: 6px 0;">
+                                                    <span style="display: inline-block; width: 18px; height: 18px; background-color: #1976d2; color: white; border-radius: 50%; text-align: center; line-height: 18px; font-size: 11px; font-weight: bold; margin-right: 8px;">4</span>
+                                                    <span style="color: #333333; font-size: 13px;">Once approved, we'll begin development immediately</span>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td style="padding: 8px 0;">
-                                                    <span style="display: inline-block; width: 20px; height: 20px; background-color: #1976d2; color: white; border-radius: 50%; text-align: center; line-height: 20px; font-size: 12px; font-weight: bold; margin-right: 10px;">5</span>
-                                                    <span style="color: #333333; font-size: 14px;">Regular updates and milestone reviews throughout the process</span>
+                                            <tr
+                                                <td style="padding: 6px 0;">
+                                                    <span style="display: inline-block; width: 18px; height: 18px; background-color: #1976d2; color: white; border-radius: 50%; text-align: center; line-height: 18px; font-size: 11px; font-weight: bold; margin-right: 8px;">5</span>
+                                                    <span style="color: #333333; font-size: 13px;">Regular updates and milestone reviews throughout the process</span>
                                                 </td>
                                             </tr>
                                         </table>
@@ -296,16 +297,16 @@ export async function sendEnquiryConfirmationEmail(data: EnquiryEmailData) {
                             </table>
 
                             <!-- Contact Information -->
-                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 30px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 20px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
                                 <tr>
-                                    <td style="padding: 25px; text-align: center;">
-                                        <h3 style="color: #333333; font-size: 18px; margin: 0 0 15px 0;">Need to Reach Us?</h3>
+                                    <td style="padding: 18px; text-align: center;">
+                                        <h3 style="color: #333333; font-size: 16px; margin: 0 0 12px 0;">Need to Reach Us?</h3>
                                         <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                                             <tr>
                                                 <td align="center">
-                                                    <a href="mailto:hello@digicraft.one" style="display: inline-block; padding: 12px 24px; background-color: #14b8a6; color: white; text-decoration: none; border-radius: 6px; font-size: 14px; font-weight: 500; margin: 5px;">📧 Email Us</a>
-                                                    <a href="https://digicraft.one" style="display: inline-block; padding: 12px 24px; background-color: #3b82f6; color: white; text-decoration: none; border-radius: 6px; font-size: 14px; font-weight: 500; margin: 5px;">🌐 Visit Website</a>
-                                                    <a href="tel:+1234567890" style="display: inline-block; padding: 12px 24px; background-color: #10b981; color: white; text-decoration: none; border-radius: 6px; font-size: 14px; font-weight: 500; margin: 5px;">📞 Call Us</a>
+                                                    <a href="mailto:support@digicraft.one" style="display: inline-block; padding: 10px 20px; background-color: #14b8a6; color: white; text-decoration: none; border-radius: 6px; font-size: 13px; font-weight: 500; margin: 4px;">📧 Email Us</a>
+                                                    <a href="https://digicraft.one" style="display: inline-block; padding: 10px 20px; background-color: #3b82f6; color: white; text-decoration: none; border-radius: 6px; font-size: 13px; font-weight: 500; margin: 4px;">🌐 Visit Website</a>
+                                                    <a href="tel:+918299797516" style="display: inline-block; padding: 10px 20px; background-color: #10b981; color: white; text-decoration: none; border-radius: 6px; font-size: 13px; font-weight: 500; margin: 4px;">📞 Call Us</a>
                                                 </td>
                                             </tr>
                                         </table>
@@ -318,10 +319,10 @@ export async function sendEnquiryConfirmationEmail(data: EnquiryEmailData) {
 
                     <!-- Footer -->
                     <tr>
-                        <td style="background-color: #f8f9fa; padding: 30px; text-align: center; border-radius: 0 0 8px 8px; border-top: 1px solid #e9ecef;">
-                            <p style="color: #666666; font-size: 14px; margin: 0 0 10px 0;"><strong>DigiCraft</strong> - Transforming Ideas into Digital Reality</p>
-                            <p style="color: #666666; font-size: 14px; margin: 0 0 20px 0;">Launch Before You Blink</p>
-                            <p style="color: #999999; font-size: 12px; margin: 0;">This email was sent from the DigiCraft contact form and is an automated response. If you have any questions, please don't hesitate to reach out.</p>
+                        <td style="background-color: #f8f9fa; padding: 20px; text-align: center; border-radius: 0 0 8px 8px; border-top: 1px solid #e9ecef;">
+                            <p style="color: #666666; font-size: 13px; margin: 0 0 8px 0;"><strong>DigiCraft</strong> - Transforming Ideas into Digital Reality</p>
+                            <p style="color: #666666; font-size: 13px; margin: 0 0 15px 0;">Launch Before You Blink</p>
+                            <p style="color: #999999; font-size: 11px; margin: 0;">This email was sent from the DigiCraft contact form and is an automated response. If you have any questions, please don't hesitate to reach out.</p>
                         </td>
                     </tr>
 
@@ -340,7 +341,8 @@ export async function sendEnquiryConfirmationEmail(data: EnquiryEmailData) {
             '{{message}}': data.message,
             '{{productTitle}}': data.productTitle,
             '{{productDescription}}': data.productDescription,
-            '{{adjustmentType}}': data.adjustmentType
+            '{{adjustmentType}}': data.adjustmentType,
+            '{{productId}}': data.productId
         };
 
         // Apply all replacements
