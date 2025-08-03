@@ -1,6 +1,7 @@
 import { errorResponse, successResponse } from "@/lib/apiResponse";
 import { authOptions } from "@/lib/auth/options";
 import { connectToDB } from "@/lib/db/mongoose";
+import { sendEnquiryNotification } from "@/lib/telegram";
 import { Enquiry } from "@/schemas/Enquiry";
 import { Product } from "@/schemas/Product";
 import { getServerSession } from "next-auth";
@@ -55,6 +56,24 @@ export async function POST(req: NextRequest) {
             });
 
         const created = await Enquiry.create(body);
+
+        // Send Telegram notification
+        try {
+            const telegramResult = await sendEnquiryNotification({
+                name: body.name,
+                email: body.email,
+                phone: body.phone,
+                message: body.message,
+                product: { title: product.title, category: product.category },
+                adjustmentType: body.adjustmentType
+            });
+
+            if (!telegramResult.success) {
+                console.error("Failed to send Telegram notification:", telegramResult.error);
+            }
+        } catch (telegramError) {
+            console.error("Error sending Telegram notification:", telegramError);
+        }
 
         return NextResponse.json(
             successResponse(created, "Enquiry submitted"),
