@@ -70,7 +70,7 @@ export async function sendEnquiryNotification(enquiryData: {
     email: string;
     phone: string;
     message: string;
-    product?: { title: string; category: string };
+    product?: { title: string; category: string; link: string };
     adjustmentType: string;
 }) {
     const text = `🚀 New Form Submission!
@@ -81,9 +81,9 @@ Phone: ${enquiryData.phone}
 Message: ${enquiryData.message}
 Product: ${enquiryData.product?.title || 'N/A'}
 Category: ${enquiryData.product?.category || 'N/A'}
+Link: ${enquiryData.product?.link || 'N/A'}
 Adjustment Type: ${enquiryData.adjustmentType}
 
 Time: ${new Date().toLocaleString()}`;
-
     return sendTelegramMessage({ text });
 } 
