@@ -14,6 +14,7 @@ export interface ProductDocument extends Document {
     category: CategoryType;
     features: ProductFeature[];
     pricingOptions: PricingTier[];
+    tags?: string[];
     createdAt: Date;
     updatedAt: Date;
 }
@@ -52,6 +53,7 @@ const ProductSchema = new Schema<ProductDocument>(
             enum: ["ecommerce", "portfolio", "blog", "landing", "custom"],
             required: true,
         },
+        tags: [{ type: String }],
         features: [FeatureSchema],
         pricingOptions: [PricingTierSchema],
     },

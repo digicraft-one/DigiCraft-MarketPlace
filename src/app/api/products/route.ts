@@ -34,6 +34,7 @@ export async function POST(req: Request) {
             "title",
             "shortDescription",
             "longDescription",
+            "tags",
             "coverImage",
             "deliverables",
             "category",

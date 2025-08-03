@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import Swal from "sweetalert2";
 
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
@@ -126,8 +127,18 @@ export default function EnquiryForm() {
     };
 
     if (!product || !adjustmentType) {
-        toast.error("Invalid product ID provided.");
-        return router.push("/");
+        Swal.fire({
+            title: "Redirecting...",
+            text: "You haven't selected a product or adjustment type. Redirecting to DigiCraft.",
+            icon: "info",
+            showConfirmButton: false,
+            timer: 3000,
+        });
+
+        setTimeout(
+            () => window.open("https://digicraft.one/contact", "_blank"),
+            3000
+        );
     }
 
     return (

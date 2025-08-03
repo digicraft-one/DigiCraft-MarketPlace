@@ -38,6 +38,7 @@ export interface ProductFormState {
     longDescription: string;
     coverImage: string;
     deliverables: string[];
+    tags: string[];
     category: CategoryType;
     features: ProductFeature[];
     pricingOptions: PricingTier[];
@@ -64,6 +65,7 @@ const DEFAULT_VALUES: ProductFormState = {
             discountPercentage: 0,
         },
     ],
+    tags: [],
 };
 
 export default function ProductForm({
@@ -88,6 +90,7 @@ export default function ProductForm({
             category: productDetails.category as CategoryType,
             features: productDetails.features,
             pricingOptions: productDetails.pricingOptions,
+            tags: productDetails.tags,
         };
 
     const [formData, setFormData] = useState<ProductFormState>(
@@ -176,6 +179,7 @@ export default function ProductForm({
             "shortDescription",
             "longDescription",
             "coverImage",
+            "tags",
             "deliverables",
             "category",
             "features",
@@ -257,6 +261,47 @@ export default function ProductForm({
                         ))}
                     </SelectContent>
                 </Select>
+            </div>
+
+            <div className="space-y-2 ">
+                <div className="flex justify-between items-center">
+                    <Label>Tags</Label>
+                    <Button
+                        variant="secondary"
+                        onClick={() =>
+                            handleChange("tags", [...formData.tags, ""])
+                        }
+                        className="w-35">
+                        Add Tag
+                    </Button>
+                </div>
+                {formData.tags.map((tag, i) => (
+                    <div key={i} className="flex gap-2">
+                        <Input
+                            required
+                            placeholder={`Tag ${i + 1}`}
+                            value={tag}
+                            onChange={(e) => {
+                                const updated = [...formData.tags];
+                                updated[i] = e.target.value;
+                                handleChange("tags", updated);
+                            }}
+                        />
+                        <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => {
+                                const updated = formData.tags.filter(
+                                    (_, index) => index !== i
+                                );
+                                handleChange("tags", updated);
+                            }}
+                            className="text-red-500 hover:text-red-700">
+                            <DeleteIcon />
+                        </Button>
+                    </div>
+                ))}
             </div>
 
             <div>

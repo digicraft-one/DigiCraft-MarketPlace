@@ -20,6 +20,7 @@ export interface Product {
     coverImage: string;
     deliverables: string[];
     category: string;
+    tags: string[];
     features: Feature[];
     pricingOptions: PricingOption[];
     createdAt: string;
