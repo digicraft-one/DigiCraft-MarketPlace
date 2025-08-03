@@ -173,10 +173,15 @@ function EnquiryFormContent() {
             timer: 3000,
         });
 
-        setTimeout(
-            () => window.open("https://digicraft.one/contact", "_blank"),
+
+        const timeout = setTimeout(
+            () => {
+                window.open("https://digicraft.one/contact", "_blank");
+                router.push("/");
+            },
             3000
         );
+        return () => clearTimeout(timeout);
     }
 
     return (
