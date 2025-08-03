@@ -10,6 +10,7 @@ import {
     ChevronDownIcon,
     ChevronUpIcon,
     InformationCircleIcon,
+    XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
@@ -499,7 +500,7 @@ export default function ProductDetail() {
     const y = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
     const params = useParams();
     const router = useRouter();
-    const [expandedFeatures, setExpandedFeatures] = useState<number[]>([]);
+    const [selectedFeature, setSelectedFeature] = useState<number | null>(null);
     const [product, setProduct] = useState<Product | null>(null);
 
     useEffect(() => {
@@ -550,12 +551,12 @@ export default function ProductDetail() {
         );
     }
 
-    const toggleFeature = (index: number) => {
-        setExpandedFeatures((prev) =>
-            prev.includes(index)
-                ? prev.filter((i) => i !== index)
-                : [...prev, index]
-        );
+    const openFeatureModal = (index: number) => {
+        setSelectedFeature(index);
+    };
+
+    const closeFeatureModal = () => {
+        setSelectedFeature(null);
     };
 
     const handlePurchase = (id: string, title: string, tier: PricingTier) =>
@@ -636,7 +637,7 @@ export default function ProductDetail() {
                 </section>
 
                 {/* Choose Your Plan */}
-                <section className="px-4 py-16">
+                <section id="pricing-section" className="px-4 py-16">
                     <div className="max-w-7xl mx-auto">
                         <h2 className="text-3xl font-bold text-white mb-8 text-center">
                             Choose Your Plan
@@ -667,56 +668,96 @@ export default function ProductDetail() {
                                     <h2 className="text-2xl font-bold text-white mb-6">
                                         Key Features
                                     </h2>
-                                    <div className="space-y-4">
+                                    <div className="space-y-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                                         {product.features.map(
                                             (feature, index) => (
                                                 <div
                                                     key={index}
-                                                    className="bg-slate-900/50 border border-teal-500/20 rounded-xl overflow-hidden">
-                                                    <button
-                                                        onClick={() =>
-                                                            toggleFeature(index)
-                                                        }
-                                                        className="w-full p-6 flex items-center justify-between text-left">
-                                                        <div className="flex items-center gap-4">
-                                                            <div className="relative w-16 h-12 rounded-lg overflow-hidden">
-                                                                <Image
-                                                                    src={
-                                                                        feature.imageUrl
-                                                                    }
-                                                                    alt={
-                                                                        feature.title
-                                                                    }
-                                                                    fill
-                                                                    className="object-cover"
-                                                                />
-                                                            </div>
+                                                    className="bg-slate-900/50 border border-teal-500/20 rounded-xl overflow-hidden transition-all duration-300 hover:border-teal-500/40 hover:shadow-lg cursor-pointer group"
+                                                    onClick={() => openFeatureModal(index)}>
+                                                    <div className="flex">
+                                                        {/* Feature Image - Left Side */}
+                                                        <div className="relative w-32 h-24 flex-shrink-0 overflow-hidden">
+                                                            <Image
+                                                                src={feature.imageUrl}
+                                                                alt={feature.title}
+                                                                fill
+                                                                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                                                            />
+                                                            <div className="absolute inset-0 bg-gradient-to-tr from-teal-500/20 to-blue-500/20" />
+                                                        </div>
+                                                        
+                                                        {/* Feature Content - Right Side */}
+                                                        <div className="flex-1 p-4 flex flex-col justify-between">
                                                             <div>
-                                                                <h3 className="text-lg font-semibold text-white">
-                                                                    {
-                                                                        feature.title
-                                                                    }
+                                                                <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-teal-400 transition-colors">
+                                                                    {feature.title}
                                                                 </h3>
-                                                                <p className="text-gray-400 text-sm">
-                                                                    {
-                                                                        feature.description
-                                                                    }
+                                                                <p className="text-gray-400 text-sm line-clamp-1">
+                                                                    {feature.description} Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim ad tempora similique dignissimos dolorem facilis in laboriosam saepe ut quo, quas doloribus labore neque omnis vel error aspernatur! Fugit porro, inventore labore pariatur totam iste magni! Veniam ad impedit consequuntur ducimus totam nulla repellat amet, velit voluptas omnis, iste dolor id saepe, in aliquam autem dolore accusamus possimus? Quo ducimus dolor, blanditiis at accusamus error nisi vel ad atque impedit sint delectus rerum itaque quibusdam. Quo a tenetur harum voluptatum enim exercitationem temporibus dolorem atque ut quas, doloribus iusto eos labore nulla facere asperiores cupiditate iste adipisci. Ea quos maiores labore facere? Dignissimos vero, ipsa iste iusto nisi expedita quo possimus odio quasi voluptas cum incidunt exercitationem omnis blanditiis quae facilis! Nobis voluptatibus libero ducimus eum quidem molestias dignissimos at nemo nam, quo saepe, nulla minima inventore earum autem a corrupti magni, esse maiores assumenda ex incidunt doloremque voluptatum. Ipsam voluptate, animi at dignissimos temporibus earum quam ratione odit ducimus consectetur commodi dolorem quidem. A, nisi amet! Inventore odio harum, modi atque perspiciatis optio architecto cum ex a pariatur accusamus dolores quae temporibus corporis deleniti velit ipsum aliquid accusantium laboriosam reprehenderit molestias dignissimos. Dolorem enim deleniti excepturi, explicabo facilis similique?
                                                                 </p>
                                                             </div>
+                                                            
+                                                           
                                                         </div>
-                                                        {expandedFeatures.includes(
-                                                            index
-                                                        ) ? (
-                                                            <ChevronUpIcon className="w-5 h-5 text-gray-400" />
-                                                        ) : (
-                                                            <ChevronDownIcon className="w-5 h-5 text-gray-400" />
-                                                        )}
-                                                    </button>
+                                                    </div>
                                                 </div>
                                             )
                                         )}
                                     </div>
                                 </div>
+
+                                {/* Feature Modal */}
+                                {selectedFeature !== null && (
+                                    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                                        <motion.div
+                                            initial={{ opacity: 0, scale: 0.9 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            exit={{ opacity: 0, scale: 0.9 }}
+                                            className="bg-slate-900 border border-teal-500/30 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+                                            
+                                            {/* Modal Header */}
+                                            <div className="flex items-center justify-between p-6 border-b border-teal-500/20">
+                                                <h3 className="text-2xl font-bold text-white">
+                                                    {product.features[selectedFeature].title}
+                                                </h3>
+                                                <button
+                                                    onClick={closeFeatureModal}
+                                                    className="p-2 rounded-lg hover:bg-slate-800 transition-colors">
+                                                    <XMarkIcon className="w-6 h-6 text-gray-400 hover:text-white" />
+                                                </button>
+                                            </div>
+
+                                            {/* Modal Content */}
+                                            <div className="p-6">
+                                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                                    {/* Large Feature Image */}
+                                                    <div className="relative w-full h-80 rounded-xl overflow-hidden">
+                                                        <Image
+                                                            src={product.features[selectedFeature].imageUrl}
+                                                            alt={product.features[selectedFeature].title}
+                                                            fill
+                                                            className="object-cover"
+                                                        />
+                                                        <div className="absolute inset-0 bg-gradient-to-tr from-teal-500/20 to-blue-500/20" />
+                                                    </div>
+                                                    
+                                                    {/* Detailed Description */}
+                                                    <div className="space-y-6">
+                                                        <div>
+                                                            <h4 className="text-xl font-bold text-white mb-4">
+                                                                {product.features[selectedFeature].title}
+                                                            </h4>
+                                                            <p className="text-gray-300 leading-relaxed text-lg">
+                                                                {product.features[selectedFeature].description}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </motion.div>
+                                    </div>
+                                )}
                             </div>
 
                             {/* Sidebar */}

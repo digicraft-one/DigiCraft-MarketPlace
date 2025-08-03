@@ -371,20 +371,22 @@ const ProductCard = ({ product }: ProductCardProps) => {
                             : 0;
                         return (
                             <>
-                                {discount > 0 && (
-                                    <span className="text-xs text-green-400 font-semibold mr-1">
-                                        -{discount}%
-                                    </span>
-                                )}
                                 <span className="text-xl font-bold text-white">
                                     ${finalPrice}
                                 </span>
+
+                                {discount > 0 && <span className="text-xs text-gray-400 line-through">
+                                    ${basePrice}
+                                </span>}
+
+                                {discount > 0 && (
+                                    <span className="text-xs text-green-400 font-semibold mr-1">
+                                        -{discount}% off
+                                    </span>
+                                )}
                             </>
                         );
                     })()}
-                    <span className="text-xs text-gray-400 line-through">
-                        ${basePrice}
-                    </span>
                 </div>
 
                 {/* Features Preview */}
@@ -408,9 +410,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
                         View Details
                         <ArrowRightIcon className="w-3 h-3" />
                     </Link>
-                    <button className="p-2 rounded-full border border-teal-500/30 hover:border-teal-500/60 transition-all">
+                    {/* <button className="p-2 rounded-full border border-teal-500/30 hover:border-teal-500/60 transition-all">
                         <HeartIcon className="w-3 h-3 text-gray-400 hover:text-red-500 transition-colors" />
-                    </button>
+                    </button> */}
                 </div>
             </div>
         </div>
@@ -576,12 +578,11 @@ export default function Marketplace() {
                                                         category.value
                                                     )
                                                 }
-                                                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${
-                                                    selectedCategory ===
+                                                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${selectedCategory ===
                                                     category.value
-                                                        ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white"
-                                                        : "bg-slate-900/50 border border-teal-500/20 text-gray-400 hover:border-teal-500/40"
-                                                }`}>
+                                                    ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white"
+                                                    : "bg-slate-900/50 border border-teal-500/20 text-gray-400 hover:border-teal-500/40"
+                                                    }`}>
                                                 {category.label}
                                             </button>
                                         ))}
