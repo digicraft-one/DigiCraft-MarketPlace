@@ -25,6 +25,7 @@ import {
     FaMapMarkerAlt,
     FaPhoneAlt,
 } from "react-icons/fa";
+import Footer from "@/components/Footer";
 
 const PLAN_OPTIONS: Plans[] = ["base", "plus", "pro", "ultimate"];
 
@@ -353,18 +354,17 @@ export default function EnquiryForm() {
                                                                         className="text-white hover:bg-[#0a0f1c]/60 focus:bg-[#0a0f1c]/60 rounded-lg">
                                                                         <span className="flex items-center">
                                                                             <div
-                                                                                className={`w-2 h-2 rounded-full mr-3 ${
-                                                                                    plan ===
-                                                                                    "base"
+                                                                                className={`w-2 h-2 rounded-full mr-3 ${plan ===
+                                                                                        "base"
                                                                                         ? "bg-green-400"
                                                                                         : plan ===
-                                                                                          "plus"
-                                                                                        ? "bg-blue-400"
-                                                                                        : plan ===
-                                                                                          "pro"
-                                                                                        ? "bg-cyan-400"
-                                                                                        : "bg-yellow-400"
-                                                                                }`}
+                                                                                            "plus"
+                                                                                            ? "bg-blue-400"
+                                                                                            : plan ===
+                                                                                                "pro"
+                                                                                                ? "bg-cyan-400"
+                                                                                                : "bg-yellow-400"
+                                                                                    }`}
                                                                             />
                                                                             {plan
                                                                                 .charAt(
@@ -445,6 +445,7 @@ export default function EnquiryForm() {
                     </motion.div>
                 </div>
             </main>
+            <Footer />
         </div>
     );
 }
