@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 -10 120 120">
+  <!-- Gradients -->
+  <defs>
+    <linearGradient id="mainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+
+      <stop offset="0%" style="stop-color:#A855F7" />
+      <stop offset="100%" style="stop-color:#EC4899" />
+    </linearGradient>
+    <linearGradient id="glowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#A855F7" stop-opacity="0.3" />
+      <stop offset="100%" style="stop-color:#EC4899" stop-opacity="0.3" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background Glow -->
+  <circle cx="50" cy="50" r="45" fill="url(#glowGradient)" filter="blur(5px)" />
+
+  <!-- Circuit Lines -->
+  <path
+    d="M15 50 L25 50 L30 45 L35 55 L40 50"
+    stroke="url(#mainGradient)"
+    stroke-width="2"
+    fill="none"
+    opacity="0.5"
+  />
+  <path
+    d="M50 50 L60 50 L65 45 L70 55 L75 50"
+    stroke="url(#mainGradient)"
+    stroke-width="2"
+    fill="none"
+    opacity="0.5"
+  />
+
+  <!-- D Letter -->
+  <path
+    d="M25 30 L40 30 Q55 30 55 50 Q55 70 40 70 L25 70 Z"
+    stroke="url(#mainGradient)"
+    stroke-width="3"
+    fill="none"
+  />
+
+  <!-- G Letter -->
+  <path
+    d="M65 30 Q80 30 80 45 L80 55 Q80 70 65 70 Q50 70 50 55 L50 50 L65 50"
+    stroke="url(#mainGradient)"
+    stroke-width="3"
+    fill="none"
+  />
+
+  <!-- Digital Dots -->
+  <circle cx="25" cy="50" r="2" fill="#A855F7" />
+  <circle cx="80" cy="50" r="2" fill="#EC4899" />
+  
+  <!-- Connection Lines -->
+</svg> 

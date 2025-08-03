@@ -1,0 +1,86 @@
+import { connectToDB } from "@/lib/db/mongoose";
+import { Product } from "@/schemas/Product";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth/options";
+import { successResponse, errorResponse } from "@/lib/apiResponse";
+import { NextResponse } from "next/server";
+
+export async function GET(_: Request, { params }: { params: { id: string } }) {
+    try {
+        await connectToDB();
+        const product = await Product.findById(params.id);
+        if (!product)
+            return NextResponse.json(errorResponse("Product not found"), {
+                status: 404,
+            });
+
+        return NextResponse.json(successResponse(product));
+    } catch (err) {
+        return NextResponse.json(
+            errorResponse("Failed to fetch product", err as Error),
+            { status: 500 }
+        );
+    }
+}
+
+export async function PUT(
+    req: Request,
+    { params }: { params: { id: string } }
+) {
+    const session = await getServerSession(authOptions);
+    if (!session)
+        return NextResponse.json(errorResponse("Unauthorized"), {
+            status: 401,
+        });
+
+    try {
+        await connectToDB();
+        const updateData = await req.json();
+
+        const updated = await Product.findByIdAndUpdate(params.id, updateData, {
+            new: true,
+            runValidators: true,
+        });
+
+        if (!updated)
+            return NextResponse.json(errorResponse("Product not found"), {
+                status: 404,
+            });
+
+        return NextResponse.json(successResponse(updated, "Product updated"));
+    } catch (err) {
+        return NextResponse.json(
+            errorResponse("Error updating product", err as Error),
+            { status: 500 }
+        );
+    }
+}
+
+export async function DELETE(
+    _: Request,
+    { params }: { params: { id: string } }
+) {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+        return NextResponse.json(errorResponse("Unauthorized access"), {
+            status: 401,
+        });
+    }
+
+    try {
+        await connectToDB();
+        const deleted = await Product.findByIdAndDelete(params.id);
+        if (!deleted)
+            return NextResponse.json(
+                errorResponse("Product not found or already deleted"),
+                { status: 404 }
+            );
+
+        return NextResponse.json(successResponse(null, "Product deleted"));
+    } catch (err) {
+        return NextResponse.json(
+            errorResponse("Failed to delete product", err as Error),
+            { status: 500 }
+        );
+    }
+}
