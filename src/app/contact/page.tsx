@@ -123,7 +123,11 @@ function EnquiryFormContent() {
     const product = productFromParams || productFromSession || undefined;
     
     const title = searchParams.get("title") as string;
-    const adjustmentType = searchParams.get("adjustmentType") as Plans;
+    
+    // Get plan type from URL parameters first, then from session storage
+    const adjustmentTypeFromParams = searchParams.get("adjustmentType") as Plans;
+    const adjustmentTypeFromSession = typeof window !== 'undefined' ? sessionStorage.getItem('selectedPlanType') : null;
+    const adjustmentType = adjustmentTypeFromParams || adjustmentTypeFromSession || undefined;
 
     const DEFAULT_VALUES: EnquiryFormState = {
         name: "",
@@ -170,11 +174,11 @@ function EnquiryFormContent() {
         }
     };
 
-    // Check if product ID exists (from params or session storage)
-    if (!product) {
+    // Check if product ID and plan type exist (from params or session storage)
+    if (!product || !adjustmentType) {
         Swal.fire({
-            title: "Product Selection Required",
-            text: "You must select a product first to contact us. Redirecting to marketplace...",
+            title: "Product & Plan Selection Required",
+            text: "You must select a product and plan first to contact us. Redirecting to marketplace...",
             icon: "info",
             showConfirmButton: false,
             timer: 3000,

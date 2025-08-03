@@ -560,8 +560,9 @@ export default function ProductDetail() {
     };
 
     const handlePurchase = (id: string, title: string, tier: PricingTier) => {
-        // Store product ID in session storage
+        // Store product ID and plan type in session storage
         sessionStorage.setItem('selectedProductId', id);
+        sessionStorage.setItem('selectedPlanType', tier.label);
         router.push(
             `/contact?product=${id}&title=${title}&adjustmentType=${tier.label}`
         );
