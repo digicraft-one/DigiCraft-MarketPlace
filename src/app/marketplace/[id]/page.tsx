@@ -370,13 +370,12 @@ const PricingCard = ({
 
     return (
         <div
-            className={`relative p-6 rounded-2xl border transition-all ${
-                isUltimate
+            className={`relative p-6 rounded-2xl border transition-all ${isUltimate
                     ? "bg-gradient-to-br from-orange-500/8 to-amber-500/8 border-orange-500/25 hover:border-orange-500/35"
                     : isPopular
-                    ? "bg-gradient-to-br from-teal-500/10 to-blue-500/10 border-teal-500/40"
-                    : "bg-slate-900/50 border-teal-500/20 hover:border-teal-500/40"
-            }`}>
+                        ? "bg-gradient-to-br from-teal-500/10 to-blue-500/10 border-teal-500/40"
+                        : "bg-slate-900/50 border-teal-500/20 hover:border-teal-500/40"
+                }`}>
             {isPopular && !isUltimate && (
                 <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                     <span className="bg-gradient-to-r from-teal-500 to-blue-500 text-white px-4 py-1 rounded-full text-xs font-bold">
@@ -397,11 +396,10 @@ const PricingCard = ({
             <div className="absolute top-4 right-4">
                 <div className="relative">
                     <InformationCircleIcon
-                        className={`w-5 h-5 transition-colors cursor-help ${
-                            isUltimate
+                        className={`w-5 h-5 transition-colors cursor-help ${isUltimate
                                 ? "text-gray-400 hover:text-orange-300"
                                 : "text-gray-400 hover:text-teal-400"
-                        }`}
+                            }`}
                         onMouseEnter={() => setShowTooltip(true)}
                         onMouseLeave={() => setShowTooltip(false)}
                         onClick={() => setShowTooltip(!showTooltip)}
@@ -409,15 +407,13 @@ const PricingCard = ({
 
                     {/* Tooltip */}
                     <div
-                        className={`absolute right-0 top-6 w-64 bg-slate-800 border rounded-lg p-4 shadow-xl transition-all duration-300 z-50 ${
-                            isUltimate
+                        className={`absolute right-0 top-6 w-64 bg-slate-800 border rounded-lg p-4 shadow-xl transition-all duration-300 z-50 ${isUltimate
                                 ? "border-orange-500/20"
                                 : "border-teal-500/20"
-                        } ${
-                            showTooltip
+                            } ${showTooltip
                                 ? "opacity-100 visible"
                                 : "opacity-0 invisible"
-                        }`}>
+                            }`}>
                         <div className="text-sm text-white font-semibold mb-2 capitalize">
                             {tier.label} Plan Includes:
                         </div>
@@ -427,11 +423,10 @@ const PricingCard = ({
                                     key={index}
                                     className="text-xs text-gray-300 flex items-center gap-2">
                                     <CheckIcon
-                                        className={`w-3 h-3 flex-shrink-0 ${
-                                            isUltimate
+                                        className={`w-3 h-3 flex-shrink-0 ${isUltimate
                                                 ? "text-orange-300"
                                                 : "text-teal-400"
-                                        }`}
+                                            }`}
                                     />
                                     {feature}
                                 </li>
@@ -439,11 +434,10 @@ const PricingCard = ({
                         </ul>
                         {/* Tooltip Arrow */}
                         <div
-                            className={`absolute -top-2 right-4 w-4 h-4 bg-slate-800 border-l border-t transform rotate-45 ${
-                                isUltimate
+                            className={`absolute -top-2 right-4 w-4 h-4 bg-slate-800 border-l border-t transform rotate-45 ${isUltimate
                                     ? "border-orange-500/20"
                                     : "border-teal-500/20"
-                            }`}></div>
+                                }`}></div>
                     </div>
                 </div>
             </div>
@@ -469,11 +463,11 @@ const PricingCard = ({
                             </span>
                         )}
                         <span className="text-3xl font-bold text-white">
-                            ${finalPrice}
+                            ₹{finalPrice}
                         </span>
                         {discountPercentage > 0 && (
                             <span className="text-sm text-gray-400 line-through">
-                                ${tier.price}
+                                ₹{tier.price}
                             </span>
                         )}
                     </div>
@@ -482,13 +476,12 @@ const PricingCard = ({
 
             <button
                 onClick={handleClick}
-                className={`w-full py-3 px-4 rounded-lg font-semibold transition-all ${
-                    isUltimate
+                className={`w-full py-3 px-4 rounded-lg font-semibold transition-all ${isUltimate
                         ? "bg-gradient-to-r from-orange-500/85 to-amber-500/85 text-white hover:shadow-lg hover:from-orange-600/95 hover:to-amber-600/95"
                         : isPopular
-                        ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:shadow-lg"
-                        : "bg-slate-800/50 text-white border border-teal-500/30 hover:border-teal-500/60"
-                }`}>
+                            ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:shadow-lg"
+                            : "bg-slate-800/50 text-white border border-teal-500/30 hover:border-teal-500/60"
+                    }`}>
                 {isUltimate ? "Contact DigiCraft" : `Select ${tier.label}`}
             </button>
         </div>
@@ -690,7 +683,7 @@ export default function ProductDetail() {
                                                             />
                                                             <div className="absolute inset-0 bg-gradient-to-tr from-teal-500/20 to-blue-500/20" />
                                                         </div>
-                                                        
+
                                                         {/* Feature Content - Right Side */}
                                                         <div className="flex-1 p-4 flex flex-col justify-between">
                                                             <div>
@@ -701,8 +694,8 @@ export default function ProductDetail() {
                                                                     {feature.description} Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim ad tempora similique dignissimos dolorem facilis in laboriosam saepe ut quo, quas doloribus labore neque omnis vel error aspernatur! Fugit porro, inventore labore pariatur totam iste magni! Veniam ad impedit consequuntur ducimus totam nulla repellat amet, velit voluptas omnis, iste dolor id saepe, in aliquam autem dolore accusamus possimus? Quo ducimus dolor, blanditiis at accusamus error nisi vel ad atque impedit sint delectus rerum itaque quibusdam. Quo a tenetur harum voluptatum enim exercitationem temporibus dolorem atque ut quas, doloribus iusto eos labore nulla facere asperiores cupiditate iste adipisci. Ea quos maiores labore facere? Dignissimos vero, ipsa iste iusto nisi expedita quo possimus odio quasi voluptas cum incidunt exercitationem omnis blanditiis quae facilis! Nobis voluptatibus libero ducimus eum quidem molestias dignissimos at nemo nam, quo saepe, nulla minima inventore earum autem a corrupti magni, esse maiores assumenda ex incidunt doloremque voluptatum. Ipsam voluptate, animi at dignissimos temporibus earum quam ratione odit ducimus consectetur commodi dolorem quidem. A, nisi amet! Inventore odio harum, modi atque perspiciatis optio architecto cum ex a pariatur accusamus dolores quae temporibus corporis deleniti velit ipsum aliquid accusantium laboriosam reprehenderit molestias dignissimos. Dolorem enim deleniti excepturi, explicabo facilis similique?
                                                                 </p>
                                                             </div>
-                                                            
-                                                           
+
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -719,7 +712,7 @@ export default function ProductDetail() {
                                             animate={{ opacity: 1, scale: 1 }}
                                             exit={{ opacity: 0, scale: 0.9 }}
                                             className="bg-slate-900 border border-teal-500/30 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-                                            
+
                                             {/* Modal Header */}
                                             <div className="flex items-center justify-between p-6 border-b border-teal-500/20">
                                                 <h3 className="text-2xl font-bold text-white">
@@ -745,7 +738,7 @@ export default function ProductDetail() {
                                                         />
                                                         <div className="absolute inset-0 bg-gradient-to-tr from-teal-500/20 to-blue-500/20" />
                                                     </div>
-                                                    
+
                                                     {/* Detailed Description */}
                                                     <div className="space-y-6">
                                                         <div>

@@ -42,279 +42,71 @@ const GridBackground = () => (
     </div>
 );
 
-// Dummy data according to Product schema
-const dummyProducts = [
-    {
-        _id: "1",
-        title: "E-Commerce Store Pro",
-        shortDescription: "Complete e-commerce solution with advanced features",
-        longDescription:
-            "A comprehensive e-commerce platform with product management, payment processing, inventory tracking, and customer analytics. Perfect for online businesses looking to scale.",
-        coverImage:
-            "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=450&fit=crop&crop=center",
-        deliverables: [
-            "Complete website files",
-            "Database setup guide",
-            "Payment gateway integration",
-            "SEO optimization",
-            "Mobile responsive design",
-            "Admin dashboard",
-        ],
-        category: "ecommerce" as CategoryType,
-        features: [
-            {
-                imageUrl:
-                    "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=225&fit=crop&crop=center",
-                title: "Product Management",
-                description:
-                    "Easy product catalog management with categories and variants",
-            },
-            {
-                imageUrl:
-                    "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&h=225&fit=crop&crop=center",
-                title: "Payment Processing",
-                description:
-                    "Secure payment gateway integration with multiple payment options",
-            },
-            {
-                imageUrl:
-                    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=225&fit=crop&crop=center",
-                title: "Inventory Tracking",
-                description:
-                    "Real-time inventory management with low stock alerts",
-            },
-        ],
-        pricingOptions: [
-            { label: "base" as Plans, price: 299, discountPercentage: 0 },
-            { label: "plus" as Plans, price: 499, discountPercentage: 10 },
-            { label: "pro" as Plans, price: 799, discountPercentage: 20 },
-            { label: "ultimate" as Plans, price: 1299, discountPercentage: 25 },
-        ],
-        tags: ["ecommerce", "website", "cms"],
-        createdAt: new Date("2024-01-15").toISOString(),
-        updatedAt: new Date("2024-01-15").toISOString(),
-        rating: 4.9,
-        reviews: 127,
-        views: 2340,
-        isHotDeal: true,
-        timeLeft: "2 days left",
-    },
-    {
-        _id: "2",
-        title: "Portfolio Showcase",
-        shortDescription: "Professional portfolio website for creatives",
-        longDescription:
-            "A stunning portfolio website designed for creative professionals, artists, and freelancers. Features gallery management, blog integration, and contact forms.",
-        coverImage:
-            "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=450&fit=crop&crop=center",
-        deliverables: [
-            "Portfolio website",
-            "Gallery management system",
-            "Blog integration",
-            "Contact forms",
-            "Social media integration",
-            "SEO optimization",
-        ],
-        category: "portfolio" as CategoryType,
-        features: [
-            {
-                imageUrl:
-                    "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=225&fit=crop&crop=center",
-                title: "Gallery Management",
-                description:
-                    "Organize and showcase your work with beautiful galleries",
-            },
-            {
-                imageUrl:
-                    "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=400&h=225&fit=crop&crop=center",
-                title: "Blog Integration",
-                description:
-                    "Share your thoughts and updates with integrated blogging",
-            },
-            {
-                imageUrl:
-                    "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=400&h=225&fit=crop&crop=center",
-                title: "Contact Forms",
-                description: "Professional contact forms with spam protection",
-            },
-        ],
-        pricingOptions: [
-            { label: "base" as Plans, price: 199, discountPercentage: 0 },
-            { label: "plus" as Plans, price: 349, discountPercentage: 15 },
-            { label: "pro" as Plans, price: 549, discountPercentage: 25 },
-            { label: "ultimate" as Plans, price: 899, discountPercentage: 30 },
-        ],
-        tags: ["ecommerce", "website", "cms"],
-        createdAt: new Date("2024-01-10").toISOString(),
-        updatedAt: new Date("2024-01-10").toISOString(),
-        rating: 4.8,
-        reviews: 89,
-        views: 1890,
-        isHotDeal: false,
-    },
-    {
-        _id: "3",
-        title: "Business Landing Page",
-        shortDescription: "High-converting landing page for businesses",
-        longDescription:
-            "A professional landing page designed to convert visitors into customers. Includes lead generation forms, service showcases, and testimonials sections.",
-        coverImage:
-            "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&h=450&fit=crop&crop=center",
-        deliverables: [
-            "Landing page design",
-            "Lead generation forms",
-            "Service showcase sections",
-            "Testimonials integration",
-            "Analytics setup",
-            "A/B testing tools",
-        ],
-        category: "landing" as CategoryType,
-        features: [
-            {
-                imageUrl:
-                    "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=400&h=225&fit=crop&crop=center",
-                title: "Lead Generation",
-                description:
-                    "Optimized forms to capture and convert leads effectively",
-            },
-            {
-                imageUrl:
-                    "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=225&fit=crop&crop=center",
-                title: "Service Showcase",
-                description:
-                    "Beautiful presentation of your services and offerings",
-            },
-            {
-                imageUrl:
-                    "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&h=225&fit=crop&crop=center",
-                title: "Testimonials",
-                description:
-                    "Build trust with customer testimonials and reviews",
-            },
-        ],
-        pricingOptions: [
-            { label: "base" as Plans, price: 149, discountPercentage: 0 },
-            { label: "plus" as Plans, price: 249, discountPercentage: 10 },
-            { label: "pro" as Plans, price: 399, discountPercentage: 20 },
-            { label: "ultimate" as Plans, price: 649, discountPercentage: 25 },
-        ],
-        tags: ["ecommerce", "website", "cms"],
-        createdAt: new Date("2024-01-05").toISOString(),
-        updatedAt: new Date("2024-01-05").toISOString(),
-        rating: 4.7,
-        reviews: 156,
-        views: 3120,
-        isHotDeal: true,
-        timeLeft: "1 day left",
-    },
-    {
-        _id: "4",
-        title: "Blog Platform",
-        shortDescription: "Modern blogging platform with advanced features",
-        longDescription:
-            "A feature-rich blogging platform with content management, SEO tools, and social media integration. Perfect for content creators and publishers.",
-        coverImage:
-            "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=800&h=450&fit=crop&crop=center",
-        deliverables: [
-            "Blog platform",
-            "Content management system",
-            "SEO optimization tools",
-            "Social media integration",
-            "Comment system",
-            "Newsletter integration",
-        ],
-        category: "blog" as CategoryType,
-        features: [
-            {
-                imageUrl:
-                    "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=400&h=225&fit=crop&crop=center",
-                title: "Content Management",
-                description:
-                    "Easy-to-use content management system for bloggers",
-            },
-            {
-                imageUrl:
-                    "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=225&fit=crop&crop=center",
-                title: "SEO Tools",
-                description:
-                    "Built-in SEO optimization tools for better rankings",
-            },
-            {
-                imageUrl:
-                    "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&h=225&fit=crop&crop=center",
-                title: "Social Integration",
-                description: "Seamless social media integration and sharing",
-            },
-        ],
-        pricingOptions: [
-            { label: "base" as Plans, price: 179, discountPercentage: 0 },
-            { label: "plus" as Plans, price: 299, discountPercentage: 12 },
-            { label: "pro" as Plans, price: 479, discountPercentage: 22 },
-            { label: "ultimate" as Plans, price: 779, discountPercentage: 28 },
-        ],
-        tags: ["ecommerce", "website", "cms"],
-        createdAt: new Date("2024-01-20").toISOString(),
-        updatedAt: new Date("2024-01-20").toISOString(),
-        rating: 4.6,
-        reviews: 203,
-        views: 4560,
-        isHotDeal: false,
-    },
-    {
-        _id: "5",
-        title: "Custom Web Application",
-        shortDescription:
-            "Tailored web application for specific business needs",
-        longDescription:
-            "A custom web application designed specifically for your business requirements. Includes custom features, integrations, and scalable architecture.",
-        coverImage:
-            "https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=800&h=450&fit=crop&crop=center",
-        deliverables: [
-            "Custom web application",
-            "Database design",
-            "API development",
-            "User authentication",
-            "Admin dashboard",
-            "Documentation",
-        ],
-        category: "custom" as CategoryType,
-        features: [
-            {
-                imageUrl:
-                    "https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=400&h=225&fit=crop&crop=center",
-                title: "Custom Features",
-                description:
-                    "Tailored features designed for your specific business needs",
-            },
-            {
-                imageUrl:
-                    "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=225&fit=crop&crop=center",
-                title: "Scalable Architecture",
-                description: "Built with scalability in mind for future growth",
-            },
-            {
-                imageUrl:
-                    "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&h=225&fit=crop&crop=center",
-                title: "API Integration",
-                description:
-                    "Seamless integration with existing systems and APIs",
-            },
-        ],
-        pricingOptions: [
-            { label: "base" as Plans, price: 999, discountPercentage: 0 },
-            { label: "plus" as Plans, price: 1499, discountPercentage: 15 },
-            { label: "pro" as Plans, price: 2499, discountPercentage: 25 },
-            { label: "ultimate" as Plans, price: 3999, discountPercentage: 30 },
-        ],
-        tags: ["ecommerce", "website", "cms"],
-        createdAt: new Date("2024-01-25").toISOString(),
-        updatedAt: new Date("2024-01-25").toISOString(),
-        rating: 4.9,
-        reviews: 67,
-        views: 890,
-        isHotDeal: false,
-    },
-];
+// Loading Skeleton Component
+const ProductCardSkeleton = () => (
+    <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900/50 to-transparent backdrop-blur-sm border border-teal-500/20 animate-pulse">
+        <div className="p-5">
+            <div className="relative w-full mb-4 rounded-xl overflow-hidden aspect-[16/9] bg-slate-800/50" />
+            
+            <div className="mb-3">
+                <div className="w-16 h-3 bg-slate-800/50 rounded mb-2" />
+                <div className="w-full h-5 bg-slate-800/50 rounded mb-1" />
+                <div className="w-3/4 h-3 bg-slate-800/50 rounded" />
+            </div>
+
+            <div className="flex items-baseline gap-2 mb-3">
+                <div className="w-12 h-6 bg-slate-800/50 rounded" />
+                <div className="w-8 h-3 bg-slate-800/50 rounded" />
+            </div>
+
+            <div className="space-y-1 mb-4">
+                <div className="flex items-center gap-2">
+                    <div className="w-1 h-1 rounded-full bg-slate-800/50" />
+                    <div className="w-20 h-2 bg-slate-800/50 rounded" />
+                </div>
+                <div className="flex items-center gap-2">
+                    <div className="w-1 h-1 rounded-full bg-slate-800/50" />
+                    <div className="w-24 h-2 bg-slate-800/50 rounded" />
+                </div>
+            </div>
+
+            <div className="w-full h-8 bg-slate-800/50 rounded-full" />
+        </div>
+    </div>
+);
+
+// Loading State Component
+const LoadingState = () => (
+    <div className="text-center py-16">
+        <div className="inline-flex items-center justify-center w-16 h-16 mb-6">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500"></div>
+        </div>
+        <h3 className="text-2xl font-bold text-white mb-2">
+            We are loading apps for you
+        </h3>
+        <p className="text-gray-400">
+            Please wait while we fetch the latest products...
+        </p>
+    </div>
+);
+
+// Empty State Component
+const EmptyState = ({ onClearFilters }: { onClearFilters: () => void }) => (
+    <div className="text-center py-16">
+        <div className="text-6xl mb-4">🔍</div>
+        <h3 className="text-2xl font-bold text-white mb-2">
+            No products found
+        </h3>
+        <p className="text-gray-400 mb-6">
+            We couldn't find any products matching your criteria. Try adjusting your search terms or filters.
+        </p>
+        <button
+            onClick={onClearFilters}
+            className="px-6 py-3 bg-gradient-to-r from-teal-500 to-blue-500 rounded-full text-white font-semibold hover:shadow-lg transition-all">
+            Clear Filters
+        </button>
+    </div>
+);
 
 const categories: { value: CategoryType | "all"; label: string }[] = [
     { value: "all", label: "All Categories" },
@@ -372,11 +164,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
                         return (
                             <>
                                 <span className="text-xl font-bold text-white">
-                                    ${finalPrice}
+                                    ₹{finalPrice}
                                 </span>
 
                                 {discount > 0 && <span className="text-xs text-gray-400 line-through">
-                                    ${basePrice}
+                                    ₹{basePrice}
                                 </span>}
 
                                 {discount > 0 && (
@@ -410,9 +202,6 @@ const ProductCard = ({ product }: ProductCardProps) => {
                         View Details
                         <ArrowRightIcon className="w-3 h-3" />
                     </Link>
-                    {/* <button className="p-2 rounded-full border border-teal-500/30 hover:border-teal-500/60 transition-all">
-                        <HeartIcon className="w-3 h-3 text-gray-400 hover:text-red-500 transition-colors" />
-                    </button> */}
                 </div>
             </div>
         </div>
@@ -422,27 +211,30 @@ const ProductCard = ({ product }: ProductCardProps) => {
 export default function Marketplace() {
     const { scrollYProgress } = useScroll();
     const y = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
-    const [products, setProducts] = useState<Product[]>(
-        dummyProducts.slice(0, 1)
-    );
-    const [filteredProducts, setFilteredProducts] = useState<Product[]>(
-        dummyProducts.slice(0, 1)
-    );
+    const [products, setProducts] = useState<Product[]>([]);
+    const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedCategory, setSelectedCategory] = useState<
         CategoryType | "all"
     >("all");
     const [sortBy, setSortBy] = useState("newest");
+    const [isLoading, setIsLoading] = useState(true);
+    const [hasError, setHasError] = useState(false);
 
     useEffect(() => {
         const fetchProducts = async () => {
+            setIsLoading(true);
+            setHasError(false);
             try {
                 const prod = await fetchAPI<Product[]>("/products");
                 setProducts(prod);
                 setFilteredProducts(prod);
             } catch (error) {
-                toast.error("Failed to load product");
-                console.error("Failed to fetch product:", error);
+                setHasError(true);
+                toast.error("Failed to load products");
+                console.error("Failed to fetch products:", error);
+            } finally {
+                setIsLoading(false);
             }
         };
         fetchProducts();
@@ -508,6 +300,12 @@ export default function Marketplace() {
 
         setFilteredProducts(filtered);
     }, [products, searchTerm, selectedCategory, sortBy]);
+
+    const handleClearFilters = () => {
+        setSearchTerm("");
+        setSelectedCategory("all");
+        setSortBy("newest");
+    };
 
     return (
         <main className="relative">
@@ -588,12 +386,14 @@ export default function Marketplace() {
                                         ))}
                                     </div>
                                     {/* Results Count */}
-                                    <div className="text-center">
-                                        <p className="text-gray-400 text-xs">
-                                            Showing {filteredProducts.length} of{" "}
-                                            {products.length} products
-                                        </p>
-                                    </div>
+                                    {!isLoading && (
+                                        <div className="text-center">
+                                            <p className="text-gray-400 text-xs">
+                                                Showing {filteredProducts.length} of{" "}
+                                                {products.length} products
+                                            </p>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -603,7 +403,24 @@ export default function Marketplace() {
                 {/* Products Grid */}
                 <section className="px-4 pb-20">
                     <div className="max-w-7xl mx-auto">
-                        {filteredProducts.length > 0 ? (
+                        {isLoading ? (
+                            <LoadingState />
+                        ) : hasError ? (
+                            <div className="text-center py-16">
+                                <div className="text-6xl mb-4">⚠️</div>
+                                <h3 className="text-2xl font-bold text-white mb-2">
+                                    Failed to load products
+                                </h3>
+                                <p className="text-gray-400 mb-6">
+                                    Something went wrong while loading the products. Please try again.
+                                </p>
+                                <button
+                                    onClick={() => window.location.reload()}
+                                    className="px-6 py-3 bg-gradient-to-r from-teal-500 to-blue-500 rounded-full text-white font-semibold hover:shadow-lg transition-all">
+                                    Try Again
+                                </button>
+                            </div>
+                        ) : filteredProducts.length > 0 ? (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 {filteredProducts.map((product, index) => (
                                     <ProductCard
@@ -614,24 +431,7 @@ export default function Marketplace() {
                                 ))}
                             </div>
                         ) : (
-                            <div className="text-center py-16">
-                                <div className="text-6xl mb-4">🔍</div>
-                                <h3 className="text-2xl font-bold text-white mb-2">
-                                    No products found
-                                </h3>
-                                <p className="text-gray-400 mb-6">
-                                    Try adjusting your search terms or filters
-                                </p>
-                                <button
-                                    onClick={() => {
-                                        setSearchTerm("");
-                                        setSelectedCategory("all");
-                                        setSortBy("newest");
-                                    }}
-                                    className="px-6 py-3 bg-gradient-to-r from-teal-500 to-blue-500 rounded-full text-white font-semibold hover:shadow-lg transition-all">
-                                    Clear Filters
-                                </button>
-                            </div>
+                            <EmptyState onClearFilters={handleClearFilters} />
                         )}
                     </div>
                 </section>
