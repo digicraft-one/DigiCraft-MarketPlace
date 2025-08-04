@@ -7,10 +7,8 @@ import type { CategoryType, Plans, PricingTier } from "@/types/schemas";
 import {
     ArrowLeftIcon,
     CheckIcon,
-    ChevronDownIcon,
-    ChevronUpIcon,
     InformationCircleIcon,
-    XMarkIcon,
+    XMarkIcon
 } from "@heroicons/react/24/outline";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
@@ -41,274 +39,18 @@ const GridBackground = () => (
     </div>
 );
 
-// Dummy data - same as marketplace
-const dummyProducts = [
-    {
-        _id: "1",
-        title: "E-Commerce Store Pro",
-        shortDescription: "Complete e-commerce solution with advanced features",
-        longDescription:
-            "A comprehensive e-commerce platform with product management, payment processing, inventory tracking, and customer analytics. Perfect for online businesses looking to scale.",
-        coverImage:
-            "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=450&fit=crop&crop=center",
-        deliverables: [
-            "Complete website files",
-            "Database setup guide",
-            "Payment gateway integration",
-            "SEO optimization",
-            "Mobile responsive design",
-            "Admin dashboard",
-        ],
-        category: "ecommerce" as CategoryType,
-        features: [
-            {
-                imageUrl:
-                    "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=225&fit=crop&crop=center",
-                title: "Product Management",
-                description:
-                    "Easy product catalog management with categories and variants",
-            },
-            {
-                imageUrl:
-                    "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&h=225&fit=crop&crop=center",
-                title: "Payment Processing",
-                description:
-                    "Secure payment gateway integration with multiple payment options",
-            },
-            {
-                imageUrl:
-                    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=225&fit=crop&crop=center",
-                title: "Inventory Tracking",
-                description:
-                    "Real-time inventory management with low stock alerts",
-            },
-        ],
-        pricingOptions: [
-            { label: "base" as Plans, price: 299, discountPercentage: 0 },
-            { label: "plus" as Plans, price: 499, discountPercentage: 10 },
-            { label: "pro" as Plans, price: 799, discountPercentage: 20 },
-            { label: "ultimate" as Plans, price: 1299, discountPercentage: 25 },
-        ],
-        createdAt: new Date("2024-01-15"),
-        updatedAt: new Date("2024-01-15"),
-        rating: 4.9,
-        reviews: 127,
-        views: 2340,
-        isHotDeal: true,
-        timeLeft: "2 days left",
-    },
-    {
-        _id: "2",
-        title: "Portfolio Showcase",
-        shortDescription: "Professional portfolio website for creatives",
-        longDescription:
-            "A stunning portfolio website designed for creative professionals, artists, and freelancers. Features gallery management, blog integration, and contact forms.",
-        coverImage:
-            "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=450&fit=crop&crop=center",
-        deliverables: [
-            "Portfolio website",
-            "Gallery management system",
-            "Blog integration",
-            "Contact forms",
-            "Social media integration",
-            "SEO optimization",
-        ],
-        category: "portfolio" as CategoryType,
-        features: [
-            {
-                imageUrl:
-                    "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=225&fit=crop&crop=center",
-                title: "Gallery Management",
-                description:
-                    "Organize and showcase your work with beautiful galleries",
-            },
-            {
-                imageUrl:
-                    "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=400&h=225&fit=crop&crop=center",
-                title: "Blog Integration",
-                description:
-                    "Share your thoughts and updates with integrated blogging",
-            },
-            {
-                imageUrl:
-                    "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=400&h=225&fit=crop&crop=center",
-                title: "Contact Forms",
-                description: "Professional contact forms with spam protection",
-            },
-        ],
-        pricingOptions: [
-            { label: "base" as Plans, price: 199, discountPercentage: 0 },
-            { label: "plus" as Plans, price: 349, discountPercentage: 15 },
-            { label: "pro" as Plans, price: 549, discountPercentage: 25 },
-            { label: "ultimate" as Plans, price: 899, discountPercentage: 30 },
-        ],
-        createdAt: new Date("2024-01-10"),
-        updatedAt: new Date("2024-01-10"),
-        rating: 4.8,
-        reviews: 89,
-        views: 1890,
-        isHotDeal: false,
-    },
-    {
-        _id: "3",
-        title: "Business Landing Page",
-        shortDescription: "High-converting landing page for businesses",
-        longDescription:
-            "A professional landing page designed to convert visitors into customers. Includes lead generation forms, service showcases, and testimonials sections.",
-        coverImage:
-            "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&h=450&fit=crop&crop=center",
-        deliverables: [
-            "Landing page design",
-            "Lead generation forms",
-            "Service showcase sections",
-            "Testimonials integration",
-            "Analytics setup",
-            "A/B testing tools",
-        ],
-        category: "landing" as CategoryType,
-        features: [
-            {
-                imageUrl:
-                    "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=400&h=225&fit=crop&crop=center",
-                title: "Lead Generation",
-                description:
-                    "Optimized forms to capture and convert leads effectively",
-            },
-            {
-                imageUrl:
-                    "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=225&fit=crop&crop=center",
-                title: "Service Showcase",
-                description:
-                    "Beautiful presentation of your services and offerings",
-            },
-            {
-                imageUrl:
-                    "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&h=225&fit=crop&crop=center",
-                title: "Testimonials",
-                description:
-                    "Build trust with customer testimonials and reviews",
-            },
-        ],
-        pricingOptions: [
-            { label: "base" as Plans, price: 149, discountPercentage: 0 },
-            { label: "plus" as Plans, price: 249, discountPercentage: 10 },
-            { label: "pro" as Plans, price: 399, discountPercentage: 20 },
-            { label: "ultimate" as Plans, price: 649, discountPercentage: 25 },
-        ],
-        createdAt: new Date("2024-01-05"),
-        updatedAt: new Date("2024-01-05"),
-        rating: 4.7,
-        reviews: 156,
-        views: 3120,
-        isHotDeal: true,
-        timeLeft: "1 day left",
-    },
-    {
-        _id: "4",
-        title: "Blog Platform",
-        shortDescription: "Modern blogging platform with advanced features",
-        longDescription:
-            "A feature-rich blogging platform with content management, SEO tools, and social media integration. Perfect for content creators and publishers.",
-        coverImage:
-            "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=800&h=450&fit=crop&crop=center",
-        deliverables: [
-            "Blog platform",
-            "Content management system",
-            "SEO optimization tools",
-            "Social media integration",
-            "Comment system",
-            "Newsletter integration",
-        ],
-        category: "blog" as CategoryType,
-        features: [
-            {
-                imageUrl:
-                    "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=400&h=225&fit=crop&crop=center",
-                title: "Content Management",
-                description:
-                    "Easy-to-use content management system for bloggers",
-            },
-            {
-                imageUrl:
-                    "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=225&fit=crop&crop=center",
-                title: "SEO Tools",
-                description:
-                    "Built-in SEO optimization tools for better rankings",
-            },
-            {
-                imageUrl:
-                    "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&h=225&fit=crop&crop=center",
-                title: "Social Integration",
-                description: "Seamless social media integration and sharing",
-            },
-        ],
-        pricingOptions: [
-            { label: "base" as Plans, price: 179, discountPercentage: 0 },
-            { label: "plus" as Plans, price: 299, discountPercentage: 12 },
-            { label: "pro" as Plans, price: 479, discountPercentage: 22 },
-            { label: "ultimate" as Plans, price: 779, discountPercentage: 28 },
-        ],
-        createdAt: new Date("2024-01-20"),
-        updatedAt: new Date("2024-01-20"),
-        rating: 4.6,
-        reviews: 203,
-        views: 4560,
-        isHotDeal: false,
-    },
-    {
-        _id: "5",
-        title: "Custom Web Application",
-        shortDescription:
-            "Tailored web application for specific business needs",
-        longDescription:
-            "A custom web application designed specifically for your business requirements. Includes custom features, integrations, and scalable architecture.",
-        coverImage:
-            "https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=800&h=450&fit=crop&crop=center",
-        deliverables: [
-            "Custom web application",
-            "Database design",
-            "API development",
-            "User authentication",
-            "Admin dashboard",
-            "Documentation",
-        ],
-        category: "custom" as CategoryType,
-        features: [
-            {
-                imageUrl:
-                    "https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=400&h=225&fit=crop&crop=center",
-                title: "Custom Features",
-                description:
-                    "Tailored features designed for your specific business needs",
-            },
-            {
-                imageUrl:
-                    "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=225&fit=crop&crop=center",
-                title: "Scalable Architecture",
-                description: "Built with scalability in mind for future growth",
-            },
-            {
-                imageUrl:
-                    "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&h=225&fit=crop&crop=center",
-                title: "API Integration",
-                description:
-                    "Seamless integration with existing systems and APIs",
-            },
-        ],
-        pricingOptions: [
-            { label: "base" as Plans, price: 999, discountPercentage: 0 },
-            { label: "plus" as Plans, price: 1499, discountPercentage: 15 },
-            { label: "pro" as Plans, price: 2499, discountPercentage: 25 },
-            { label: "ultimate" as Plans, price: 3999, discountPercentage: 30 },
-        ],
-        createdAt: new Date("2024-01-25"),
-        updatedAt: new Date("2024-01-25"),
-        rating: 4.9,
-        reviews: 67,
-        views: 890,
-        isHotDeal: false,
-    },
-];
+// Loading Component
+const LoadingSpinner = () => (
+    <div className="flex items-center justify-center min-h-screen">
+        <div className="relative">
+            <div className="w-12 h-12 border-4 border-teal-500/20 border-t-teal-500 rounded-full animate-spin"></div>
+            <div className="mt-4 text-center">
+                <p className="text-white text-lg font-semibold">Loading product...</p>
+                <p className="text-gray-400 text-sm">Please wait while we fetch the details</p>
+            </div>
+        </div>
+    </div>
+);
 
 interface PricingCardProps {
     tier: PricingTier;
@@ -495,23 +237,45 @@ export default function ProductDetail() {
     const router = useRouter();
     const [selectedFeature, setSelectedFeature] = useState<number | null>(null);
     const [product, setProduct] = useState<Product | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchProduct = async () => {
             try {
+                setLoading(true);
+                setError(null);
                 const data = await fetchAPI<Product>(`/products/${params.id}`);
                 setProduct(data);
             } catch (error) {
-                toast.error("Failed to fetch product");
                 console.error("Error fetching product:", error);
+                setError("Failed to fetch product");
+                toast.error("Failed to fetch product");
+            } finally {
+                setLoading(false);
             }
         };
         fetchProduct();
     }, [params.id]);
 
-    // const product = dummyProducts.find((p) => p._id === params.id);
+    // Loading state
+    if (loading) {
+        return (
+            <main className="relative">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(20,184,166,0.05)_0%,transparent_100%)]" />
+                <GradientOrbs />
+                <GridBackground />
+                <div className="relative">
+                    <Navbar />
+                    <LoadingSpinner />
+                    <Footer />
+                </div>
+            </main>
+        );
+    }
 
-    if (!product) {
+    // Error state
+    if (error || !product) {
         return (
             <main className="relative">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(20,184,166,0.05)_0%,transparent_100%)]" />
@@ -598,7 +362,6 @@ export default function ProductDetail() {
                                         fill
                                         className="object-cover"
                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-tr from-teal-500 to-blue-500 opacity-20" />
                                 </div>
                             </div>
 
@@ -681,7 +444,6 @@ export default function ProductDetail() {
                                                                 fill
                                                                 className="object-cover transition-transform duration-300 group-hover:scale-105"
                                                             />
-                                                            <div className="absolute inset-0 bg-gradient-to-tr from-teal-500/20 to-blue-500/20" />
                                                         </div>
 
                                                         {/* Feature Content - Right Side */}
@@ -691,11 +453,9 @@ export default function ProductDetail() {
                                                                     {feature.title}
                                                                 </h3>
                                                                 <p className="text-gray-400 text-sm line-clamp-1">
-                                                                    {feature.description} Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim ad tempora similique dignissimos dolorem facilis in laboriosam saepe ut quo, quas doloribus labore neque omnis vel error aspernatur! Fugit porro, inventore labore pariatur totam iste magni! Veniam ad impedit consequuntur ducimus totam nulla repellat amet, velit voluptas omnis, iste dolor id saepe, in aliquam autem dolore accusamus possimus? Quo ducimus dolor, blanditiis at accusamus error nisi vel ad atque impedit sint delectus rerum itaque quibusdam. Quo a tenetur harum voluptatum enim exercitationem temporibus dolorem atque ut quas, doloribus iusto eos labore nulla facere asperiores cupiditate iste adipisci. Ea quos maiores labore facere? Dignissimos vero, ipsa iste iusto nisi expedita quo possimus odio quasi voluptas cum incidunt exercitationem omnis blanditiis quae facilis! Nobis voluptatibus libero ducimus eum quidem molestias dignissimos at nemo nam, quo saepe, nulla minima inventore earum autem a corrupti magni, esse maiores assumenda ex incidunt doloremque voluptatum. Ipsam voluptate, animi at dignissimos temporibus earum quam ratione odit ducimus consectetur commodi dolorem quidem. A, nisi amet! Inventore odio harum, modi atque perspiciatis optio architecto cum ex a pariatur accusamus dolores quae temporibus corporis deleniti velit ipsum aliquid accusantium laboriosam reprehenderit molestias dignissimos. Dolorem enim deleniti excepturi, explicabo facilis similique?
+                                                                    {feature.description}
                                                                 </p>
                                                             </div>
-
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -736,7 +496,6 @@ export default function ProductDetail() {
                                                             fill
                                                             className="object-cover"
                                                         />
-                                                        <div className="absolute inset-0 bg-gradient-to-tr from-teal-500/20 to-blue-500/20" />
                                                     </div>
 
                                                     {/* Detailed Description */}

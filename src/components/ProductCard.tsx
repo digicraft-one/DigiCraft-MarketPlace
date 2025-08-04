@@ -8,9 +8,10 @@ import type { Product } from "@/lib/types";
 
 interface ProductCardProps {
     productId: string;
+    plan: string;
 }
 
-export default function ProductCard({ productId }: ProductCardProps) {
+export default function ProductCard({ productId, plan }: ProductCardProps) {
     const [product, setProduct] = useState<Product | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -74,7 +75,8 @@ export default function ProductCard({ productId }: ProductCardProps) {
         );
     }
 
-    const basePrice = product.pricingOptions.find(p => p.label === "base")?.price || 0;
+    const basePrice = product.pricingOptions.find(p => p.label === plan)?.price || 0;
+    const discount = product.pricingOptions.find(p => p.label === plan)?.discountPercentage || 0;
 
     return (
         <motion.div
@@ -87,8 +89,8 @@ export default function ProductCard({ productId }: ProductCardProps) {
                 {/* Product Info - Left Side */}
                 <div className="flex-1 min-w-0 pl-3">
                     {/* Category Badge */}
-                    <span className="text-xs text-gray-400">
-                        ${basePrice}
+                    <span className="text-sm text-gray-400">
+                        <span className="text-white font-bold">{discount > 0 ? `₹${basePrice - (basePrice * discount / 100)}` : `₹${basePrice}`} </span>{discount > 0 && <span className="text-xs text-gray-400 line-through">₹{basePrice}</span>}
                     </span>
 
                     {/* Title */}

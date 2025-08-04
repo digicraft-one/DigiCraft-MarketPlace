@@ -358,7 +358,7 @@ function EnquiryFormContent() {
                                                     Selected Product
                                                 </Label>
                                                 <div className="bg-[#0a0f1c]/40 border border-gray-700/30 rounded-xl p-3">
-                                                    <ProductCard productId={product} />
+                                                    <ProductCard productId={product} plan={formData.adjustmentType} />
                                                 </div>
                                             </div>
 

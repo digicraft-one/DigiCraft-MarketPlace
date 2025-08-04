@@ -82,7 +82,7 @@ const LoadingState = () => (
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500"></div>
         </div>
         <h3 className="text-2xl font-bold text-white mb-2">
-            We are loading apps for you
+            We are loading marketplace for you
         </h3>
         <p className="text-gray-400">
             Please wait while we fetch the latest products...
