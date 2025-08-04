@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth/options";
 import { successResponse, errorResponse } from "@/lib/apiResponse";
 import { NextResponse } from "next/server";
+import { Types } from "mongoose";
 
 export async function GET(_: Request, { params }: { params: { id: string } }) {
     try {
@@ -24,7 +25,7 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
     }
 }
 
-export async function PUT(
+export async function PATCH(
     req: Request,
     { params }: { params: { id: string } }
 ) {
@@ -37,11 +38,13 @@ export async function PUT(
     try {
         await connectToDB();
         const updateData = await req.json();
+        const { id } = await params;
 
-        const updated = await Product.findByIdAndUpdate(params.id, updateData, {
-            new: true,
-            runValidators: true,
-        });
+        const updated = await Product.findByIdAndUpdate(
+            new Types.ObjectId(id),
+            updateData,
+            { new: true, runValidators: true }
+        );
 
         if (!updated)
             return NextResponse.json(errorResponse("Product not found"), {
@@ -69,8 +72,10 @@ export async function DELETE(
     }
 
     try {
+        const { id } = await params;
         await connectToDB();
-        const deleted = await Product.findByIdAndDelete(params.id);
+        const deleted = await Product.findByIdAndDelete(id);
+
         if (!deleted)
             return NextResponse.json(
                 errorResponse("Product not found or already deleted"),

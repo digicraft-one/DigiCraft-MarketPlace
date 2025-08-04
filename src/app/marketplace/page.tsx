@@ -5,13 +5,11 @@ import { fetchAPI } from "@/lib/api";
 import { Product } from "@/lib/types";
 import type {
     CategoryType,
-    Plans,
     PricingTier,
     ProductFeature,
 } from "@/types/schemas";
 import {
     ArrowRightIcon,
-    HeartIcon,
     MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
 import { motion, useScroll, useTransform } from "framer-motion";
@@ -47,7 +45,7 @@ const ProductCardSkeleton = () => (
     <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900/50 to-transparent backdrop-blur-sm border border-teal-500/20 animate-pulse">
         <div className="p-5">
             <div className="relative w-full mb-4 rounded-xl overflow-hidden aspect-[16/9] bg-slate-800/50" />
-            
+
             <div className="mb-3">
                 <div className="w-16 h-3 bg-slate-800/50 rounded mb-2" />
                 <div className="w-full h-5 bg-slate-800/50 rounded mb-1" />
@@ -98,7 +96,8 @@ const EmptyState = ({ onClearFilters }: { onClearFilters: () => void }) => (
             No products found
         </h3>
         <p className="text-gray-400 mb-6">
-            We couldn't find any products matching your criteria. Try adjusting your search terms or filters.
+            We couldn&apos;t find any products matching your criteria. Try
+            adjusting your search terms or filters.
         </p>
         <button
             onClick={onClearFilters}
@@ -132,7 +131,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
             <div className="p-5">
                 <div className="relative w-full mb-4 rounded-xl overflow-hidden aspect-[16/9]">
                     <Image
-                        src={product.coverImage}
+                        src={product.coverImage.url}
                         alt={product.title}
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -167,9 +166,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
                                     ₹{finalPrice}
                                 </span>
 
-                                {discount > 0 && <span className="text-xs text-gray-400 line-through">
-                                    ₹{basePrice}
-                                </span>}
+                                {discount > 0 && (
+                                    <span className="text-xs text-gray-400 line-through">
+                                        ₹{basePrice}
+                                    </span>
+                                )}
 
                                 {discount > 0 && (
                                     <span className="text-xs text-green-400 font-semibold mr-1">
@@ -376,11 +377,12 @@ export default function Marketplace() {
                                                         category.value
                                                     )
                                                 }
-                                                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${selectedCategory ===
+                                                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${
+                                                    selectedCategory ===
                                                     category.value
-                                                    ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white"
-                                                    : "bg-slate-900/50 border border-teal-500/20 text-gray-400 hover:border-teal-500/40"
-                                                    }`}>
+                                                        ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white"
+                                                        : "bg-slate-900/50 border border-teal-500/20 text-gray-400 hover:border-teal-500/40"
+                                                }`}>
                                                 {category.label}
                                             </button>
                                         ))}
@@ -389,7 +391,8 @@ export default function Marketplace() {
                                     {!isLoading && (
                                         <div className="text-center">
                                             <p className="text-gray-400 text-xs">
-                                                Showing {filteredProducts.length} of{" "}
+                                                Showing{" "}
+                                                {filteredProducts.length} of{" "}
                                                 {products.length} products
                                             </p>
                                         </div>
@@ -412,7 +415,8 @@ export default function Marketplace() {
                                     Failed to load products
                                 </h3>
                                 <p className="text-gray-400 mb-6">
-                                    Something went wrong while loading the products. Please try again.
+                                    Something went wrong while loading the
+                                    products. Please try again.
                                 </p>
                                 <button
                                     onClick={() => window.location.reload()}

@@ -11,7 +11,7 @@ function bufferToStream(buffer: Buffer): Readable {
 export async function POST(req: NextRequest): Promise<NextResponse> {
     try {
         const formData = await req.formData();
-        
+
         const file = formData.get("file");
 
         if (!file || !(file instanceof Blob))
@@ -57,6 +57,37 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     } catch (err) {
         return NextResponse.json(
             errorResponse("Unexpected error during upload", err as Error),
+            { status: 500 }
+        );
+    }
+}
+export async function DELETE(req: NextRequest): Promise<NextResponse> {
+    try {
+        const body = await req.json();
+        const { public_id } = body;
+
+        if (!public_id || typeof public_id !== "string")
+            return NextResponse.json(
+                errorResponse("Missing or invalid public_id"),
+                { status: 400 }
+            );
+
+        const result = await cloudinary.uploader.destroy(public_id, {
+            resource_type: "image",
+        });
+
+        if (result.result !== "ok")
+            return NextResponse.json(
+                errorResponse("Failed to delete image", result),
+                { status: 500 }
+            );
+
+        return NextResponse.json(
+            successResponse(null, "Image deleted successfully")
+        );
+    } catch (err) {
+        return NextResponse.json(
+            errorResponse("Unexpected error during deletion", err as Error),
             { status: 500 }
         );
     }

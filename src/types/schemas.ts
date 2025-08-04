@@ -17,6 +17,7 @@ export interface PricingTier {
 
 export interface ProductFeature {
     imageUrl: string;
+    imagePublicId: string;
     title: string;
     description: string;
 }

@@ -2,6 +2,7 @@ export type PlanType = "base" | "plus" | "pro" | "ultimate";
 
 export interface Feature {
     imageUrl: string;
+    imagePublicId: string;
     title: string;
     description: string;
 }
@@ -17,7 +18,7 @@ export interface Product {
     title: string;
     shortDescription: string;
     longDescription: string;
-    coverImage: string;
+    coverImage: { url: string; publicId: string };
     deliverables: string[];
     category: string;
     tags: string[];
@@ -46,11 +47,7 @@ export interface Enquiry {
     email: string;
     phone: string;
     message: string;
-    product: {
-        _id: string;
-        title: string;
-        category: string;
-    };
+    product: { _id: string; title: string; category: string };
     notes: string[];
     adjustmentType: PlanType;
     status: "pending" | "contacted" | "closed";

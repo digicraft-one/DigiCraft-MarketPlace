@@ -9,7 +9,7 @@ export interface ProductDocument extends Document {
     title: string;
     shortDescription: string;
     longDescription: string;
-    coverImage: string;
+    coverImage: { url: string; publicId: string };
     deliverables: string[];
     category: CategoryType;
     features: ProductFeature[];
@@ -35,6 +35,7 @@ const PricingTierSchema = new Schema<PricingTier>(
 const FeatureSchema = new Schema<ProductFeature>(
     {
         imageUrl: { type: String, required: true },
+        imagePublicId: { type: String, required: true },
         title: { type: String, required: true },
         description: { type: String, required: true },
     },
@@ -46,7 +47,10 @@ const ProductSchema = new Schema<ProductDocument>(
         title: { type: String, required: true },
         shortDescription: { type: String, required: true },
         longDescription: { type: String, required: true },
-        coverImage: { type: String, required: true },
+        coverImage: {
+            url: { type: String, required: true },
+            publicId: { type: String, required: true },
+        },
         deliverables: { type: [String], required: true },
         category: {
             type: String,

@@ -20,11 +20,17 @@ export default function ProductCard({ productId, plan }: ProductCardProps) {
         const fetchProduct = async () => {
             try {
                 setLoading(true);
-                const productData = await fetchAPI<Product>(`/products/${productId}`);
-                console.log(productData)
+                const productData = await fetchAPI<Product>(
+                    `/products/${productId}`
+                );
+                console.log(productData);
                 setProduct(productData);
             } catch (err) {
-                setError(err instanceof Error ? err.message : "Failed to load product");
+                setError(
+                    err instanceof Error
+                        ? err.message
+                        : "Failed to load product"
+                );
                 console.error("Error fetching product:", err);
             } finally {
                 setLoading(false);
@@ -41,8 +47,7 @@ export default function ProductCard({ productId, plan }: ProductCardProps) {
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-[#1a2332]/40 backdrop-blur-xl border border-cyan-500/20 rounded-xl p-3 shadow-xl"
-            >
+                className="bg-[#1a2332]/40 backdrop-blur-xl border border-cyan-500/20 rounded-xl p-3 shadow-xl">
                 <div className="animate-pulse">
                     <div className="flex gap-3">
                         <div className="flex-1 space-y-2">
@@ -66,8 +71,7 @@ export default function ProductCard({ productId, plan }: ProductCardProps) {
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-[#1a2332]/40 backdrop-blur-xl border border-red-500/20 rounded-xl p-3 shadow-xl"
-            >
+                className="bg-[#1a2332]/40 backdrop-blur-xl border border-red-500/20 rounded-xl p-3 shadow-xl">
                 <div className="text-center text-red-400 text-xs">
                     {error || "Product not found"}
                 </div>
@@ -75,22 +79,33 @@ export default function ProductCard({ productId, plan }: ProductCardProps) {
         );
     }
 
-    const basePrice = product.pricingOptions.find(p => p.label === plan)?.price || 0;
-    const discount = product.pricingOptions.find(p => p.label === plan)?.discountPercentage || 0;
+    const basePrice =
+        product.pricingOptions.find((p) => p.label === plan)?.price || 0;
+    const discount =
+        product.pricingOptions.find((p) => p.label === plan)
+            ?.discountPercentage || 0;
 
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="bg-[#1a2332]/40 backdrop-blur-xl border border-cyan-500/20 rounded-xl p-0 shadow-xl hover:border-cyan-500/40 transition-all duration-300 overflow-hidden"
-        >
+            className="bg-[#1a2332]/40 backdrop-blur-xl border border-cyan-500/20 rounded-xl p-0 shadow-xl hover:border-cyan-500/40 transition-all duration-300 overflow-hidden">
             <div className="flex gap-3 items-center overflow-hidden">
                 {/* Product Info - Left Side */}
                 <div className="flex-1 min-w-0 pl-3">
                     {/* Category Badge */}
                     <span className="text-sm text-gray-400">
-                        <span className="text-white font-bold">{discount > 0 ? `₹${basePrice - (basePrice * discount / 100)}` : `₹${basePrice}`} </span>{discount > 0 && <span className="text-xs text-gray-400 line-through">₹{basePrice}</span>}
+                        <span className="text-white font-bold">
+                            {discount > 0
+                                ? `₹${basePrice - (basePrice * discount) / 100}`
+                                : `₹${basePrice}`}{" "}
+                        </span>
+                        {discount > 0 && (
+                            <span className="text-xs text-gray-400 line-through">
+                                ₹{basePrice}
+                            </span>
+                        )}
                     </span>
 
                     {/* Title */}
@@ -105,7 +120,7 @@ export default function ProductCard({ productId, plan }: ProductCardProps) {
                 </div>
                 <div className="relative w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
                     <Image
-                        src={product.coverImage}
+                        src={product.coverImage.url}
                         alt={product.title}
                         fill
                         className="object-cover"
@@ -115,4 +130,4 @@ export default function ProductCard({ productId, plan }: ProductCardProps) {
             </div>
         </motion.div>
     );
-} 
+}

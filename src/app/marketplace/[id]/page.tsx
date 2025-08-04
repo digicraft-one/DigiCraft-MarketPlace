@@ -357,7 +357,7 @@ export default function ProductDetail() {
                             <div className="relative">
                                 <div className="relative w-full rounded-2xl overflow-hidden aspect-[16/9]">
                                     <Image
-                                        src={product.coverImage}
+                                        src={product.coverImage.url}
                                         alt={product.title}
                                         fill
                                         className="object-cover"

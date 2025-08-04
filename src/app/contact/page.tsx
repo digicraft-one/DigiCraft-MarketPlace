@@ -2,11 +2,13 @@
 
 import { motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, Suspense } from "react";
+import { Suspense, useState } from "react";
 import { toast } from "sonner";
 import Swal from "sweetalert2";
 
+import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import ProductCard from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -26,8 +28,6 @@ import {
     FaMapMarkerAlt,
     FaPhoneAlt,
 } from "react-icons/fa";
-import Footer from "@/components/Footer";
-import ProductCard from "@/components/ProductCard";
 
 const PLAN_OPTIONS: Plans[] = ["base", "plus", "pro", "ultimate"];
 
@@ -116,18 +116,27 @@ const ContactFormLoading = () => (
 function EnquiryFormContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
-    
+
     // Get product ID from URL parameters first, then from session storage
     const productFromParams = searchParams.get("product") as string;
-    const productFromSession = typeof window !== 'undefined' ? sessionStorage.getItem('selectedProductId') : null;
+    const productFromSession =
+        typeof window !== "undefined"
+            ? sessionStorage.getItem("selectedProductId")
+            : null;
     const product = productFromParams || productFromSession || undefined;
-    
+
     const title = searchParams.get("title") as string;
-    
+
     // Get plan type from URL parameters first, then from session storage
-    const adjustmentTypeFromParams = searchParams.get("adjustmentType") as Plans;
-    const adjustmentTypeFromSession = typeof window !== 'undefined' ? sessionStorage.getItem('selectedPlanType') : null;
-    const adjustmentType = adjustmentTypeFromParams || adjustmentTypeFromSession || undefined;
+    const adjustmentTypeFromParams = searchParams.get(
+        "adjustmentType"
+    ) as Plans;
+    const adjustmentTypeFromSession =
+        typeof window !== "undefined"
+            ? sessionStorage.getItem("selectedPlanType")
+            : null;
+    const adjustmentType =
+        adjustmentTypeFromParams || adjustmentTypeFromSession || undefined;
 
     const DEFAULT_VALUES: EnquiryFormState = {
         name: "",
@@ -203,12 +212,12 @@ function EnquiryFormContent() {
                 <div className="absolute inset-0 bg-gradient-to-br from-[#0a0f1c] via-[#1a2332] to-[#0a0f1c]" />
 
                 {/* Content Container */}
-                <div className="relative z-10 flex items-center justify-center min-h-screen px-4 mt-12 w-screen">
+                <div className="relative z-10 flex items-center justify-center min-h-screen px-6 sm:px-8 md:px-10 lg:px-20 w-full">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
-                        className="w-full max-w-6xl flex flex-row-reverse items-start gap-12">
+                        className="w-full max-w-4xl lg:max-w-6xl flex flex-col-reverse md:flex-row-reverse items-center justify-center gap-8 sm:gap-10 md:gap-12 py-6">
                         {/* Header Section (Left Side) */}
                         <div className="flex-1 flex flex-col text-center md:text-left my-auto gap-6">
                             <motion.h1
@@ -216,7 +225,7 @@ function EnquiryFormContent() {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.3, duration: 0.8 }}
                                 className="text-4xl md:text-5xl font-bold mb-6 leading-tight flex flex-col items-center">
-                                <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-300 bg-clip-text text-transparent">
+                                <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-300 bg-clip-text text-transparent text-center">
                                     Get Started{" "}
                                 </span>
                                 <span className="bg-gradient-to-r from-blue-300 via-cyan-300 to-teal-300 bg-clip-text text-transparent">
@@ -231,8 +240,6 @@ function EnquiryFormContent() {
                                     connect you with the perfect solution.
                                 </motion.p>
                             </motion.h1>
-
-
 
                             {/* Reach Us Section */}
                             <motion.div
@@ -358,7 +365,12 @@ function EnquiryFormContent() {
                                                     Selected Product
                                                 </Label>
                                                 <div className="bg-[#0a0f1c]/40 border border-gray-700/30 rounded-xl p-3">
-                                                    <ProductCard productId={product} plan={formData.adjustmentType} />
+                                                    <ProductCard
+                                                        productId={product}
+                                                        plan={
+                                                            formData.adjustmentType
+                                                        }
+                                                    />
                                                 </div>
                                             </div>
 
@@ -385,26 +397,23 @@ function EnquiryFormContent() {
                                                         {PLAN_OPTIONS.map(
                                                             (plan) => (
                                                                 <SelectItem
-                                                                    key={
-                                                                        plan
-                                                                    }
-                                                                    value={
-                                                                        plan
-                                                                    }
+                                                                    key={plan}
+                                                                    value={plan}
                                                                     className="text-white hover:bg-[#0a0f1c]/60 focus:bg-[#0a0f1c]/60 rounded-lg">
                                                                     <span className="flex items-center">
                                                                         <div
-                                                                            className={`w-2 h-2 rounded-full mr-3 ${plan ===
-                                                                                    "base"
+                                                                            className={`w-2 h-2 rounded-full mr-3 ${
+                                                                                plan ===
+                                                                                "base"
                                                                                     ? "bg-green-400"
                                                                                     : plan ===
-                                                                                        "plus"
-                                                                                        ? "bg-blue-400"
-                                                                                        : plan ===
-                                                                                            "pro"
-                                                                                            ? "bg-cyan-400"
-                                                                                            : "bg-yellow-400"
-                                                                                }`}
+                                                                                      "plus"
+                                                                                    ? "bg-blue-400"
+                                                                                    : plan ===
+                                                                                      "pro"
+                                                                                    ? "bg-cyan-400"
+                                                                                    : "bg-yellow-400"
+                                                                            }`}
                                                                         />
                                                                         {plan
                                                                             .charAt(

@@ -6,7 +6,7 @@ import { useState } from "react";
 export function ImageUploader({
     onUpload,
 }: {
-    onUpload: (url: string) => void;
+    onUpload: (url: string, publicId: string) => void;
 }) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -43,7 +43,7 @@ export function ImageUploader({
             }
 
             const { data } = json;
-            onUpload(data.url);
+            onUpload(data.url, data.public_id);
         } catch (err) {
             setError((err as Error).message);
         } finally {
