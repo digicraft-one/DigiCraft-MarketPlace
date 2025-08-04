@@ -22,6 +22,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { ArrowLeft, Plus, Edit, Trash2, Eye, Package, Calendar, Tag } from "lucide-react";
 
 export default function AdminProductsPage() {
     const router = useRouter();
@@ -49,7 +50,7 @@ export default function AdminProductsPage() {
         setLoading(true);
         try {
             await fetchAPI(`/products/${id}`, { method: "DELETE" });
-            toast.success("Product deleted");
+            toast.success("Product deleted successfully");
             setProducts((prev) => prev && prev.filter((p) => p._id !== id));
         } catch (err) {
             console.error(err);
@@ -61,118 +62,195 @@ export default function AdminProductsPage() {
 
     if (loading)
         return (
-            <div className="space-y-4">
-                <Skeleton className="h-10 w-full" />
-                <Skeleton className="h-32 w-full" />
+            <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+                <div className="px-4 sm:px-6 lg:px-8 py-8 max-w-7xl mx-auto space-y-6">
+                    <div className="flex items-center justify-between">
+                        <Skeleton className="h-10 w-48" />
+                        <div className="flex gap-3">
+                            <Skeleton className="h-10 w-24" />
+                            <Skeleton className="h-10 w-40" />
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {[...Array(6)].map((_, i) => (
+                            <Card key={i} className="rounded-xl border-0 shadow-lg overflow-hidden">
+                                <Skeleton className="h-48 w-full" />
+                                <CardContent className="p-6 space-y-4">
+                                    <Skeleton className="h-6 w-3/4" />
+                                    <Skeleton className="h-4 w-full" />
+                                    <Skeleton className="h-4 w-2/3" />
+                                    <div className="flex gap-2">
+                                        <Skeleton className="h-8 w-16" />
+                                        <Skeleton className="h-8 w-16" />
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </div>
+                </div>
             </div>
         );
 
-    if (error) return <div className="text-red-500">{error}</div>;
+    if (error) return (
+        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex items-center justify-center">
+            <Card className="rounded-xl border-red-200 bg-red-50 p-8 max-w-md">
+                <div className="text-center space-y-4">
+                    <div className="p-3 rounded-full bg-red-100 text-red-600 w-fit mx-auto">
+                        <Package className="w-8 h-8" />
+                    </div>
+                    <h3 className="text-xl font-semibold text-red-900">Error Loading Products</h3>
+                    <p className="text-red-600">{error}</p>
+                    <Button onClick={() => window.location.reload()} variant="outline">
+                        Try Again
+                    </Button>
+                </div>
+            </Card>
+        </div>
+    );
 
     return (
-        <main className="h-screen w-screen space-y-6 px-4 sm:px-6 lg:px-8 py-6">
-            <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-bold">Products</h2>
-                <div className="flex gap-2">
-                    <Button onClick={() => router.push("/admin")}>
-                        Go Back
-                    </Button>
-                    <Link href="/admin/products/new">
-                        <Button>Create New Product</Button>
-                    </Link>
+        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+            <main className="px-4 sm:px-6 lg:px-8 py-8 max-w-7xl mx-auto space-y-8">
+                {/* Header Section */}
+                <div className="flex items-center justify-between">
+                    <div className="space-y-2">
+                        <h1 className="text-4xl font-bold bg-gradient-to-r from-slate-900 to-slate-600 bg-clip-text text-transparent">
+                            Products Management
+                        </h1>
+                        <p className="text-slate-600 text-lg">
+                            Manage your marketplace products and listings
+                        </p>
+                    </div>
+                    <div className="flex gap-3">
+                        <Button 
+                            onClick={() => router.push("/admin")}
+                            variant="outline"
+                            className="border-slate-200 text-slate-600 hover:bg-slate-50"
+                        >
+                            <ArrowLeft className="w-4 h-4 mr-2" />
+                            Back to Dashboard
+                        </Button>
+                        <Link href="/admin/products/new">
+                            <Button className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-lg">
+                                <Plus className="w-4 h-4 mr-2" />
+                                Create Product
+                            </Button>
+                        </Link>
+                    </div>
                 </div>
-            </div>
 
-            {products && products.length === 0 ? (
-                <div className="text-muted-foreground">No products found.</div>
-            ) : (
-                <div className="grid grid-cols-2 gap-4">
-                    {products?.map((product) => (
-                        <Card key={product._id} className="p-2">
-                            <CardContent className="px-4 py-2 space-y-2">
-                                <div className="flex justify-between items-center">
-                                    <div className="flex justify-center items-center gap-6 ">
-                                        <Image
-                                            src={product.coverImage}
-                                            alt="sample product image"
-                                            height={150}
-                                            width={150}
-                                        />
-                                        <div>
-                                            <h3 className="text-lg font-semibold">
-                                                {product.title}
-                                            </h3>
-                                            <p className="text-sm text-muted-foreground">
-                                                {product.category} •{" "}
-                                                {product.pricingOptions
-                                                    ?.map((p) => `₹${p.price}`)
-                                                    .join(" / ")}
-                                            </p>
-                                            <p className="text-xs text-gray-500">
-                                                Created{" "}
-                                                {product.createdAt &&
-                                                    formatDistanceToNow(
-                                                        new Date(
-                                                            product.createdAt
-                                                        ),
-                                                        { addSuffix: true }
-                                                    )}
-                                            </p>
+                {/* Products Grid */}
+                {products && products.length === 0 ? (
+                    <Card className="rounded-xl border-0 shadow-lg bg-white/80 backdrop-blur-sm">
+                        <CardContent className="p-12 text-center">
+                            <div className="p-4 rounded-full bg-slate-100 w-fit mx-auto mb-4">
+                                <Package className="w-12 h-12 text-slate-400" />
+                            </div>
+                            <h3 className="text-xl font-semibold text-slate-900 mb-2">No Products Found</h3>
+                            <p className="text-slate-600 mb-6">Get started by creating your first product listing</p>
+                            <Link href="/admin/products/new">
+                                <Button className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700">
+                                    <Plus className="w-4 h-4 mr-2" />
+                                    Create Your First Product
+                                </Button>
+                            </Link>
+                        </CardContent>
+                    </Card>
+                ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {products?.map((product) => (
+                            <Card key={product._id} className="group overflow-hidden rounded-xl border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white/80 backdrop-blur-sm hover:scale-105">
+                                <div className="relative">
+                                    <Image
+                                        src={product.coverImage}
+                                        alt={product.title}
+                                        height={200}
+                                        width={400}
+                                        className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                                    />
+                                    <div className="absolute top-3 right-3">
+                                        <div className="px-2 py-1 rounded-full bg-white/90 backdrop-blur-sm text-xs font-medium text-slate-700">
+                                            {product.category}
                                         </div>
                                     </div>
-                                    <div className="flex gap-2">
-                                        <Link
-                                            href={`/admin/products/${product._id}`}>
-                                            <Button size="sm" variant="outline">
+                                </div>
+                                <CardContent className="p-6 space-y-4">
+                                    <div className="space-y-2">
+                                        <h3 className="font-semibold text-lg text-slate-900 line-clamp-2 group-hover:text-blue-600 transition-colors">
+                                            {product.title}
+                                        </h3>
+                                        <p className="text-sm text-slate-600 line-clamp-2">
+                                            {product.shortDescription}
+                                        </p>
+                                    </div>
+                                    
+                                    <div className="flex items-center gap-4 text-xs text-slate-500">
+                                        <div className="flex items-center gap-1">
+                                            <Calendar className="w-3 h-3" />
+                                            {formatDistanceToNow(new Date(product.createdAt), { addSuffix: true })}
+                                        </div>
+                                        <div className="flex items-center gap-1">
+                                            <Tag className="w-3 h-3" />
+                                            {product.pricingOptions.length} plans
+                                        </div>
+                                    </div>
+
+                                    <div className="flex gap-2 pt-2">
+                                        <Link href={`/admin/products/${product._id}`} className="flex-1">
+                                            <Button 
+                                                variant="outline" 
+                                                size="sm" 
+                                                className="w-full border-blue-200 text-blue-600 hover:bg-blue-50 hover:border-blue-300"
+                                            >
+                                                <Edit className="w-4 h-4 mr-2" />
                                                 Edit
+                                            </Button>
+                                        </Link>
+                                        <Link href={`/marketplace/${product._id}`} className="flex-1">
+                                            <Button 
+                                                variant="outline" 
+                                                size="sm" 
+                                                className="w-full border-slate-200 text-slate-600 hover:bg-slate-50"
+                                            >
+                                                <Eye className="w-4 h-4 mr-2" />
+                                                View
                                             </Button>
                                         </Link>
                                         <AlertDialog>
                                             <AlertDialogTrigger asChild>
-                                                <Button
+                                                <Button 
+                                                    variant="outline" 
                                                     size="sm"
-                                                    variant="destructive">
-                                                    Delete
+                                                    className="border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300"
+                                                >
+                                                    <Trash2 className="w-4 h-4" />
                                                 </Button>
                                             </AlertDialogTrigger>
-                                            <AlertDialogContent>
+                                            <AlertDialogContent className="rounded-xl">
                                                 <AlertDialogHeader>
-                                                    <AlertDialogTitle>
-                                                        Are you sure?
-                                                    </AlertDialogTitle>
-                                                    <AlertDialogDescription>
-                                                        This will permanently
-                                                        delete the product and
-                                                        all related data.
+                                                    <AlertDialogTitle className="text-slate-900">Delete Product</AlertDialogTitle>
+                                                    <AlertDialogDescription className="text-slate-600">
+                                                        Are you sure you want to delete "{product.title}"? This action cannot be undone.
                                                     </AlertDialogDescription>
                                                 </AlertDialogHeader>
                                                 <AlertDialogFooter>
-                                                    <AlertDialogCancel
-                                                        disabled={loading}>
-                                                        Cancel
-                                                    </AlertDialogCancel>
-                                                    <AlertDialogAction
-                                                        className="bg-red-600 hover:bg-red-700 text-primary"
-                                                        onClick={() =>
-                                                            handleDelete(
-                                                                product._id
-                                                            )
-                                                        }
-                                                        disabled={loading}>
-                                                        {loading
-                                                            ? "Deleting..."
-                                                            : "Yes, delete"}
+                                                    <AlertDialogCancel className="border-slate-200">Cancel</AlertDialogCancel>
+                                                    <AlertDialogAction 
+                                                        onClick={() => handleDelete(product._id)}
+                                                        className="bg-red-600 hover:bg-red-700"
+                                                    >
+                                                        Delete Product
                                                     </AlertDialogAction>
                                                 </AlertDialogFooter>
                                             </AlertDialogContent>
                                         </AlertDialog>
                                     </div>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    ))}
-                </div>
-            )}
-        </main>
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </div>
+                )}
+            </main>
+        </div>
     );
 }

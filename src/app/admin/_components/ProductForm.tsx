@@ -11,6 +11,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { fetchAPI } from "@/lib/api";
 import {
     PlanType,
@@ -19,11 +20,12 @@ import {
     Feature as ProductFeature,
 } from "@/lib/types";
 import { CategoryType } from "@/types/schemas";
-import { DeleteIcon } from "lucide-react";
+import { DeleteIcon, Plus, Save, ArrowLeft, Package, Tag, Image as ImageIcon, Settings, DollarSign } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ImageUploader } from "./ImageUploader";
 import { toast } from "sonner";
+
 const PRICING_TIERS: PlanType[] = ["base", "plus", "pro", "ultimate"];
 const CATEGORIES: CategoryType[] = [
     "ecommerce",
@@ -98,8 +100,8 @@ export default function ProductForm({
         initialValues ?? DEFAULT_VALUES
     );
 
-    const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     const handleChange = <K extends keyof ProductFormState>(
         field: K,
@@ -111,9 +113,12 @@ export default function ProductForm({
         field: keyof ProductFeature,
         value: string
     ) => {
-        const updated = [...formData.features];
-        updated[index] = { ...updated[index], [field]: value };
-        handleChange("features", updated);
+        setFormData((prev) => ({
+            ...prev,
+            features: prev.features.map((f, i) =>
+                i === index ? { ...f, [field]: value } : f
+            ),
+        }));
     };
 
     const updatePricing = (
@@ -121,82 +126,97 @@ export default function ProductForm({
         field: keyof PricingTier,
         value: string | number
     ) => {
-        const updated = [...formData.pricingOptions];
-        updated[index] = { ...updated[index], [field]: value };
-        handleChange("pricingOptions", updated);
+        setFormData((prev) => ({
+            ...prev,
+            pricingOptions: prev.pricingOptions.map((p, i) =>
+                i === index ? { ...p, [field]: value } : p
+            ),
+        }));
     };
 
     const addFeature = () => {
-        handleChange("features", [
-            ...formData.features,
-            { imageUrl: "", title: "", description: "" },
-        ]);
+        setFormData((prev) => ({
+            ...prev,
+            features: [
+                ...prev.features,
+                { imageUrl: "", title: "", description: "" },
+            ],
+        }));
     };
 
     const addPricing = () => {
-        handleChange("pricingOptions", [
-            ...formData.pricingOptions,
-            { label: "base", price: 0, discountPercentage: 0 },
-        ]);
+        setFormData((prev) => ({
+            ...prev,
+            pricingOptions: [
+                ...prev.pricingOptions,
+                { label: "base", price: 0, discountPercentage: 0 },
+            ],
+        }));
     };
 
     const addDeliverable = () => {
-        handleChange("deliverables", [...formData.deliverables, ""]);
+        setFormData((prev) => ({
+            ...prev,
+            deliverables: [...prev.deliverables, ""],
+        }));
     };
+
     const updateDeliverable = (index: number, value: string) => {
-        const updated = [...formData.deliverables];
-        updated[index] = value;
-        handleChange("deliverables", updated);
+        setFormData((prev) => ({
+            ...prev,
+            deliverables: prev.deliverables.map((d, i) =>
+                i === index ? value : d
+            ),
+        }));
     };
+
     const removeDeliverable = (index: number) => {
-        const updated = formData.deliverables.filter((_, i) => i !== index);
-        handleChange("deliverables", updated);
+        setFormData((prev) => ({
+            ...prev,
+            deliverables: prev.deliverables.filter((_, i) => i !== index),
+        }));
     };
+
     const removeFeature = (index: number) => {
-        const updated = formData.features.filter((_, i) => i !== index);
-        handleChange("features", updated);
+        setFormData((prev) => ({
+            ...prev,
+            features: prev.features.filter((_, i) => i !== index),
+        }));
     };
+
     const removePricing = (index: number) => {
-        const updated = formData.pricingOptions.filter((_, i) => i !== index);
-        handleChange("pricingOptions", updated);
+        setFormData((prev) => ({
+            ...prev,
+            pricingOptions: prev.pricingOptions.filter((_, i) => i !== index),
+        }));
     };
+
     const handleCreate = async (data: ProductFormState) => {
-        try {
-            await fetchAPI("/products", {
-                method: "POST",
-                body: JSON.stringify(data),
-            });
-            toast.success("Product created");
-        } catch (error) {
-            toast.error("Failed to create product");
-            console.error("Failed to create product:", error);
-            setError("Failed to create product");
-        }
+        const response = await fetchAPI("/products", {
+            method: "POST",
+            body: JSON.stringify(data),
+        });
+        toast.success("Product created successfully");
+        return response;
     };
 
     const handleUpdate = async (id: string, data: ProductFormState) => {
-        try {
-            await fetchAPI<Product>(`/products/${id}`, {
-                method: "PUT",
-                body: JSON.stringify(data),
-            });
-
-            toast.success("Product updated");
-        } catch (error) {
-            toast.error("Failed to update product");
-            console.error("Failed to update product:", error);
-            setError("Failed to update product");
-        }
+        const response = await fetchAPI(`/products/${id}`, {
+            method: "PATCH",
+            body: JSON.stringify(data),
+        });
+        toast.success("Product updated successfully");
+        return response;
     };
 
     const handleFormSubmit = async () => {
+        setError(null);
+
         const requiredFields: (keyof ProductFormState)[] = [
             "title",
             "shortDescription",
             "longDescription",
             "coverImage",
-            "tags",
-            "deliverables",
             "category",
             "features",
             "pricingOptions",
@@ -230,300 +250,389 @@ export default function ProductForm({
     };
 
     return (
-        <div className="grid grid-cols-2 gap-5 *:space-y-2">
-            <div>
-                <Label>Title</Label>
-                <Input
-                    required
-                    value={formData.title}
-                    onChange={(e) => handleChange("title", e.target.value)}
-                />
-            </div>
-            <div>
-                <Label>Short Description</Label>
-                <Input
-                    required
-                    value={formData.shortDescription}
-                    onChange={(e) =>
-                        handleChange("shortDescription", e.target.value)
-                    }
-                />
-            </div>
-            <div className="col-start-1 col-end-3">
-                <Label>Long Description</Label>
-                <Textarea
-                    value={formData.longDescription}
-                    onChange={(e) =>
-                        handleChange("longDescription", e.target.value)
-                    }
-                />
-            </div>
-
-            <div>
-                <Label>Category</Label>
-                <Select
-                    value={formData.category}
-                    onValueChange={(val) =>
-                        handleChange("category", val as CategoryType)
-                    }>
-                    <SelectTrigger>
-                        <SelectValue placeholder="Choose category" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {CATEGORIES.map((cat) => (
-                            <SelectItem key={cat} value={cat}>
-                                {cat}
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
-            </div>
-
-            <div className="space-y-2 ">
-                <div className="flex justify-between items-center">
-                    <Label>Tags</Label>
-                    <Button
-                        variant="secondary"
-                        onClick={() =>
-                            handleChange("tags", [...formData.tags, ""])
-                        }
-                        className="w-35">
-                        Add Tag
-                    </Button>
-                </div>
-                {formData.tags.map((tag, i) => (
-                    <div key={i} className="flex gap-2">
-                        <Input
-                            required
-                            placeholder={`Tag ${i + 1}`}
-                            value={tag}
-                            onChange={(e) => {
-                                const updated = [...formData.tags];
-                                updated[i] = e.target.value;
-                                handleChange("tags", updated);
-                            }}
-                        />
-                        <Button
-                            type="button"
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => {
-                                const updated = formData.tags.filter(
-                                    (_, index) => index !== i
-                                );
-                                handleChange("tags", updated);
-                            }}
-                            className="text-red-500 hover:text-red-700">
-                            <DeleteIcon />
-                        </Button>
-                    </div>
-                ))}
-            </div>
-
-            <div>
-                <Label>Cover Image</Label>
-                <div className="flex gap-2">
-                    <ImageUploader
-                        onUpload={(url: string) =>
-                            handleChange("coverImage", url)
-                        }
-                    />
-                    <Input
-                        required
-                        disabled
-                        hidden={formData.coverImage === ""}
-                        placeholder="Enter image URL"
-                        value={formData.coverImage}
-                        onChange={(e) =>
-                            handleChange("coverImage", e.target.value)
-                        }
-                    />
-                </div>
-            </div>
-
-            <div className="col-span-2">
-                <div className="space-y-2">
-                    <div className="flex justify-between items-center">
-                        <Label>Deliverables</Label>
-                        <Button
-                            variant="secondary"
-                            onClick={addDeliverable}
-                            className="w-35">
-                            Add Deliverable
-                        </Button>
-                    </div>
-
-                    {formData.deliverables?.map((item, i) => (
-                        <div key={i} className="flex gap-2">
+        <div className="space-y-8 text-black">
+            {/* Basic Information */}
+            <Card className="border-0 shadow-lg pt-0">
+                <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-t-lg px-5 py-3">
+                    <CardTitle className="flex items-center gap-2 text-slate-900">
+                        <Package className="w-5 h-5" />
+                        Basic Information
+                    </CardTitle>
+                </CardHeader>
+                <CardContent className="p-6 space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                            <Label className="text-sm font-medium text-slate-700">Product Title</Label>
                             <Input
                                 required
-                                placeholder={`Deliverable ${i + 1}`}
-                                value={item}
-                                onChange={(e) =>
-                                    updateDeliverable(i, e.target.value)
-                                }
+                                value={formData.title}
+                                onChange={(e) => handleChange("title", e.target.value)}
+                                placeholder="Enter product title"
+                                className="border-slate-200 focus:border-blue-500"
                             />
-                            <Button
-                                type="button"
-                                variant="ghost"
-                                size="icon"
-                                onClick={() => removeDeliverable(i)}
-                                className="text-red-500 hover:text-red-700">
-                                <DeleteIcon />
-                            </Button>
                         </div>
-                    ))}
-                </div>
-            </div>
-
-            <div className="space-y-2 col-span-2">
-                <div className="flex justify-between items-center">
-                    <Label>Pricing Options</Label>
-                    <Button
-                        variant="secondary"
-                        onClick={addPricing}
-                        className="w-35">
-                        Add Tier
-                    </Button>
-                </div>
-                {formData.pricingOptions?.map((tier, i) => (
-                    <div
-                        key={i}
-                        className="grid grid-cols-3 gap-2 items-center">
-                        <Select
-                            value={tier.label}
-                            onValueChange={(val) =>
-                                updatePricing(
-                                    i,
-                                    "label",
-                                    val as PricingTier["label"]
-                                )
-                            }>
-                            <SelectTrigger>
-                                <SelectValue placeholder="Tier" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {PRICING_TIERS.map((t) => (
-                                    <SelectItem key={t} value={t}>
-                                        {t}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                        <Input
-                            required
-                            type="number"
-                            placeholder="Price"
-                            value={tier.price}
-                            onChange={(e) =>
-                                updatePricing(
-                                    i,
-                                    "price",
-                                    Number(e.target.value)
-                                )
-                            }
-                        />
-                        <div className="flex gap-2">
-                            <Input
-                                required
-                                type="number"
-                                placeholder="Discount %"
-                                value={tier.discountPercentage}
-                                onChange={(e) =>
-                                    updatePricing(
-                                        i,
-                                        "discountPercentage",
-                                        Number(e.target.value)
-                                    )
-                                }
-                            />
-                            <Button
-                                type="button"
-                                variant="ghost"
-                                size="icon"
-                                onClick={() => removePricing(i)}
-                                className="text-red-500 hover:text-red-700">
-                                <DeleteIcon />
-                            </Button>
+                        <div className="space-y-2">
+                            <Label className="text-sm font-medium text-slate-700">Category</Label>
+                            <Select
+                                value={formData.category}
+                                onValueChange={(val) =>
+                                    handleChange("category", val as CategoryType)
+                                }>
+                                <SelectTrigger className="border-slate-200 focus:border-blue-500">
+                                    <SelectValue placeholder="Choose category" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {CATEGORIES.map((cat) => (
+                                        <SelectItem key={cat} value={cat}>
+                                            {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
                         </div>
                     </div>
-                ))}
-            </div>
-            <div className="space-y-2 col-start-1 col-end-3">
-                <div className="flex justify-between items-center">
-                    <Label>Features</Label>
-                    <Button
-                        variant="secondary"
-                        onClick={addFeature}
-                        className="w-35">
-                        Add Feature
-                    </Button>
-                </div>
-                {formData.features.map((feat, i) => (
-                    <div
-                        key={i}
-                        className="grid grid-cols-5 gap-2 items-center">
+                    
+                    <div className="space-y-2">
+                        <Label className="text-sm font-medium text-slate-700">Short Description</Label>
                         <Input
                             required
-                            placeholder="Title"
-                            value={feat.title}
+                            value={formData.shortDescription}
                             onChange={(e) =>
-                                updateFeature(i, "title", e.target.value)
+                                handleChange("shortDescription", e.target.value)
                             }
+                            placeholder="Brief description of the product"
+                            className="border-slate-200 focus:border-blue-500"
                         />
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label className="text-sm font-medium text-slate-700">Long Description</Label>
+                        <Textarea
+                            value={formData.longDescription}
+                            onChange={(e) =>
+                                handleChange("longDescription", e.target.value)
+                            }
+                            placeholder="Detailed description of the product"
+                            className="border-slate-200 focus:border-blue-500 min-h-[120px]"
+                        />
+                    </div>
+                </CardContent>
+            </Card>
+
+            {/* Cover Image */}
+            <Card className="border-0 shadow-lg pt-0">
+                <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-t-lg px-5 py-3">
+                    <CardTitle className="flex items-center gap-2 text-slate-900">
+                        <ImageIcon className="w-5 h-5" />
+                        Cover Image
+                    </CardTitle>
+                </CardHeader>
+                <CardContent className="p-6">
+                    <div className="space-y-4">
+                        <Label className="text-sm font-medium text-slate-700">Product Cover Image</Label>
                         <ImageUploader
-                            onUpload={(url: string) =>
-                                updateFeature(i, "imageUrl", url)
-                            }
+                            onUpload={(url: string) => handleChange("coverImage", url)}
                         />
-                        <Input
-                            required
-                            placeholder="Description"
-                            value={feat.description}
-                            onChange={(e) =>
-                                updateFeature(i, "description", e.target.value)
-                            }
-                            className="col-span-2"
-                        />
-                        <div className="flex gap-1">
-                            <Input
-                                hidden={feat.imageUrl === ""}
-                                disabled
-                                required
-                                placeholder="Image URL"
-                                value={feat.imageUrl}
-                                onChange={(e) =>
-                                    updateFeature(i, "imageUrl", e.target.value)
-                                }
-                            />
+                        {formData.coverImage && (
+                            <div className="mt-4 p-4 bg-slate-50 rounded-lg border border-slate-200">
+                                <p className="text-sm text-slate-600 mb-2">Image URL:</p>
+                                <Input
+                                    disabled
+                                    value={formData.coverImage}
+                                    className="bg-white border-slate-200"
+                                />
+                            </div>
+                        )}
+                    </div>
+                </CardContent>
+            </Card>
+
+            {/* Tags */}
+            <Card className="border-0 shadow-lg pt-0">
+                <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-t-lg px-5 py-3">
+                    <CardTitle className="flex items-center gap-2 text-slate-900">
+                        <Tag className="w-5 h-5" />
+                        Tags
+                    </CardTitle>
+                </CardHeader>
+                <CardContent className="p-6">
+                    <div className="space-y-4">
+                        <div className="flex justify-between items-center">
+                            <Label className="text-sm font-medium text-slate-700">Product Tags</Label>
                             <Button
-                                type="button"
-                                variant="ghost"
-                                size="icon"
-                                onClick={() => removeFeature(i)}
-                                className="text-red-500 hover:text-red-700">
-                                <DeleteIcon />
+                                variant="outline"
+                                onClick={() =>
+                                    handleChange("tags", [...formData.tags, ""])
+                                }
+                                className="border-blue-200 text-blue-600 hover:bg-blue-50"
+                            >
+                                <Plus className="w-4 h-4 mr-2" />
+                                Add Tag
                             </Button>
                         </div>
+                        <div className="space-y-3">
+                            {formData.tags.map((tag, i) => (
+                                <div key={i} className="flex gap-3">
+                                    <Input
+                                        required
+                                        placeholder={`Tag ${i + 1}`}
+                                        value={tag}
+                                        onChange={(e) => {
+                                            const newTags = [...formData.tags];
+                                            newTags[i] = e.target.value;
+                                            handleChange("tags", newTags);
+                                        }}
+                                        className="flex-1 border-slate-200 focus:border-blue-500"
+                                    />
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() => {
+                                            const newTags = formData.tags.filter((_, index) => index !== i);
+                                            handleChange("tags", newTags);
+                                        }}
+                                        className="border-red-200 text-red-600 hover:bg-red-50"
+                                    >
+                                        <DeleteIcon className="w-4 h-4" />
+                                    </Button>
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                ))}
-            </div>
-            {error && <p className="text-red-500 col-span-2">{error}</p>}
+                </CardContent>
+            </Card>
 
-            <div className="flex col-span-2 items-center gap-4 justify-center">
+            {/* Deliverables */}
+            <Card className="border-0 shadow-lg pt-0">
+                <CardHeader className="bg-gradient-to-r from-orange-50 to-red-50 rounded-t-lg px-5 py-3">
+                    <CardTitle className="flex items-center gap-2 text-slate-900">
+                        <Settings className="w-5 h-5" />
+                        Deliverables
+                    </CardTitle>
+                </CardHeader>
+                <CardContent className="p-6">
+                    <div className="space-y-4">
+                        <div className="flex justify-between items-center">
+                            <Label className="text-sm font-medium text-slate-700">What's Included</Label>
+                            <Button
+                                variant="outline"
+                                onClick={addDeliverable}
+                                className="border-orange-200 text-orange-600 hover:bg-orange-50"
+                            >
+                                <Plus className="w-4 h-4 mr-2" />
+                                Add Deliverable
+                            </Button>
+                        </div>
+                        <div className="space-y-3">
+                            {formData.deliverables.map((deliverable, i) => (
+                                <div key={i} className="flex gap-3">
+                                    <Input
+                                        required
+                                        placeholder={`Deliverable ${i + 1}`}
+                                        value={deliverable}
+                                        onChange={(e) => updateDeliverable(i, e.target.value)}
+                                        className="flex-1 border-slate-200 focus:border-blue-500"
+                                    />
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() => removeDeliverable(i)}
+                                        className="border-red-200 text-red-600 hover:bg-red-50"
+                                    >
+                                        <DeleteIcon className="w-4 h-4" />
+                                    </Button>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
+
+            {/* Pricing Options */}
+            <Card className="border-0 shadow-lg pt-0">
+                <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-t-lg px-5 py-3">
+                    <CardTitle className="flex items-center gap-2 text-slate-900">
+                        <DollarSign className="w-5 h-5" />
+                        Pricing Options
+                    </CardTitle>
+                </CardHeader>
+                <CardContent className="p-6">
+                    <div className="space-y-4">
+                        <div className="flex justify-between items-center">
+                            <Label className="text-sm font-medium text-slate-700">Pricing Tiers</Label>
+                            <Button
+                                variant="outline"
+                                onClick={addPricing}
+                                className="border-green-200 text-green-600 hover:bg-green-50"
+                            >
+                                <Plus className="w-4 h-4 mr-2" />
+                                Add Pricing Tier
+                            </Button>
+                        </div>
+                        <div className="space-y-4">
+                            {formData.pricingOptions.map((tier, i) => (
+                                <div key={i} className="p-4 border border-slate-200 rounded-lg bg-slate-50">
+                                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                        <Select
+                                            value={tier.label}
+                                            onValueChange={(val) =>
+                                                updatePricing(i, "label", val)
+                                            }>
+                                            <SelectTrigger className="border-slate-200">
+                                                <SelectValue placeholder="Tier" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {PRICING_TIERS.map((t) => (
+                                                    <SelectItem key={t} value={t}>
+                                                        {t.charAt(0).toUpperCase() + t.slice(1)}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                        <Input
+                                            required
+                                            type="number"
+                                            placeholder="Price (₹)"
+                                            value={tier.price}
+                                            onChange={(e) =>
+                                                updatePricing(i, "price", Number(e.target.value))
+                                            }
+                                            className="border-slate-200 focus:border-blue-500"
+                                        />
+                                        <Input
+                                            required
+                                            type="number"
+                                            placeholder="Discount %"
+                                            value={tier.discountPercentage}
+                                            onChange={(e) =>
+                                                updatePricing(i, "discountPercentage", Number(e.target.value))
+                                            }
+                                            className="border-slate-200 focus:border-blue-500"
+                                        />
+                                        <Button
+                                            type="button"
+                                            variant="outline"
+                                            size="sm"
+                                            onClick={() => removePricing(i)}
+                                            className="border-red-200 text-red-600 hover:bg-red-50"
+                                        >
+                                            <DeleteIcon className="w-4 h-4" />
+                                        </Button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
+
+            {/* Features */}
+            <Card className="border-0 shadow-lg pt-0">
+                <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-t-lg px-5 py-3">
+                    <CardTitle className="flex items-center gap-2 text-slate-900">
+                        <Settings className="w-5 h-5" />
+                        Features
+                    </CardTitle>
+                </CardHeader>
+                <CardContent className="p-6">
+                    <div className="space-y-4">
+                        <div className="flex justify-between items-center">
+                            <Label className="text-sm font-medium text-slate-700">Product Features</Label>
+                            <Button
+                                variant="outline"
+                                onClick={addFeature}
+                                className="border-blue-200 text-blue-600 hover:bg-blue-50"
+                            >
+                                <Plus className="w-4 h-4 mr-2" />
+                                Add Feature
+                            </Button>
+                        </div>
+                        <div className="space-y-6">
+                            {formData.features.map((feat, i) => (
+                                <div key={i} className="p-4 border border-slate-200 rounded-lg bg-slate-50">
+                                    <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 items-start">
+                                        <Input
+                                            required
+                                            placeholder="Feature Title"
+                                            value={feat.title}
+                                            onChange={(e) =>
+                                                updateFeature(i, "title", e.target.value)
+                                            }
+                                            className="border-slate-200 focus:border-blue-500"
+                                        />
+                                        <div className="lg:col-span-2">
+                                            <ImageUploader
+                                                onUpload={(url: string) =>
+                                                    updateFeature(i, "imageUrl", url)
+                                                }
+                                            />
+                                        </div>
+                                        <Input
+                                            required
+                                            placeholder="Feature Description"
+                                            value={feat.description}
+                                            onChange={(e) =>
+                                                updateFeature(i, "description", e.target.value)
+                                            }
+                                            className="lg:col-span-2 border-slate-200 focus:border-blue-500"
+                                        />
+                                        <Button
+                                            type="button"
+                                            variant="outline"
+                                            size="sm"
+                                            onClick={() => removeFeature(i)}
+                                            className="border-red-200 text-red-600 hover:bg-red-50"
+                                        >
+                                            <DeleteIcon className="w-4 h-4" />
+                                        </Button>
+                                    </div>
+                                    {feat.imageUrl && (
+                                        <div className="mt-4 p-3 bg-white rounded border border-slate-200">
+                                            <p className="text-sm text-slate-600 mb-2">Feature Image URL:</p>
+                                            <Input
+                                                disabled
+                                                value={feat.imageUrl}
+                                                className="bg-slate-50 border-slate-200"
+                                            />
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
+
+            {/* Error Display */}
+            {error && (
+                <Card className="border-red-200 bg-red-50">
+                    <CardContent className="p-4">
+                        <p className="text-red-600 text-sm">{error}</p>
+                    </CardContent>
+                </Card>
+            )}
+
+            {/* Form Actions */}
+            <div className="flex items-center justify-center gap-4 pt-6">
                 <Button
                     onClick={() => router.back()}
-                    variant="default"
+                    variant="outline"
                     disabled={loading}
-                    className="w-30 m-0">
+                    className="border-slate-200 text-slate-600 hover:bg-slate-50 px-8"
+                >
+                    <ArrowLeft className="w-4 h-4 mr-2" />
                     Go Back
                 </Button>
 
                 <Button
                     onClick={handleFormSubmit}
                     disabled={loading}
-                    className="w-30">
-                    {loading ? "Submitting..." : "Submit"}
+                    className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-lg px-8"
+                >
+                    <Save className="w-4 h-4 mr-2" />
+                    {loading ? "Submitting..." : productDetails ? "Update Product" : "Create Product"}
                 </Button>
             </div>
         </div>
