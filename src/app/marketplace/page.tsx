@@ -258,7 +258,10 @@ export default function Marketplace() {
                         .includes(searchTerm.toLowerCase()) ||
                     product.shortDescription
                         .toLowerCase()
-                        .includes(searchTerm.toLowerCase())
+                        .includes(searchTerm.toLowerCase()) ||
+                    product.tags.some((tag) =>
+                        tag.toLowerCase().includes(searchTerm.toLowerCase())
+                    )
             );
         }
 
