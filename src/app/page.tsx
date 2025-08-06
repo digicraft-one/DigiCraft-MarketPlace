@@ -28,21 +28,6 @@ const GridBackground = () => (
     </div>
 );
 
-interface MarketingBannerData {
-    success: boolean;
-    data: {
-        _id: string;
-        imageUrl: string;
-        link?: string;
-        isActive: boolean;
-    }[];
-}
-
-interface BannerImage {
-    url: string;
-    alt: string;
-    link?: string;
-}
 
 export default function Home() {
     const { scrollYProgress } = useScroll();
