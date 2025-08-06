@@ -10,6 +10,7 @@ const navItems = [
     { name: "Home", path: "/" },
     { name: "Marketplace", path: "/marketplace" },
     { name: "Offers", path: "/offers" },
+    { name: "About", path: "/about" },
     { name: "FAQ", path: "/faq" },
 ];
 const productDropdownItems = [
