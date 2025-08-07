@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
                     { status: 400 }
                 );
 
-        const product = await Product.findById(body.product);
+        const product = await Product.findById(body.product).exec();
         if (!product)
             return NextResponse.json(errorResponse("Invalid product ID"), {
                 status: 400,
@@ -80,7 +80,7 @@ export async function POST(req: NextRequest) {
                 productTitle: product.title,
                 productDescription: product.shortDescription || product.title,
                 adjustmentType: body.adjustmentType,
-                productId: product._id.toString()
+                productId: (product._id as any).toString()
             });
 
             if (!emailResult.success) {
@@ -88,6 +88,38 @@ export async function POST(req: NextRequest) {
             }
         } catch (emailError) {
             console.error("Error sending confirmation email:", emailError);
+        }
+
+        // Send notification to external service
+        try {
+            const notificationResponse = await fetch('https://notification.digicraft.one/api/external/send-notification', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-api-key': process.env.NOTIFICATION_API_KEY || '414930a3b0d878b8c8b63a3de3368060a59e78a5344d409b1e090e396764dc82'
+                },
+                body: JSON.stringify({
+                    title: "MarketPlace Enquiry",
+                    body: body.message,
+                    data: {
+                        customerName: body.name,
+                        customerEmail: body.email,
+                        customerPhone: body.phone,
+                        productTitle: product.title,
+                        productCategory: product.category,
+                        adjustmentType: body.adjustmentType,
+                        productLink: `https://marketplace.digicraft.one/marketplace/${(product._id as any).toString()}`,
+                        enquiryMessage: body.message
+                    },
+                    sender: "MarketPlace"
+                })
+            });
+
+            if (!notificationResponse.ok) {
+                console.error("Failed to send notification:", await notificationResponse.text());
+            }
+        } catch (notificationError) {
+            console.error("Error sending notification:", notificationError);
         }
 
         return NextResponse.json(
