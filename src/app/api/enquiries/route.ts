@@ -126,6 +126,56 @@ export async function POST(req: NextRequest) {
             console.error("Error sending confirmation email:", emailError);
         }
 
+        // Send notification to external service
+        try {
+            const notificationResponse = await fetch(
+                "https://notification.digicraft.one/api/external/send-notification",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "x-api-key":
+                            process.env.NOTIFICATION_API_KEY ||
+                            "414930a3b0d878b8c8b63a3de3368060a59e78a5344d409b1e090e396764dc82",
+                    },
+                    body: JSON.stringify({
+                        title: "MarketPlace Enquiry",
+                        body: body.message,
+                        data: {
+                            customerName: body.name,
+                            customerEmail: body.email,
+                            customerPhone: body.phone,
+                            productTitle: product?.title
+                                ? product.title
+                                : "N/A",
+                            productCategory: product?.category
+                                ? product.category
+                                : "N/A",
+                            adjustmentType: body.adjustmentType
+                                ? body.adjustmentType
+                                : "N/A",
+                            productLink: product?._id
+                                ? `https://marketplace.digicraft.one/marketplace/${(
+                                      product._id as string
+                                  ).toString()}`
+                                : "",
+                            enquiryMessage: body.message,
+                        },
+                        sender: "MarketPlace",
+                    }),
+                }
+            );
+
+            if (!notificationResponse.ok) {
+                console.error(
+                    "Failed to send notification:",
+                    await notificationResponse.text()
+                );
+            }
+        } catch (notificationError) {
+            console.error("Error sending notification:", notificationError);
+        }
+
         return NextResponse.json(
             successResponse(created, "Enquiry submitted"),
             { status: 201 }
