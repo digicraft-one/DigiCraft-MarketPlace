@@ -5,6 +5,7 @@ import {
     sendEnquiryConfirmationEmailNoProduct,
 } from "@/lib/email/brevo";
 import { sendEnquiryNotification } from "@/lib/telegram";
+import { PlanType } from "@/lib/types";
 import { Enquiry } from "@/schemas/Enquiry";
 import { Product } from "@/schemas/Product";
 import { NextRequest, NextResponse } from "next/server";
@@ -30,14 +31,7 @@ export async function POST(req: NextRequest) {
         await connectToDB();
         const body = await req.json();
 
-        const requiredFields = [
-            "name",
-            "email",
-            "phone",
-            "message",
-            "product",
-            "adjustmentType",
-        ];
+        const requiredFields = ["name", "email", "phone", "message"];
         for (const field of requiredFields)
             if (!body[field])
                 return NextResponse.json(
@@ -45,13 +39,41 @@ export async function POST(req: NextRequest) {
                     { status: 400 }
                 );
 
-        const product = await Product.findById(body.product);
-        // if (!product)
-        //     return NextResponse.json(errorResponse("Invalid product ID"), {
-        //         status: 400,
-        //     });
+        const product =
+            body.product && body.product !== ""
+                ? await Product.findById(body.product)
+                : {
+                      title: "N/A",
+                      category: "N/A",
+                      _id: null,
+                      shortDescription: "N/A",
+                  };
 
-        const created = await Enquiry.create(body);
+        if (!product)
+            return NextResponse.json(errorResponse("Invalid product ID"), {
+                status: 400,
+            });
+
+        const newEntry: {
+            name: string;
+            email: string;
+            phone: string;
+            message: string;
+            product?: string;
+            adjustmentType?: PlanType;
+        } = {
+            name: body.name as string,
+            email: body.email as string,
+            phone: body.phone as string,
+            message: body.message as string,
+        };
+
+        if (body.product && body.product !== "") {
+            newEntry.product = product._id as string;
+            newEntry.adjustmentType = body.adjustmentType;
+        }
+
+        const created = await Enquiry.create(newEntry);
 
         // Send Telegram notification
         try {
@@ -60,22 +82,14 @@ export async function POST(req: NextRequest) {
                 email: body.email,
                 phone: body.phone,
                 message: body.message,
-                // product?: {
-                //     title: product.title,
-                //     category: product.category,
-                //     link: `marketplace.digicraft.one/marketplace/${product._id}`,
-                // },
-                product: product
-                    ? {
-                          title: product.title,
-                          category: product.category,
-                          link: `marketplace.digicraft.one/marketplace/${product._id}`,
-                      }
-                    : {
-                          title: "N/A",
-                          category: "N/A",
-                          link: "#",
-                      },
+                product: {
+                    title: product.title,
+                    category: product.category,
+                    link:
+                        product.title === "N/A"
+                            ? "#"
+                            : `marketplace.digicraft.one/marketplace/${product._id}`,
+                },
                 adjustmentType: body.adjustmentType,
             });
 
@@ -95,24 +109,24 @@ export async function POST(req: NextRequest) {
         // Send confirmation email to customer
         try {
             let emailResult;
-            if (body.product && body.product === "") {
-                emailResult = await sendEnquiryConfirmationEmailNoProduct({
-                    name: body.name,
-                    email: body.email,
-                    phone: body.phone,
-                    message: body.message,
-                });
-            } else {
+            if (body.product && body.product !== "") {
                 emailResult = await sendEnquiryConfirmationEmail({
                     name: body.name,
                     email: body.email,
                     phone: body.phone,
                     message: body.message,
-                    productTitle: product?.title || "N/A",
+                    productTitle: product?.title,
                     productDescription:
-                        product?.shortDescription || product?.title || "N/A",
+                        product?.shortDescription || product?.title,
                     adjustmentType: body.adjustmentType,
-                    productId: product?._id?.toString() || "N/A",
+                    productId: product._id?.toString() as string,
+                });
+            } else {
+                emailResult = await sendEnquiryConfirmationEmailNoProduct({
+                    name: body.name,
+                    email: body.email,
+                    phone: body.phone,
+                    message: body.message,
                 });
             }
 

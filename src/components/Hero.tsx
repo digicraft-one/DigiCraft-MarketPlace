@@ -195,8 +195,8 @@ const Hero = () => {
                             className="group px-8 py-4 border border-teal-400 rounded-full text-lg font-semibold hover:bg-teal-500/10 transition-all relative overflow-hidden"
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}>
-                            <Link href={"/top-picks"} className="relative z-10">
-                                Let's Connect
+                            <Link href={"/contact"} className="relative z-10">
+                                Let&apos;s Connect
                             </Link>
                             <div className="absolute inset-0 bg-gradient-to-r from-teal-500/10 to-cyan-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                         </motion.button>
