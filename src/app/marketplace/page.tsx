@@ -40,39 +40,6 @@ const GridBackground = () => (
     </div>
 );
 
-// Loading Skeleton Component
-const ProductCardSkeleton = () => (
-    <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900/50 to-transparent backdrop-blur-sm border border-teal-500/20 animate-pulse">
-        <div className="p-5">
-            <div className="relative w-full mb-4 rounded-xl overflow-hidden aspect-[16/9] bg-slate-800/50" />
-
-            <div className="mb-3">
-                <div className="w-16 h-3 bg-slate-800/50 rounded mb-2" />
-                <div className="w-full h-5 bg-slate-800/50 rounded mb-1" />
-                <div className="w-3/4 h-3 bg-slate-800/50 rounded" />
-            </div>
-
-            <div className="flex items-baseline gap-2 mb-3">
-                <div className="w-12 h-6 bg-slate-800/50 rounded" />
-                <div className="w-8 h-3 bg-slate-800/50 rounded" />
-            </div>
-
-            <div className="space-y-1 mb-4">
-                <div className="flex items-center gap-2">
-                    <div className="w-1 h-1 rounded-full bg-slate-800/50" />
-                    <div className="w-20 h-2 bg-slate-800/50 rounded" />
-                </div>
-                <div className="flex items-center gap-2">
-                    <div className="w-1 h-1 rounded-full bg-slate-800/50" />
-                    <div className="w-24 h-2 bg-slate-800/50 rounded" />
-                </div>
-            </div>
-
-            <div className="w-full h-8 bg-slate-800/50 rounded-full" />
-        </div>
-    </div>
-);
-
 // Loading State Component
 const LoadingState = () => (
     <div className="text-center py-16">

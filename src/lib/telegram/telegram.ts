@@ -71,7 +71,7 @@ export async function sendEnquiryNotification(enquiryData: {
     phone: string;
     message: string;
     product?: { title: string; category: string; link: string };
-    adjustmentType: string;
+    adjustmentType?: string;
 }) {
     const text = `🚀 New Form Submission!
 
