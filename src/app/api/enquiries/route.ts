@@ -1,11 +1,13 @@
 import { errorResponse, successResponse } from "@/lib/apiResponse";
-import { authOptions } from "@/lib/auth/options";
 import { connectToDB } from "@/lib/db/mongoose";
+import {
+    sendEnquiryConfirmationEmail,
+    sendEnquiryConfirmationEmailNoProduct,
+} from "@/lib/email/brevo";
 import { sendEnquiryNotification } from "@/lib/telegram";
-import { sendEnquiryConfirmationEmail } from "@/lib/email/brevo";
+import { PlanType } from "@/lib/types";
 import { Enquiry } from "@/schemas/Enquiry";
 import { Product } from "@/schemas/Product";
-import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
@@ -29,14 +31,7 @@ export async function POST(req: NextRequest) {
         await connectToDB();
         const body = await req.json();
 
-        const requiredFields = [
-            "name",
-            "email",
-            "phone",
-            "message",
-            "product",
-            "adjustmentType",
-        ];
+        const requiredFields = ["name", "email", "phone", "message"];
         for (const field of requiredFields)
             if (!body[field])
                 return NextResponse.json(
@@ -44,13 +39,41 @@ export async function POST(req: NextRequest) {
                     { status: 400 }
                 );
 
-        const product = await Product.findById(body.product).exec();
+        const product =
+            body.product && body.product !== ""
+                ? await Product.findById(body.product)
+                : {
+                      title: "N/A",
+                      category: "N/A",
+                      _id: null,
+                      shortDescription: "N/A",
+                  };
+
         if (!product)
             return NextResponse.json(errorResponse("Invalid product ID"), {
                 status: 400,
             });
 
-        const created = await Enquiry.create(body);
+        const newEntry: {
+            name: string;
+            email: string;
+            phone: string;
+            message: string;
+            product?: string;
+            adjustmentType?: PlanType;
+        } = {
+            name: body.name as string,
+            email: body.email as string,
+            phone: body.phone as string,
+            message: body.message as string,
+        };
+
+        if (body.product && body.product !== "") {
+            newEntry.product = product._id as string;
+            newEntry.adjustmentType = body.adjustmentType;
+        }
+
+        const created = await Enquiry.create(newEntry);
 
         // Send Telegram notification
         try {
@@ -59,32 +82,59 @@ export async function POST(req: NextRequest) {
                 email: body.email,
                 phone: body.phone,
                 message: body.message,
-                product: { title: product.title, category: product.category, link: `marketplace.digicraft.one/marketplace/${product._id}` },
-                adjustmentType: body.adjustmentType
+                product: {
+                    title: product.title,
+                    category: product.category,
+                    link:
+                        product.title === "N/A"
+                            ? "#"
+                            : `marketplace.digicraft.one/marketplace/${product._id}`,
+                },
+                adjustmentType: body.adjustmentType,
             });
 
             if (!telegramResult.success) {
-                console.error("Failed to send Telegram notification:", telegramResult.error);
+                console.error(
+                    "Failed to send Telegram notification:",
+                    telegramResult.error
+                );
             }
         } catch (telegramError) {
-            console.error("Error sending Telegram notification:", telegramError);
+            console.error(
+                "Error sending Telegram notification:",
+                telegramError
+            );
         }
 
         // Send confirmation email to customer
         try {
-            const emailResult = await sendEnquiryConfirmationEmail({
-                name: body.name,
-                email: body.email,
-                phone: body.phone,
-                message: body.message,
-                productTitle: product.title,
-                productDescription: product.shortDescription || product.title,
-                adjustmentType: body.adjustmentType,
-                productId: (product._id as any).toString()
-            });
+            let emailResult;
+            if (body.product && body.product !== "") {
+                emailResult = await sendEnquiryConfirmationEmail({
+                    name: body.name,
+                    email: body.email,
+                    phone: body.phone,
+                    message: body.message,
+                    productTitle: product?.title,
+                    productDescription:
+                        product?.shortDescription || product?.title,
+                    adjustmentType: body.adjustmentType,
+                    productId: product._id?.toString() as string,
+                });
+            } else {
+                emailResult = await sendEnquiryConfirmationEmailNoProduct({
+                    name: body.name,
+                    email: body.email,
+                    phone: body.phone,
+                    message: body.message,
+                });
+            }
 
             if (!emailResult.success) {
-                console.error("Failed to send confirmation email:", emailResult.error);
+                console.error(
+                    "Failed to send confirmation email:",
+                    emailResult.error
+                );
             }
         } catch (emailError) {
             console.error("Error sending confirmation email:", emailError);
@@ -92,31 +142,49 @@ export async function POST(req: NextRequest) {
 
         // Send notification to external service
         try {
-            const notificationResponse = await fetch('https://notification.digicraft.one/api/external/send-notification', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-api-key': process.env.NOTIFICATION_API_KEY || '414930a3b0d878b8c8b63a3de3368060a59e78a5344d409b1e090e396764dc82'
-                },
-                body: JSON.stringify({
-                    title: "MarketPlace Enquiry",
-                    body: body.message,
-                    data: {
-                        customerName: body.name,
-                        customerEmail: body.email,
-                        customerPhone: body.phone,
-                        productTitle: product.title,
-                        productCategory: product.category,
-                        adjustmentType: body.adjustmentType,
-                        productLink: `https://marketplace.digicraft.one/marketplace/${(product._id as any).toString()}`,
-                        enquiryMessage: body.message
+            const notificationResponse = await fetch(
+                "https://notification.digicraft.one/api/external/send-notification",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "x-api-key":
+                            process.env.NOTIFICATION_API_KEY ||
+                            "414930a3b0d878b8c8b63a3de3368060a59e78a5344d409b1e090e396764dc82",
                     },
-                    sender: "MarketPlace"
-                })
-            });
+                    body: JSON.stringify({
+                        title: "MarketPlace Enquiry",
+                        body: body.message,
+                        data: {
+                            customerName: body.name,
+                            customerEmail: body.email,
+                            customerPhone: body.phone,
+                            productTitle: product?.title
+                                ? product.title
+                                : "N/A",
+                            productCategory: product?.category
+                                ? product.category
+                                : "N/A",
+                            adjustmentType: body.adjustmentType
+                                ? body.adjustmentType
+                                : "N/A",
+                            productLink: product?._id
+                                ? `https://marketplace.digicraft.one/marketplace/${(
+                                      product._id as string
+                                  ).toString()}`
+                                : "",
+                            enquiryMessage: body.message,
+                        },
+                        sender: "MarketPlace",
+                    }),
+                }
+            );
 
             if (!notificationResponse.ok) {
-                console.error("Failed to send notification:", await notificationResponse.text());
+                console.error(
+                    "Failed to send notification:",
+                    await notificationResponse.text()
+                );
             }
         } catch (notificationError) {
             console.error("Error sending notification:", notificationError);

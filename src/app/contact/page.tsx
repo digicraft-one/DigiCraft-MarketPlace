@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 import { toast } from "sonner";
-import Swal from "sweetalert2";
 
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
@@ -143,8 +142,8 @@ function EnquiryFormContent() {
         email: "",
         phone: "",
         message: "",
-        adjustmentType,
-        product: product,
+        adjustmentType: adjustmentType || "base",
+        product: product || "",
     };
 
     const [formData, setFormData] = useState<EnquiryFormState>(DEFAULT_VALUES);
@@ -182,23 +181,6 @@ function EnquiryFormContent() {
             setLoading(false);
         }
     };
-
-    // Check if product ID and plan type exist (from params or session storage)
-    if (!product || !adjustmentType) {
-        Swal.fire({
-            title: "Product & Plan Selection Required",
-            text: "You must select a product and plan first to contact us. Redirecting to marketplace...",
-            icon: "info",
-            showConfirmButton: false,
-            timer: 3000,
-        });
-
-        setTimeout(() => {
-            router.push("/marketplace");
-        }, 3000);
-
-        return null;
-    }
 
     return (
         <div className="relative">
@@ -256,7 +238,7 @@ function EnquiryFormContent() {
                                     </div>
                                     <div className="flex items-center space-x-3">
                                         <FaEnvelope className="text-cyan-400 size-5" />
-                                        <span>hello@digicraft.one</span>
+                                        <span>support@digicraft.one</span>
                                     </div>
                                     <div className="flex items-center space-x-3">
                                         <FaMapMarkerAlt className="text-cyan-400 size-5" />
@@ -359,78 +341,87 @@ function EnquiryFormContent() {
                                         </div>
 
                                         {/* Product Details Section */}
-                                        <div className="space-y-6">
-                                            <div className="space-y-3">
-                                                <Label className="text-gray-300 font-medium">
-                                                    Selected Product
-                                                </Label>
-                                                <div className="bg-[#0a0f1c]/40 border border-gray-700/30 rounded-xl p-3">
-                                                    <ProductCard
-                                                        productId={product}
-                                                        plan={
+
+                                        {formData.product && (
+                                            <div className="space-y-6">
+                                                <div className="space-y-3">
+                                                    <Label className="text-gray-300 font-medium">
+                                                        Selected Product
+                                                    </Label>
+                                                    <div className="bg-[#0a0f1c]/40 border border-gray-700/30 rounded-xl p-3">
+                                                        <ProductCard
+                                                            productId={
+                                                                product || ""
+                                                            }
+                                                            plan={
+                                                                formData.adjustmentType
+                                                            }
+                                                        />
+                                                    </div>
+                                                </div>
+
+                                                <div className="space-y-3">
+                                                    <Label
+                                                        htmlFor="adjustmentType"
+                                                        className="text-gray-300 font-medium">
+                                                        Plan Type
+                                                    </Label>
+                                                    <Select
+                                                        value={
                                                             formData.adjustmentType
                                                         }
-                                                    />
+                                                        onValueChange={(val) =>
+                                                            handleChange(
+                                                                "adjustmentType",
+                                                                val as Plans
+                                                            )
+                                                        }>
+                                                        <SelectTrigger className="bg-[#0a0f1c]/60 border-gray-600/30 text-white focus:border-cyan-400 focus:ring-cyan-400/20 rounded-xl h-10 hover:border-gray-500/50 transition-all duration-300">
+                                                            <SelectValue placeholder="Select a plan" />
+                                                        </SelectTrigger>
+                                                        <SelectContent className="bg-[#1a2332] border-gray-600/30 rounded-xl">
+                                                            {PLAN_OPTIONS.map(
+                                                                (plan) => (
+                                                                    <SelectItem
+                                                                        key={
+                                                                            plan
+                                                                        }
+                                                                        value={
+                                                                            plan
+                                                                        }
+                                                                        className="text-white hover:bg-[#0a0f1c]/60 focus:bg-[#0a0f1c]/60 rounded-lg">
+                                                                        <span className="flex items-center">
+                                                                            <div
+                                                                                className={`w-2 h-2 rounded-full mr-3 ${
+                                                                                    plan ===
+                                                                                    "base"
+                                                                                        ? "bg-green-400"
+                                                                                        : plan ===
+                                                                                          "plus"
+                                                                                        ? "bg-blue-400"
+                                                                                        : plan ===
+                                                                                          "pro"
+                                                                                        ? "bg-cyan-400"
+                                                                                        : "bg-yellow-400"
+                                                                                }`}
+                                                                            />
+                                                                            {plan
+                                                                                .charAt(
+                                                                                    0
+                                                                                )
+                                                                                .toUpperCase() +
+                                                                                plan.slice(
+                                                                                    1
+                                                                                )}
+                                                                        </span>
+                                                                    </SelectItem>
+                                                                )
+                                                            )}
+                                                        </SelectContent>
+                                                    </Select>
                                                 </div>
                                             </div>
-
-                                            <div className="space-y-3">
-                                                <Label
-                                                    htmlFor="adjustmentType"
-                                                    className="text-gray-300 font-medium">
-                                                    Plan Type
-                                                </Label>
-                                                <Select
-                                                    value={
-                                                        formData.adjustmentType
-                                                    }
-                                                    onValueChange={(val) =>
-                                                        handleChange(
-                                                            "adjustmentType",
-                                                            val as Plans
-                                                        )
-                                                    }>
-                                                    <SelectTrigger className="bg-[#0a0f1c]/60 border-gray-600/30 text-white focus:border-cyan-400 focus:ring-cyan-400/20 rounded-xl h-10 hover:border-gray-500/50 transition-all duration-300">
-                                                        <SelectValue placeholder="Select a plan" />
-                                                    </SelectTrigger>
-                                                    <SelectContent className="bg-[#1a2332] border-gray-600/30 rounded-xl">
-                                                        {PLAN_OPTIONS.map(
-                                                            (plan) => (
-                                                                <SelectItem
-                                                                    key={plan}
-                                                                    value={plan}
-                                                                    className="text-white hover:bg-[#0a0f1c]/60 focus:bg-[#0a0f1c]/60 rounded-lg">
-                                                                    <span className="flex items-center">
-                                                                        <div
-                                                                            className={`w-2 h-2 rounded-full mr-3 ${
-                                                                                plan ===
-                                                                                "base"
-                                                                                    ? "bg-green-400"
-                                                                                    : plan ===
-                                                                                      "plus"
-                                                                                    ? "bg-blue-400"
-                                                                                    : plan ===
-                                                                                      "pro"
-                                                                                    ? "bg-cyan-400"
-                                                                                    : "bg-yellow-400"
-                                                                            }`}
-                                                                        />
-                                                                        {plan
-                                                                            .charAt(
-                                                                                0
-                                                                            )
-                                                                            .toUpperCase() +
-                                                                            plan.slice(
-                                                                                1
-                                                                            )}
-                                                                    </span>
-                                                                </SelectItem>
-                                                            )
-                                                        )}
-                                                    </SelectContent>
-                                                </Select>
-                                            </div>
-                                        </div>
+                                        )}
 
                                         {/* Message Section */}
                                         <div className="space-y-6">

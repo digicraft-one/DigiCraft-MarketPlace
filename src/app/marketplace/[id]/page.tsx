@@ -8,7 +8,7 @@ import {
     ArrowLeftIcon,
     CheckIcon,
     InformationCircleIcon,
-    XMarkIcon
+    XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
@@ -43,10 +43,16 @@ const GridBackground = () => (
 const LoadingSpinner = () => (
     <div className="flex items-center justify-center min-h-screen">
         <div className="relative">
-            <div className="w-12 h-12 border-4 border-teal-500/20 border-t-teal-500 rounded-full animate-spin"></div>
+            <div className="inline-flex items-center justify-center w-full h-16 mb-6">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500"></div>
+            </div>
             <div className="mt-4 text-center">
-                <p className="text-white text-lg font-semibold">Loading product...</p>
-                <p className="text-gray-400 text-sm">Please wait while we fetch the details</p>
+                <p className="text-white text-lg font-semibold">
+                    Loading product...
+                </p>
+                <p className="text-gray-400 text-sm">
+                    Please wait while we fetch the details
+                </p>
             </div>
         </div>
     </div>
@@ -112,12 +118,13 @@ const PricingCard = ({
 
     return (
         <div
-            className={`relative p-6 rounded-2xl border transition-all ${isUltimate
+            className={`relative p-6 rounded-2xl border transition-all ${
+                isUltimate
                     ? "bg-gradient-to-br from-orange-500/8 to-amber-500/8 border-orange-500/25 hover:border-orange-500/35"
                     : isPopular
-                        ? "bg-gradient-to-br from-teal-500/10 to-blue-500/10 border-teal-500/40"
-                        : "bg-slate-900/50 border-teal-500/20 hover:border-teal-500/40"
-                }`}>
+                    ? "bg-gradient-to-br from-teal-500/10 to-blue-500/10 border-teal-500/40"
+                    : "bg-slate-900/50 border-teal-500/20 hover:border-teal-500/40"
+            }`}>
             {isPopular && !isUltimate && (
                 <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                     <span className="bg-gradient-to-r from-teal-500 to-blue-500 text-white px-4 py-1 rounded-full text-xs font-bold">
@@ -138,10 +145,11 @@ const PricingCard = ({
             <div className="absolute top-4 right-4">
                 <div className="relative">
                     <InformationCircleIcon
-                        className={`w-5 h-5 transition-colors cursor-help ${isUltimate
+                        className={`w-5 h-5 transition-colors cursor-help ${
+                            isUltimate
                                 ? "text-gray-400 hover:text-orange-300"
                                 : "text-gray-400 hover:text-teal-400"
-                            }`}
+                        }`}
                         onMouseEnter={() => setShowTooltip(true)}
                         onMouseLeave={() => setShowTooltip(false)}
                         onClick={() => setShowTooltip(!showTooltip)}
@@ -149,13 +157,15 @@ const PricingCard = ({
 
                     {/* Tooltip */}
                     <div
-                        className={`absolute right-0 top-6 w-64 bg-slate-800 border rounded-lg p-4 shadow-xl transition-all duration-300 z-50 ${isUltimate
+                        className={`absolute right-0 top-6 w-64 bg-slate-800 border rounded-lg p-4 shadow-xl transition-all duration-300 z-50 ${
+                            isUltimate
                                 ? "border-orange-500/20"
                                 : "border-teal-500/20"
-                            } ${showTooltip
+                        } ${
+                            showTooltip
                                 ? "opacity-100 visible"
                                 : "opacity-0 invisible"
-                            }`}>
+                        }`}>
                         <div className="text-sm text-white font-semibold mb-2 capitalize">
                             {tier.label} Plan Includes:
                         </div>
@@ -165,10 +175,11 @@ const PricingCard = ({
                                     key={index}
                                     className="text-xs text-gray-300 flex items-center gap-2">
                                     <CheckIcon
-                                        className={`w-3 h-3 flex-shrink-0 ${isUltimate
+                                        className={`w-3 h-3 flex-shrink-0 ${
+                                            isUltimate
                                                 ? "text-orange-300"
                                                 : "text-teal-400"
-                                            }`}
+                                        }`}
                                     />
                                     {feature}
                                 </li>
@@ -176,10 +187,11 @@ const PricingCard = ({
                         </ul>
                         {/* Tooltip Arrow */}
                         <div
-                            className={`absolute -top-2 right-4 w-4 h-4 bg-slate-800 border-l border-t transform rotate-45 ${isUltimate
+                            className={`absolute -top-2 right-4 w-4 h-4 bg-slate-800 border-l border-t transform rotate-45 ${
+                                isUltimate
                                     ? "border-orange-500/20"
                                     : "border-teal-500/20"
-                                }`}></div>
+                            }`}></div>
                     </div>
                 </div>
             </div>
@@ -218,12 +230,13 @@ const PricingCard = ({
 
             <button
                 onClick={handleClick}
-                className={`w-full py-3 px-4 rounded-lg font-semibold transition-all ${isUltimate
+                className={`w-full py-3 px-4 rounded-lg font-semibold transition-all ${
+                    isUltimate
                         ? "bg-gradient-to-r from-orange-500/85 to-amber-500/85 text-white hover:shadow-lg hover:from-orange-600/95 hover:to-amber-600/95"
                         : isPopular
-                            ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:shadow-lg"
-                            : "bg-slate-800/50 text-white border border-teal-500/30 hover:border-teal-500/60"
-                    }`}>
+                        ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:shadow-lg"
+                        : "bg-slate-800/50 text-white border border-teal-500/30 hover:border-teal-500/60"
+                }`}>
                 {isUltimate ? "Contact DigiCraft" : `Select ${tier.label}`}
             </button>
         </div>
@@ -318,8 +331,8 @@ export default function ProductDetail() {
 
     const handlePurchase = (id: string, title: string, tier: PricingTier) => {
         // Store product ID and plan type in session storage
-        sessionStorage.setItem('selectedProductId', id);
-        sessionStorage.setItem('selectedPlanType', tier.label);
+        sessionStorage.setItem("selectedProductId", id);
+        sessionStorage.setItem("selectedPlanType", tier.label);
         router.push(
             `/contact?product=${id}&title=${title}&adjustmentType=${tier.label}`
         );
@@ -434,13 +447,19 @@ export default function ProductDetail() {
                                                 <div
                                                     key={index}
                                                     className="bg-slate-900/50 border border-teal-500/20 rounded-xl overflow-hidden transition-all duration-300 hover:border-teal-500/40 hover:shadow-lg cursor-pointer group"
-                                                    onClick={() => openFeatureModal(index)}>
+                                                    onClick={() =>
+                                                        openFeatureModal(index)
+                                                    }>
                                                     <div className="flex">
                                                         {/* Feature Image - Left Side */}
                                                         <div className="relative w-32 h-24 flex-shrink-0 overflow-hidden">
                                                             <Image
-                                                                src={feature.imageUrl}
-                                                                alt={feature.title}
+                                                                src={
+                                                                    feature.imageUrl
+                                                                }
+                                                                alt={
+                                                                    feature.title
+                                                                }
                                                                 fill
                                                                 className="object-cover transition-transform duration-300 group-hover:scale-105"
                                                             />
@@ -450,10 +469,14 @@ export default function ProductDetail() {
                                                         <div className="flex-1 p-4 flex flex-col justify-between">
                                                             <div>
                                                                 <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-teal-400 transition-colors">
-                                                                    {feature.title}
+                                                                    {
+                                                                        feature.title
+                                                                    }
                                                                 </h3>
                                                                 <p className="text-gray-400 text-sm line-clamp-1">
-                                                                    {feature.description}
+                                                                    {
+                                                                        feature.description
+                                                                    }
                                                                 </p>
                                                             </div>
                                                         </div>
@@ -472,11 +495,14 @@ export default function ProductDetail() {
                                             animate={{ opacity: 1, scale: 1 }}
                                             exit={{ opacity: 0, scale: 0.9 }}
                                             className="bg-slate-900 border border-teal-500/30 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-
                                             {/* Modal Header */}
                                             <div className="flex items-center justify-between p-6 border-b border-teal-500/20">
                                                 <h3 className="text-2xl font-bold text-white">
-                                                    {product.features[selectedFeature].title}
+                                                    {
+                                                        product.features[
+                                                            selectedFeature
+                                                        ].title
+                                                    }
                                                 </h3>
                                                 <button
                                                     onClick={closeFeatureModal}
@@ -491,8 +517,18 @@ export default function ProductDetail() {
                                                     {/* Large Feature Image */}
                                                     <div className="relative w-full h-80 rounded-xl overflow-hidden">
                                                         <Image
-                                                            src={product.features[selectedFeature].imageUrl}
-                                                            alt={product.features[selectedFeature].title}
+                                                            src={
+                                                                product
+                                                                    .features[
+                                                                    selectedFeature
+                                                                ].imageUrl
+                                                            }
+                                                            alt={
+                                                                product
+                                                                    .features[
+                                                                    selectedFeature
+                                                                ].title
+                                                            }
                                                             fill
                                                             className="object-cover"
                                                         />
@@ -502,10 +538,21 @@ export default function ProductDetail() {
                                                     <div className="space-y-6">
                                                         <div>
                                                             <h4 className="text-xl font-bold text-white mb-4">
-                                                                {product.features[selectedFeature].title}
+                                                                {
+                                                                    product
+                                                                        .features[
+                                                                        selectedFeature
+                                                                    ].title
+                                                                }
                                                             </h4>
                                                             <p className="text-gray-300 leading-relaxed text-lg">
-                                                                {product.features[selectedFeature].description}
+                                                                {
+                                                                    product
+                                                                        .features[
+                                                                        selectedFeature
+                                                                    ]
+                                                                        .description
+                                                                }
                                                             </p>
                                                         </div>
                                                     </div>

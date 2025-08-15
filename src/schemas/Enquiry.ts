@@ -23,12 +23,10 @@ const EnquirySchema = new Schema<EnquiryDocument>(
         product: {
             type: Schema.Types.ObjectId,
             ref: "Product",
-            required: true,
         },
         adjustmentType: {
             type: String,
             enum: ["base", "plus", "pro", "ultimate"],
-            required: true,
         },
         notes: [{ type: String, default: "" }],
         status: {
