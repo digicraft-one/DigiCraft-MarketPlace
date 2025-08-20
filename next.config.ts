@@ -21,6 +21,8 @@ const nextConfig: NextConfig = {
             },
         ],
     },
+    siteUrl: 'https://marketplace.digicraft.one',
+    generateRobotsTxt: true,
 };
 
 export default nextConfig;
