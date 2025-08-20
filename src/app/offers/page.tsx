@@ -28,17 +28,17 @@ const GridBackground = () => (
 
 // Offers Data
 const offersData = [
-  {
-    id: 1,
-    title: "New Year Special",
-    subtitle: "Start 2024 with a Digital Transformation",
-    description: "Get up to 40% off on all marketplace products. Perfect time to launch your online business with our premium software solutions. Limited time offer - don't miss out!",
-    image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=800&h=400&fit=crop&crop=center",
-    url: "/marketplace",
-    buttonText: "Shop Now",
-    badge: "40% OFF",
-    badgeColor: "from-red-500 to-pink-500"
-  },
+  // {
+  //   id: 1,
+  //   title: "New Year Special",
+  //   subtitle: "Start 2024 with a Digital Transformation",
+  //   description: "Get up to 40% off on all marketplace products. Perfect time to launch your online business with our premium software solutions. Limited time offer - don't miss out!",
+  //   image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=800&h=400&fit=crop&crop=center",
+  //   url: "/marketplace",
+  //   buttonText: "Shop Now",
+  //   badge: "40% OFF",
+  //   badgeColor: "from-red-500 to-pink-500"
+  // },
   {
     id: 2,
     title: "Freelancer Bundle",
