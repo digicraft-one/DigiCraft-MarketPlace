@@ -48,8 +48,8 @@ const FeatureSchema = new Schema<ProductFeature>(
 
 const SeoSchema = new Schema<Seo>(
     {
-        title: { type: String, required: true, default: "" },
-        description: { type: String, required: true, default: "" },
+        title: { type: String, default: "" },
+        description: { type: String, default: "" },
         keywords: { type: [String], default: [] },
     },
     { _id: false }
