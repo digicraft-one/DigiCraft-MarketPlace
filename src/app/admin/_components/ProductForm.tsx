@@ -18,6 +18,7 @@ import {
     PricingOption as PricingTier,
     Product,
     Feature as ProductFeature,
+    Seo,
 } from "@/lib/types";
 import { CategoryType } from "@/types/schemas";
 import {
@@ -33,7 +34,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { ImageUploader } from "./ImageUploader";
 
@@ -56,6 +57,9 @@ export interface ProductFormState {
     category: CategoryType;
     features: ProductFeature[];
     pricingOptions: PricingTier[];
+    catelogLink: string;
+    demoLink: string;
+    seo: Seo;
 }
 
 const DEFAULT_VALUES: ProductFormState = {
@@ -84,6 +88,13 @@ const DEFAULT_VALUES: ProductFormState = {
         },
     ],
     tags: [],
+    catelogLink: "",
+    demoLink: "",
+    seo: {
+        title: "",
+        description: "",
+        keywords: [],
+    },
 };
 
 export default function ProductForm({
@@ -94,22 +105,26 @@ export default function ProductForm({
     const router = useRouter();
 
     let initialValues: ProductFormState | undefined;
-    if (
-        productDetails &&
-        productDetails.features.length > 0 &&
-        productDetails.pricingOptions.length > 0
-    )
+    if (productDetails) {
         initialValues = {
             title: productDetails.title,
             shortDescription: productDetails.shortDescription,
             longDescription: productDetails.longDescription,
             coverImage: productDetails.coverImage,
-            deliverables: productDetails.deliverables,
+            deliverables: productDetails.deliverables || [],
             category: productDetails.category as CategoryType,
-            features: productDetails.features,
-            pricingOptions: productDetails.pricingOptions,
-            tags: productDetails.tags,
+            features: productDetails.features || [],
+            pricingOptions: productDetails.pricingOptions || [],
+            tags: productDetails.tags || [],
+            catelogLink: productDetails.catelogLink || "",
+            demoLink: productDetails.demoLink || "",
+            seo: productDetails.seo || {
+                title: "",
+                description: "",
+                keywords: [],
+            },
         };
+    }
 
     const [formData, setFormData] = useState<ProductFormState>(
         initialValues ?? DEFAULT_VALUES
@@ -118,10 +133,39 @@ export default function ProductForm({
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
+    // Ensure SEO object is always properly structured
+    useEffect(() => {
+        if (!formData.seo || typeof formData.seo !== 'object') {
+            setFormData(prev => ({
+                ...prev,
+                seo: {
+                    title: "",
+                    description: "",
+                    keywords: [],
+                }
+            }));
+        }
+    }, []);
+
     const handleChange = <K extends keyof ProductFormState>(
         field: K,
         value: ProductFormState[K]
-    ) => setFormData((prev) => ({ ...prev, [field]: value }));
+    ) => {
+        setFormData((prev) => {
+            const newData = { ...prev, [field]: value };
+            
+            // Ensure SEO object is always properly structured
+            if (field === 'seo' && (!newData.seo || typeof newData.seo !== 'object')) {
+                newData.seo = {
+                    title: "",
+                    description: "",
+                    keywords: [],
+                };
+            }
+            
+            return newData;
+        });
+    };
 
     const updateFeature = (
         index: number,
@@ -379,6 +423,136 @@ export default function ProductForm({
                             placeholder="Detailed description of the product"
                             className="border-slate-200 focus:border-blue-500 min-h-[120px]"
                         />
+                    </div>
+
+                                            <div className="space-y-2">
+                            <Label className="text-sm font-medium text-slate-700">
+                                Catalog Link <span className="text-gray-400 text-xs">(Optional)</span>
+                            </Label>
+                            <Input
+                                value={formData.catelogLink}
+                                onChange={(e) =>
+                                    handleChange("catelogLink", e.target.value)
+                                }
+                                placeholder="Enter catalog link (optional)"
+                                className="border-slate-200 focus:border-blue-500"
+                            />
+                        </div>
+
+                    <div className="space-y-2">
+                        <Label className="text-sm font-medium text-slate-700">
+                            Demo Link <span className="text-gray-400 text-xs">(Optional)</span>
+                        </Label>
+                        <Input
+                            value={formData.demoLink}
+                            onChange={(e) =>
+                                handleChange("demoLink", e.target.value)
+                            }
+                            placeholder="Enter demo link (optional)"
+                            className="border-slate-500 focus:border-blue-500"
+                        />
+                    </div>
+
+                    <div className="space-y-4">
+                        <Label className="text-sm font-medium text-slate-700">
+                            SEO <span className="text-gray-400 text-xs">(Optional)</span>
+                        </Label>
+                        {!formData.seo && (
+                            <div className="text-red-500 text-sm">
+                                SEO data not loaded. Please refresh the page.
+                            </div>
+                        )}
+                        {formData.seo && (
+                            <>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <Label className="text-sm font-medium text-slate-600">
+                                            SEO Title <span className="text-gray-400 text-xs">(Optional)</span>
+                                        </Label>
+                                        <Input
+                                            value={formData.seo.title || ""}
+                                            onChange={(e) =>
+                                                handleChange("seo", {
+                                                    ...formData.seo,
+                                                    title: e.target.value,
+                                                })
+                                            }
+                                            placeholder="SEO title for search engines (optional)"
+                                            className="border-slate-200 focus:border-blue-500"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label className="text-sm font-medium text-slate-600">
+                                            SEO Description <span className="text-gray-400 text-xs">(Optional)</span>
+                                        </Label>
+                                        <Input
+                                            value={formData.seo.description || ""}
+                                            onChange={(e) =>
+                                                handleChange("seo", {
+                                                    ...formData.seo,
+                                                    description: e.target.value,
+                                                })
+                                            }
+                                            placeholder="SEO description for search engines (optional)"
+                                            className="border-slate-200 focus:border-blue-500"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label className="text-sm font-medium text-slate-600">
+                                        SEO Keywords <span className="text-gray-400 text-xs">(Optional)</span>
+                                    </Label>
+                                    <div className="space-y-3">
+                                        {(formData.seo.keywords || []).map((keyword, i) => (
+                                            <div key={i} className="flex gap-3">
+                                                <Input
+                                                    placeholder={`Keyword ${i + 1}`}
+                                                    value={keyword}
+                                                    onChange={(e) => {
+                                                        const newKeywords = [...formData.seo.keywords];
+                                                        newKeywords[i] = e.target.value;
+                                                        handleChange("seo", {
+                                                            ...formData.seo,
+                                                            keywords: newKeywords,
+                                                        });
+                                                    }}
+                                                    className="flex-1 border-slate-200 focus:border-blue-500"
+                                                />
+                                                <Button
+                                                    type="button"
+                                                    variant="outline"
+                                                    size="sm"
+                                                    onClick={() => {
+                                                        const newKeywords = formData.seo.keywords.filter(
+                                                            (_, index) => index !== i
+                                                        );
+                                                        handleChange("seo", {
+                                                            ...formData.seo,
+                                                            keywords: newKeywords,
+                                                        });
+                                                    }}
+                                                    className="border-red-200 text-red-600 hover:bg-red-50">
+                                                    <DeleteIcon className="w-4 h-4" />
+                                                </Button>
+                                            </div>
+                                        ))}
+                                        <Button
+                                            type="button"
+                                            variant="outline"
+                                            onClick={() => {
+                                                handleChange("seo", {
+                                                    ...formData.seo,
+                                                    keywords: [...formData.seo.keywords, ""],
+                                                });
+                                            }}
+                                            className="border-blue-200 text-blue-600 hover:bg-blue-50">
+                                            <Plus className="w-4 h-4 mr-2" />
+                                            Add Keyword
+                                        </Button>
+                                    </div>
+                                </div>
+                            </>
+                        )}
                     </div>
                 </CardContent>
             </Card>

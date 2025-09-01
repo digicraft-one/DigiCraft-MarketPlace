@@ -40,6 +40,9 @@ export async function POST(req: Request) {
             "category",
             "features",
             "pricingOptions",
+            "catelogLink",
+            "demoLink",
+            "seo",
         ];
 
         for (const field of requiredFields)

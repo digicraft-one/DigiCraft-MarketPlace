@@ -3,7 +3,7 @@ import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { fetchAPI } from "@/lib/api";
 import { Product } from "@/lib/types";
-import type { CategoryType, Plans, PricingTier } from "@/types/schemas";
+import type { Plans, PricingTier } from "@/types/schemas";
 import {
     ArrowLeftIcon,
     CheckIcon,
@@ -11,6 +11,7 @@ import {
     XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { BookOpenIcon, PlayIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -118,13 +119,12 @@ const PricingCard = ({
 
     return (
         <div
-            className={`relative p-6 rounded-2xl border transition-all ${
-                isUltimate
+            className={`relative p-6 rounded-2xl border transition-all ${isUltimate
                     ? "bg-gradient-to-br from-orange-500/8 to-amber-500/8 border-orange-500/25 hover:border-orange-500/35"
                     : isPopular
-                    ? "bg-gradient-to-br from-teal-500/10 to-blue-500/10 border-teal-500/40"
-                    : "bg-slate-900/50 border-teal-500/20 hover:border-teal-500/40"
-            }`}>
+                        ? "bg-gradient-to-br from-teal-500/10 to-blue-500/10 border-teal-500/40"
+                        : "bg-slate-900/50 border-teal-500/20 hover:border-teal-500/40"
+                }`}>
             {isPopular && !isUltimate && (
                 <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                     <span className="bg-gradient-to-r from-teal-500 to-blue-500 text-white px-4 py-1 rounded-full text-xs font-bold">
@@ -145,11 +145,10 @@ const PricingCard = ({
             <div className="absolute top-4 right-4">
                 <div className="relative">
                     <InformationCircleIcon
-                        className={`w-5 h-5 transition-colors cursor-help ${
-                            isUltimate
+                        className={`w-5 h-5 transition-colors cursor-help ${isUltimate
                                 ? "text-gray-400 hover:text-orange-300"
                                 : "text-gray-400 hover:text-teal-400"
-                        }`}
+                            }`}
                         onMouseEnter={() => setShowTooltip(true)}
                         onMouseLeave={() => setShowTooltip(false)}
                         onClick={() => setShowTooltip(!showTooltip)}
@@ -157,15 +156,13 @@ const PricingCard = ({
 
                     {/* Tooltip */}
                     <div
-                        className={`absolute right-0 top-6 w-64 bg-slate-800 border rounded-lg p-4 shadow-xl transition-all duration-300 z-50 ${
-                            isUltimate
+                        className={`absolute right-0 top-6 w-64 bg-slate-800 border rounded-lg p-4 shadow-xl transition-all duration-300 z-50 ${isUltimate
                                 ? "border-orange-500/20"
                                 : "border-teal-500/20"
-                        } ${
-                            showTooltip
+                            } ${showTooltip
                                 ? "opacity-100 visible"
                                 : "opacity-0 invisible"
-                        }`}>
+                            }`}>
                         <div className="text-sm text-white font-semibold mb-2 capitalize">
                             {tier.label} Plan Includes:
                         </div>
@@ -175,11 +172,10 @@ const PricingCard = ({
                                     key={index}
                                     className="text-xs text-gray-300 flex items-center gap-2">
                                     <CheckIcon
-                                        className={`w-3 h-3 flex-shrink-0 ${
-                                            isUltimate
+                                        className={`w-3 h-3 flex-shrink-0 ${isUltimate
                                                 ? "text-orange-300"
                                                 : "text-teal-400"
-                                        }`}
+                                            }`}
                                     />
                                     {feature}
                                 </li>
@@ -187,11 +183,10 @@ const PricingCard = ({
                         </ul>
                         {/* Tooltip Arrow */}
                         <div
-                            className={`absolute -top-2 right-4 w-4 h-4 bg-slate-800 border-l border-t transform rotate-45 ${
-                                isUltimate
+                            className={`absolute -top-2 right-4 w-4 h-4 bg-slate-800 border-l border-t transform rotate-45 ${isUltimate
                                     ? "border-orange-500/20"
                                     : "border-teal-500/20"
-                            }`}></div>
+                                }`}></div>
                     </div>
                 </div>
             </div>
@@ -230,13 +225,12 @@ const PricingCard = ({
 
             <button
                 onClick={handleClick}
-                className={`w-full py-3 px-4 rounded-lg font-semibold transition-all ${
-                    isUltimate
+                className={`w-full py-3 px-4 rounded-lg font-semibold transition-all ${isUltimate
                         ? "bg-gradient-to-r from-orange-500/85 to-amber-500/85 text-white hover:shadow-lg hover:from-orange-600/95 hover:to-amber-600/95"
                         : isPopular
-                        ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:shadow-lg"
-                        : "bg-slate-800/50 text-white border border-teal-500/30 hover:border-teal-500/60"
-                }`}>
+                            ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:shadow-lg"
+                            : "bg-slate-800/50 text-white border border-teal-500/30 hover:border-teal-500/60"
+                    }`}>
                 {isUltimate ? "Contact DigiCraft" : `Select ${tier.label}`}
             </button>
         </div>
@@ -376,6 +370,33 @@ export default function ProductDetail() {
                                         className="object-cover"
                                     />
                                 </div>
+                                {/* Action Links - Only show when available */}
+                                {(product.catelogLink || product.demoLink) && (
+                                    <div className="mt-6">
+                                        <div className="flex flex-col sm:flex-row gap-3">
+                                            {product.catelogLink && (
+                                                <Link 
+                                                    href={product.catelogLink} 
+                                                    target="_blank" 
+                                                    className="flex-1 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                                                >
+                                                    <BookOpenIcon className="w-5 h-5" />
+                                                    View Catalog
+                                                </Link>
+                                            )}
+                                            {product.demoLink && (
+                                                <Link 
+                                                    href={product.demoLink} 
+                                                    target="_blank" 
+                                                    className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                                                >
+                                                    <PlayIcon className="w-5 h-5" />
+                                                    View Demo
+                                                </Link>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
                             </div>
 
                             {/* Product Info */}

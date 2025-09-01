@@ -2,6 +2,7 @@ import type {
     CategoryType,
     PricingTier,
     ProductFeature,
+    Seo
 } from "@/types/schemas";
 import { Document, Model, model, models, Schema } from "mongoose";
 
@@ -15,6 +16,9 @@ export interface ProductDocument extends Document {
     features: ProductFeature[];
     pricingOptions: PricingTier[];
     tags?: string[];
+    catelogLink: string;
+    demoLink: string;
+    seo: Seo;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -42,6 +46,15 @@ const FeatureSchema = new Schema<ProductFeature>(
     { _id: false }
 );
 
+const SeoSchema = new Schema<Seo>(
+    {
+        title: { type: String, required: true, default: "" },
+        description: { type: String, required: true, default: "" },
+        keywords: { type: [String], default: [] },
+    },
+    { _id: false }
+)
+
 const ProductSchema = new Schema<ProductDocument>(
     {
         title: { type: String, required: true },
@@ -60,6 +73,9 @@ const ProductSchema = new Schema<ProductDocument>(
         tags: [{ type: String }],
         features: [FeatureSchema],
         pricingOptions: [PricingTierSchema],
+        catelogLink: { type: String, default: "" },
+        demoLink: { type: String, default: "" },
+        seo: SeoSchema,
     },
     { timestamps: true }
 );

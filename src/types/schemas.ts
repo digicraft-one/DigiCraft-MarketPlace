@@ -22,6 +22,12 @@ export interface ProductFeature {
     description: string;
 }
 
+export interface Seo {
+    title: string;
+    description: string;
+    keywords: string[];
+}
+
 export interface OfferProductLink {
     productId: Types.ObjectId;
     offerDiscountPercentage?: number;

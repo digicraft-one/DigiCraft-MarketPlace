@@ -13,6 +13,12 @@ export interface PricingOption {
     discountPercentage?: number;
 }
 
+export interface Seo {
+    title: string;
+    description: string;
+    keywords: string[];
+}
+
 export interface Product {
     _id: string;
     title: string;
@@ -24,6 +30,9 @@ export interface Product {
     tags: string[];
     features: Feature[];
     pricingOptions: PricingOption[];
+    catelogLink: string;
+    demoLink: string;
+    seo: Seo;
     createdAt: string;
     updatedAt: string;
 }
