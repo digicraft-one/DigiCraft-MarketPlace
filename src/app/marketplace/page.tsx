@@ -10,7 +10,9 @@ import type {
 } from "@/types/schemas";
 import {
     ArrowRightIcon,
+    BookOpenIcon,
     MagnifyingGlassIcon,
+    PlayIcon,
 } from "@heroicons/react/24/outline";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
@@ -166,10 +168,30 @@ const ProductCard = ({ product }: ProductCardProps) => {
                 <div className="flex gap-2">
                     <Link
                         href={`/marketplace/${product._id}`}
-                        className="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 rounded-full text-xs font-semibold bg-gradient-to-r from-teal-500 to-blue-500 hover:shadow-lg transition-all">
+                        className="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 rounded-full text-xs font-semibold bg-gradient-to-r from-teal-500 to-blue-500 hover:shadow-lg transition-all w-full">
                         View Details
                         <ArrowRightIcon className="w-3 h-3" />
                     </Link>
+                    {product.catelogLink && (
+                        <Link
+                            href={product.catelogLink}
+                            target="_blank"
+                            className="inline-flex items-center justify-center gap-2 px-3 py-2 rounded-full text-xs font-semibold bg-gradient-to-r from-indigo-500 to-blue-400 hover:from-indigo-600 hover:to-blue-500 text-white shadow-md hover:shadow-lg transition-all"
+                            title="View Catalog"
+                        >
+                            <BookOpenIcon className="w-5 h-5" />
+                        </Link>
+                    )}
+                    {product.demoLink && (
+                        <Link
+                            href={product.demoLink}
+                            target="_blank"
+                            className="inline-flex items-center justify-center gap-2 px-3 py-2 rounded-full text-xs font-semibold bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white shadow-md hover:shadow-lg transition-all"
+                            title="View Demo"
+                        >
+                            <PlayIcon className="w-5 h-5" />
+                        </Link>
+                    )}
                 </div>
             </div>
         </div>
