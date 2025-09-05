@@ -405,7 +405,7 @@ export default function ProductDetail() {
                                     <span className="text-sm text-teal-400 font-medium capitalize">
                                         {product.category}
                                     </span>
-                                    <h1 className="text-4xl font-bold text-white mb-4">
+                                    <h1 className="text-4xl font-bold text-white mb-4 ">
                                         {product.title}
                                     </h1>
                                     <p className="text-xl text-gray-400 mb-2">
