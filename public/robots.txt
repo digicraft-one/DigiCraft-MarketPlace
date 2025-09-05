@@ -1,0 +1,15 @@
+# *
+User-agent: *
+Allow: /
+
+# *
+User-agent: *
+Disallow: /admin
+Disallow: /api
+
+# Host
+Host: https://marketplace.digicraft.one
+
+# Sitemaps
+Sitemap: https://marketplace.digicraft.one/sitemap.xml
+Sitemap: https://marketplace.digicraft.one/server-sitemap.xml

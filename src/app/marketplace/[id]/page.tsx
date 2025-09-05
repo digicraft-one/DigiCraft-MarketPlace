@@ -252,7 +252,7 @@ export default function ProductDetail() {
             try {
                 setLoading(true);
                 setError(null);
-                const data = await fetchAPI<Product>(`/products/${params.id}`);
+                const data = await fetchAPI<Product>(`/products/details-by-slug/${params.id}`);
                 setProduct(data);
             } catch (error) {
                 console.error("Error fetching product:", error);

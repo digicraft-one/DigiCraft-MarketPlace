@@ -51,6 +51,7 @@ const SeoSchema = new Schema<Seo>(
         title: { type: String, default: "" },
         description: { type: String, default: "" },
         keywords: { type: [String], default: [] },
+        slug: { type: String, default: "", required: true },
     },
     { _id: false }
 )

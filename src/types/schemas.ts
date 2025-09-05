@@ -26,6 +26,7 @@ export interface Seo {
     title: string;
     description: string;
     keywords: string[];
+    slug: string;
 }
 
 export interface OfferProductLink {

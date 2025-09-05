@@ -34,7 +34,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { toast } from "sonner";
 import { ImageUploader } from "./ImageUploader";
 
@@ -94,6 +94,7 @@ const DEFAULT_VALUES: ProductFormState = {
         title: "",
         description: "",
         keywords: [],
+        slug: "",
     },
 };
 
@@ -122,6 +123,7 @@ export default function ProductForm({
                 title: "",
                 description: "",
                 keywords: [],
+                slug: "",
             },
         };
     }
@@ -142,6 +144,7 @@ export default function ProductForm({
                     title: "",
                     description: "",
                     keywords: [],
+                    slug: "",
                 }
             }));
         }
@@ -160,6 +163,7 @@ export default function ProductForm({
                     title: "",
                     description: "",
                     keywords: [],
+                    slug: "",
                 };
             }
             
@@ -303,7 +307,7 @@ export default function ProductForm({
         }));
     };
 
-    const handleFormSubmit = async () => {
+    const handleFormSubmit = useCallback(async () => {
         setError(null);
 
         const requiredFields: (keyof ProductFormState)[] = [
@@ -314,7 +318,14 @@ export default function ProductForm({
             "category",
             "features",
             "pricingOptions",
+            "seo",
         ];
+
+        // Additional validation for SEO fields
+        if (formData.seo && (!formData.seo.title?.trim() || !formData.seo.slug?.trim())) {
+            setError("SEO Title and SEO Slug are required fields");
+            return;
+        }
 
         for (const field of requiredFields) {
             const value = formData[field];
@@ -341,7 +352,24 @@ export default function ProductForm({
         } finally {
             setLoading(false);
         }
-    };
+    }, [formData, productDetails, router]);
+
+    // Handle Ctrl+Enter keyboard shortcut to save
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.ctrlKey && event.key === 'Enter') {
+                event.preventDefault();
+                if (!loading) {
+                    handleFormSubmit();
+                }
+            }
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [loading, handleFormSubmit]);
 
     return (
         <div className="space-y-8 text-black">
@@ -452,11 +480,19 @@ export default function ProductForm({
                             className="border-slate-500 focus:border-blue-500"
                         />
                     </div>
+                </CardContent>
+            </Card>
 
+            {/* SEO */}
+            <Card className="border-0 shadow-lg pt-0">
+                <CardHeader className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-t-lg px-5 py-3">
+                    <CardTitle className="flex items-center gap-2 text-slate-900">
+                        <Settings className="w-5 h-5" />
+                        SEO Settings
+                    </CardTitle>
+                </CardHeader>
+                <CardContent className="p-6">
                     <div className="space-y-4">
-                        <Label className="text-sm font-medium text-slate-700">
-                            SEO <span className="text-gray-400 text-xs">(Optional)</span>
-                        </Label>
                         {!formData.seo && (
                             <div className="text-red-500 text-sm">
                                 SEO data not loaded. Please refresh the page.
@@ -467,9 +503,10 @@ export default function ProductForm({
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div className="space-y-2">
                                         <Label className="text-sm font-medium text-slate-600">
-                                            SEO Title <span className="text-gray-400 text-xs">(Optional)</span>
+                                            SEO Title <span className="text-red-500 text-xs">*</span>
                                         </Label>
                                         <Input
+                                            required
                                             value={formData.seo.title || ""}
                                             onChange={(e) =>
                                                 handleChange("seo", {
@@ -477,7 +514,7 @@ export default function ProductForm({
                                                     title: e.target.value,
                                                 })
                                             }
-                                            placeholder="SEO title for search engines (optional)"
+                                            placeholder="SEO title for search engines"
                                             className="border-slate-200 focus:border-blue-500"
                                         />
                                     </div>
@@ -497,6 +534,23 @@ export default function ProductForm({
                                             className="border-slate-200 focus:border-blue-500"
                                         />
                                     </div>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label className="text-sm font-medium text-slate-600">
+                                        SEO Slug <span className="text-red-500 text-xs">*</span>
+                                    </Label>
+                                    <Input
+                                        required
+                                        value={formData.seo.slug || ""}
+                                        onChange={(e) =>
+                                            handleChange("seo", {
+                                                ...formData.seo,
+                                                slug: e.target.value,
+                                            })
+                                        }
+                                        placeholder="URL-friendly slug (e.g., my-awesome-product)"
+                                        className="border-slate-200 focus:border-blue-500"
+                                    />
                                 </div>
                                 <div className="space-y-2">
                                     <Label className="text-sm font-medium text-slate-600">
@@ -985,6 +1039,7 @@ export default function ProductForm({
                         : productDetails
                         ? "Update Product"
                         : "Create Product"}
+                    <span className="ml-2 text-xs opacity-75">(Ctrl+Enter)</span>
                 </Button>
             </div>
         </div>
