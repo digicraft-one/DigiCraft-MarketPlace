@@ -238,7 +238,7 @@ export default function AdminProductsPage() {
 
                                     <div className="flex gap-2 pt-2">
                                         <Link
-                                            href={`/admin/products/${product._id}`}
+                                            href={`/admin/products/${product.seo.slug}`}
                                             className="flex-1">
                                             <Button
                                                 variant="outline"
