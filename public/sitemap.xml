@@ -1,5 +1,112 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<sitemap><loc>https://marketplace.digicraft.one/sitemap-0.xml</loc></sitemap>
-<sitemap><loc>https://marketplace.digicraft.one/server-sitemap.xml</loc></sitemap>
-</sitemapindex>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Static Pages -->
+  <url>
+    <loc>https://marketplace.digicraft.one/</loc>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://marketplace.digicraft.one/about</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://marketplace.digicraft.one/contact</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://marketplace.digicraft.one/faq</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://marketplace.digicraft.one/login</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://marketplace.digicraft.one/marketplace</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://marketplace.digicraft.one/offers</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://marketplace.digicraft.one/privacy-policy</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://marketplace.digicraft.one/terms</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://marketplace.digicraft.one/admin</loc>
+    <priority>0.3</priority>
+  </url>
+
+  <!-- Product Pages -->
+  <url>
+    <loc>https://marketplace.digicraft.one/products/college-management-software</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://marketplace.digicraft.one/products/agency-cms-modern-animated-template</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://marketplace.digicraft.one/products/ultra-modern-single-page-agency-website</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://marketplace.digicraft.one/products/college-projects-repository</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://marketplace.digicraft.one/products/club-website-showcase-your-clubs-identity-online-single-page</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://marketplace.digicraft.one/products/college-annual-event-management-software</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://marketplace.digicraft.one/products/digital-poster-design</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://marketplace.digicraft.one/products/iot-data-management-monitoring-admin-panel</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://marketplace.digicraft.one/products/multi-page-business-club-website-complete-business-society-web-presence</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://marketplace.digicraft.one/products/standard-ecommerce-application</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://marketplace.digicraft.one/products/single-vendor-ecommerce-application-admin-customer-panel</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://marketplace.digicraft.one/products/personal-portfolio-website-showcase-your-work-identity</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://marketplace.digicraft.one/products/launch-screen-website-coming-soon-under-construction-page</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://marketplace.digicraft.one/products/restaurant-management-system-rms-admin-panel-operations-software</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://marketplace.digicraft.one/products/landing-page</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://marketplace.digicraft.one/products/multi-page-business-club-website-cms-complete-business-society-web-presence</loc>
+    <priority>0.9</priority>
+  </url>
+
+</urlset>
