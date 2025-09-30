@@ -6,9 +6,16 @@ import { fetchAPI } from "@/lib/api";
 import { EnquiryDocument } from "@/schemas/Enquiry";
 import { OfferDocument } from "@/schemas/Offer";
 import { ProductDocument } from "@/schemas/Product";
+import {
+    BarChart3,
+    FileUser,
+    MessageSquare,
+    Package,
+    Tag,
+    TrendingUp,
+} from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
-import { BarChart3, Package, MessageSquare, Tag, TrendingUp, Users } from "lucide-react";
 
 export default function AdminDashboardPage() {
     return (
@@ -39,7 +46,7 @@ export default function AdminDashboardPage() {
                 </Suspense>
 
                 {/* Quick Actions */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <QuickActionCard
                         title="Add Product"
                         description="Create a new product listing"
@@ -54,6 +61,14 @@ export default function AdminDashboardPage() {
                         icon={<MessageSquare className="w-6 h-6" />}
                         href="/admin/enquiries"
                         gradient="from-green-500 to-emerald-500"
+                        isExternal={false}
+                    />
+                    <QuickActionCard
+                        title="View Applications"
+                        description="Check applications"
+                        icon={<FileUser className="w-6 h-6" />}
+                        href="/admin/applications"
+                        gradient="from-yellow-500 to-amber-500"
                         isExternal={false}
                     />
                     <QuickActionCard
@@ -115,20 +130,26 @@ export function DashboardCard({
                             {count.toLocaleString()}
                         </div>
                         {trend && trendValue && (
-                            <div className={`flex items-center gap-1 text-sm ${
-                                trend === "up" ? "text-green-600" : "text-red-600"
-                            }`}>
-                                <TrendingUp className={`w-4 h-4 ${trend === "down" ? "rotate-180" : ""}`} />
+                            <div
+                                className={`flex items-center gap-1 text-sm ${
+                                    trend === "up"
+                                        ? "text-green-600"
+                                        : "text-red-600"
+                                }`}>
+                                <TrendingUp
+                                    className={`w-4 h-4 ${
+                                        trend === "down" ? "rotate-180" : ""
+                                    }`}
+                                />
                                 {trendValue}
                             </div>
                         )}
                     </div>
                     <Link href={linkTo}>
-                        <Button 
-                            variant="outline" 
+                        <Button
+                            variant="outline"
                             size="sm"
-                            className="border-blue-200 text-blue-600 hover:bg-blue-50 hover:border-blue-300 transition-colors"
-                        >
+                            className="border-blue-200 text-blue-600 hover:bg-blue-50 hover:border-blue-300 transition-colors">
                             View All
                         </Button>
                     </Link>
@@ -155,17 +176,18 @@ function QuickActionCard({
 }) {
     if (isExternal) {
         return (
-            <a 
-                href={href} 
-                target="_blank" 
+            <a
+                href={href}
+                target="_blank"
                 rel="noopener noreferrer"
-                className="block"
-            >
+                className="block">
                 <Card className="group cursor-pointer overflow-hidden rounded-xl border-0 shadow-md hover:shadow-xl transition-all duration-300 bg-white/80 backdrop-blur-sm hover:scale-105">
-                    <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}></div>
+                    <div
+                        className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}></div>
                     <CardContent className="relative p-6">
                         <div className="flex items-center gap-4">
-                            <div className={`p-3 rounded-xl bg-gradient-to-br ${gradient} text-white shadow-lg`}>
+                            <div
+                                className={`p-3 rounded-xl bg-gradient-to-br ${gradient} text-white shadow-lg`}>
                                 {icon}
                             </div>
                             <div className="space-y-1">
@@ -186,10 +208,12 @@ function QuickActionCard({
     return (
         <Link href={href}>
             <Card className="group cursor-pointer overflow-hidden rounded-xl border-0 shadow-md hover:shadow-xl transition-all duration-300 bg-white/80 backdrop-blur-sm hover:scale-105">
-                <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}></div>
+                <div
+                    className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}></div>
                 <CardContent className="relative p-6">
                     <div className="flex items-center gap-4">
-                        <div className={`p-3 rounded-xl bg-gradient-to-br ${gradient} text-white shadow-lg`}>
+                        <div
+                            className={`p-3 rounded-xl bg-gradient-to-br ${gradient} text-white shadow-lg`}>
                             {icon}
                         </div>
                         <div className="space-y-1">
@@ -272,8 +296,12 @@ async function DashboardStats() {
                         <BarChart3 className="w-5 h-5" />
                     </div>
                     <div>
-                        <h3 className="font-semibold text-red-900">Error Loading Metrics</h3>
-                        <p className="text-sm text-red-600">Check server/API logs for details</p>
+                        <h3 className="font-semibold text-red-900">
+                            Error Loading Metrics
+                        </h3>
+                        <p className="text-sm text-red-600">
+                            Check server/API logs for details
+                        </p>
                     </div>
                 </div>
             </Card>

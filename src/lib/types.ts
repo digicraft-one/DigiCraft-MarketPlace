@@ -64,3 +64,35 @@ export interface Enquiry {
     createdAt: string;
     updatedAt: string;
 }
+
+export interface Application {
+    _id: string;
+    name: string;
+    email: string;
+    phone: string;
+    location: string;
+    role: ApplicationRoles;
+    experience: ExperienceLevel;
+    primarySkills: string;
+    secondarySkills: string;
+    github: string;
+    linkedin: string;
+    portfolio: string;
+    resume: string;
+    canJoin: string;
+    coverLetter: string;
+    notes: string[];
+    status: "pending" | "selected" | "declined";
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+export type ApplicationRoles =
+    | "fullstack"
+    | "frontend"
+    | "backend"
+    | "app"
+    | "ai-ml"
+    | "devops";
+
+export type ExperienceLevel = "junior" | "mid" | "senior" | "lead";

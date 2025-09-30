@@ -137,15 +137,15 @@ export default function ProductForm({
 
     // Ensure SEO object is always properly structured
     useEffect(() => {
-        if (!formData.seo || typeof formData.seo !== 'object') {
-            setFormData(prev => ({
+        if (!formData.seo || typeof formData.seo !== "object") {
+            setFormData((prev) => ({
                 ...prev,
                 seo: {
                     title: "",
                     description: "",
                     keywords: [],
                     slug: "",
-                }
+                },
             }));
         }
     }, []);
@@ -156,9 +156,12 @@ export default function ProductForm({
     ) => {
         setFormData((prev) => {
             const newData = { ...prev, [field]: value };
-            
+
             // Ensure SEO object is always properly structured
-            if (field === 'seo' && (!newData.seo || typeof newData.seo !== 'object')) {
+            if (
+                field === "seo" &&
+                (!newData.seo || typeof newData.seo !== "object")
+            ) {
                 newData.seo = {
                     title: "",
                     description: "",
@@ -166,7 +169,7 @@ export default function ProductForm({
                     slug: "",
                 };
             }
-            
+
             return newData;
         });
     };
@@ -322,7 +325,10 @@ export default function ProductForm({
         ];
 
         // Additional validation for SEO fields
-        if (formData.seo && (!formData.seo.title?.trim() || !formData.seo.slug?.trim())) {
+        if (
+            formData.seo &&
+            (!formData.seo.title?.trim() || !formData.seo.slug?.trim())
+        ) {
             setError("SEO Title and SEO Slug are required fields");
             return;
         }
@@ -357,7 +363,7 @@ export default function ProductForm({
     // Handle Ctrl+Enter keyboard shortcut to save
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
-            if (event.ctrlKey && event.key === 'Enter') {
+            if (event.ctrlKey && event.key === "Enter") {
                 event.preventDefault();
                 if (!loading) {
                     handleFormSubmit();
@@ -365,9 +371,9 @@ export default function ProductForm({
             }
         };
 
-        document.addEventListener('keydown', handleKeyDown);
+        document.addEventListener("keydown", handleKeyDown);
         return () => {
-            document.removeEventListener('keydown', handleKeyDown);
+            document.removeEventListener("keydown", handleKeyDown);
         };
     }, [loading, handleFormSubmit]);
 
@@ -453,23 +459,29 @@ export default function ProductForm({
                         />
                     </div>
 
-                                            <div className="space-y-2">
-                            <Label className="text-sm font-medium text-slate-700">
-                                Catalog Link <span className="text-gray-400 text-xs">(Optional)</span>
-                            </Label>
-                            <Input
-                                value={formData.catelogLink}
-                                onChange={(e) =>
-                                    handleChange("catelogLink", e.target.value)
-                                }
-                                placeholder="Enter catalog link (optional)"
-                                className="border-slate-200 focus:border-blue-500"
-                            />
-                        </div>
+                    <div className="space-y-2">
+                        <Label className="text-sm font-medium text-slate-700">
+                            Catalog Link{" "}
+                            <span className="text-gray-400 text-xs">
+                                (Optional)
+                            </span>
+                        </Label>
+                        <Input
+                            value={formData.catelogLink}
+                            onChange={(e) =>
+                                handleChange("catelogLink", e.target.value)
+                            }
+                            placeholder="Enter catalog link (optional)"
+                            className="border-slate-200 focus:border-blue-500"
+                        />
+                    </div>
 
                     <div className="space-y-2">
                         <Label className="text-sm font-medium text-slate-700">
-                            Demo Link <span className="text-gray-400 text-xs">(Optional)</span>
+                            Demo Link{" "}
+                            <span className="text-gray-400 text-xs">
+                                (Optional)
+                            </span>
                         </Label>
                         <Input
                             value={formData.demoLink}
@@ -503,7 +515,10 @@ export default function ProductForm({
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div className="space-y-2">
                                         <Label className="text-sm font-medium text-slate-600">
-                                            SEO Title <span className="text-red-500 text-xs">*</span>
+                                            SEO Title{" "}
+                                            <span className="text-red-500 text-xs">
+                                                *
+                                            </span>
                                         </Label>
                                         <Input
                                             required
@@ -520,10 +535,15 @@ export default function ProductForm({
                                     </div>
                                     <div className="space-y-2">
                                         <Label className="text-sm font-medium text-slate-600">
-                                            SEO Description <span className="text-gray-400 text-xs">(Optional)</span>
+                                            SEO Description{" "}
+                                            <span className="text-gray-400 text-xs">
+                                                (Optional)
+                                            </span>
                                         </Label>
                                         <Input
-                                            value={formData.seo.description || ""}
+                                            value={
+                                                formData.seo.description || ""
+                                            }
                                             onChange={(e) =>
                                                 handleChange("seo", {
                                                     ...formData.seo,
@@ -537,7 +557,10 @@ export default function ProductForm({
                                 </div>
                                 <div className="space-y-2">
                                     <Label className="text-sm font-medium text-slate-600">
-                                        SEO Slug <span className="text-red-500 text-xs">*</span>
+                                        SEO Slug{" "}
+                                        <span className="text-red-500 text-xs">
+                                            *
+                                        </span>
                                     </Label>
                                     <Input
                                         required
@@ -554,49 +577,82 @@ export default function ProductForm({
                                 </div>
                                 <div className="space-y-2">
                                     <Label className="text-sm font-medium text-slate-600">
-                                        SEO Keywords <span className="text-gray-400 text-xs">(Optional)</span>
+                                        SEO Keywords{" "}
+                                        <span className="text-gray-400 text-xs">
+                                            (Optional)
+                                        </span>
                                     </Label>
                                     <div className="space-y-3">
-                                        {(formData.seo.keywords || []).map((keyword, i) => (
-                                            <div key={i} className="flex gap-3">
-                                                <Input
-                                                    placeholder={`Keyword ${i + 1}`}
-                                                    value={keyword}
-                                                    onChange={(e) => {
-                                                        const newKeywords = [...formData.seo.keywords];
-                                                        newKeywords[i] = e.target.value;
-                                                        handleChange("seo", {
-                                                            ...formData.seo,
-                                                            keywords: newKeywords,
-                                                        });
-                                                    }}
-                                                    className="flex-1 border-slate-200 focus:border-blue-500"
-                                                />
-                                                <Button
-                                                    type="button"
-                                                    variant="outline"
-                                                    size="sm"
-                                                    onClick={() => {
-                                                        const newKeywords = formData.seo.keywords.filter(
-                                                            (_, index) => index !== i
-                                                        );
-                                                        handleChange("seo", {
-                                                            ...formData.seo,
-                                                            keywords: newKeywords,
-                                                        });
-                                                    }}
-                                                    className="border-red-200 text-red-600 hover:bg-red-50">
-                                                    <DeleteIcon className="w-4 h-4" />
-                                                </Button>
-                                            </div>
-                                        ))}
+                                        {(formData.seo.keywords || []).map(
+                                            (keyword, i) => (
+                                                <div
+                                                    key={i}
+                                                    className="flex gap-3">
+                                                    <Input
+                                                        placeholder={`Keyword ${
+                                                            i + 1
+                                                        }`}
+                                                        value={keyword}
+                                                        onChange={(e) => {
+                                                            const newKeywords =
+                                                                [
+                                                                    ...formData
+                                                                        .seo
+                                                                        .keywords,
+                                                                ];
+                                                            newKeywords[i] =
+                                                                e.target.value;
+                                                            handleChange(
+                                                                "seo",
+                                                                {
+                                                                    ...formData.seo,
+                                                                    keywords:
+                                                                        newKeywords,
+                                                                }
+                                                            );
+                                                        }}
+                                                        className="flex-1 border-slate-200 focus:border-blue-500"
+                                                    />
+                                                    <Button
+                                                        type="button"
+                                                        variant="outline"
+                                                        size="sm"
+                                                        onClick={() => {
+                                                            const newKeywords =
+                                                                formData.seo.keywords.filter(
+                                                                    (
+                                                                        _,
+                                                                        index
+                                                                    ) =>
+                                                                        index !==
+                                                                        i
+                                                                );
+                                                            handleChange(
+                                                                "seo",
+                                                                {
+                                                                    ...formData.seo,
+                                                                    keywords:
+                                                                        newKeywords,
+                                                                }
+                                                            );
+                                                        }}
+                                                        className="border-red-200 text-red-600 hover:bg-red-50">
+                                                        <DeleteIcon className="w-4 h-4" />
+                                                    </Button>
+                                                </div>
+                                            )
+                                        )}
                                         <Button
                                             type="button"
                                             variant="outline"
                                             onClick={() => {
                                                 handleChange("seo", {
                                                     ...formData.seo,
-                                                    keywords: [...formData.seo.keywords, ""],
+                                                    keywords: [
+                                                        ...formData.seo
+                                                            .keywords,
+                                                        "",
+                                                    ],
                                                 });
                                             }}
                                             className="border-blue-200 text-blue-600 hover:bg-blue-50">
@@ -1039,7 +1095,9 @@ export default function ProductForm({
                         : productDetails
                         ? "Update Product"
                         : "Create Product"}
-                    <span className="ml-2 text-xs opacity-75">(Ctrl+Enter)</span>
+                    <span className="ml-2 text-xs opacity-75">
+                        (Ctrl+Enter)
+                    </span>
                 </Button>
             </div>
         </div>
