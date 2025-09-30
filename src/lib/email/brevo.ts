@@ -310,7 +310,7 @@ export async function sendEnquiryConfirmationEmail(data: EnquiryEmailData) {
                                                     <span style="color: #333333; font-size: 13px;">Once approved, we'll begin development immediately</span>
                                                 </td>
                                             </tr>
-                                            <tr
+                                            <tr>
                                                 <td style="padding: 6px 0;">
                                                     <span style="display: inline-block; width: 18px; height: 18px; background-color: #1976d2; color: white; border-radius: 50%; text-align: center; line-height: 18px; font-size: 11px; font-weight: bold; margin-right: 8px;">5</span>
                                                     <span style="color: #333333; font-size: 13px;">Regular updates and milestone reviews throughout the process</span>
@@ -682,8 +682,8 @@ export async function sendApplicationConfirmationEmail(data: {
     role: string;
     primarySkills: string;
     github: string;
-    resume: string;
-    coverLetter: string;
+    resume: string; // URL
+    coverLetter: string; // RAW TEXT (not a link)
 }) {
     try {
         let htmlTemplate = `<!DOCTYPE html>
@@ -730,11 +730,10 @@ export async function sendApplicationConfirmationEmail(data: {
                                 <tr>
                                     <td align="center">
                                         <h2 style="color: #14b8a6; font-size: 20px; margin: 0 0 10px 0;">Welcome to the DigiCraft Talent Pool!</h2>
-                                        <p style="color: #666666; font-size: 14px; margin: 0; line-height: 1.5;">Thank you for applying for the <strong>{{role}}</strong> position. We’ve received your application and our hiring team will review it carefully. We appreciate your interest in building something amazing with us!</p>
+                                        <p style="color: #666666; font-size: 14px; margin: 0; line-height: 1.5;">Thank you for applying for the <strong>{{role}}</strong> position. We’ve received your application and our team will review it carefully. We appreciate your interest in building something amazing with us!</p>
                                     </td>
                                 </tr>
                             </table>
-
                             <!-- Applicant Details -->
                             <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 20px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
                                 <tr>
@@ -783,7 +782,6 @@ export async function sendApplicationConfirmationEmail(data: {
                                     </td>
                                 </tr>
                             </table>
-
                             <!-- Documents Section -->
                             <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 20px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
                                 <tr>
@@ -791,14 +789,14 @@ export async function sendApplicationConfirmationEmail(data: {
                                         <h3 style="color: #333333; font-size: 16px; margin: 0 0 12px 0;">📄 Submitted Documents</h3>
                                         <ul style="color: #333333; font-size: 13px; margin: 0; padding-left: 20px;">
                                             <li style="margin-bottom: 6px;">Resume: <a href="{{resume}}" target="_blank" style="color: #3b82f6; text-decoration: underline;">View Resume</a></li>
-                                            {{#coverLetter}}
-                                            <li>Cover Letter: <a href="{{coverLetter}}" target="_blank" style="color: #3b82f6; text-decoration: underline;">View Cover Letter</a></li>
-                                            {{/coverLetter}}
+                                            <li style="margin-bottom: 6px;">Cover Letter:</li>
                                         </ul>
+                                        <div style="background-color: #ffffff; padding: 12px; border-radius: 6px; border: 1px solid #e9ecef; font-size: 13px; color: #333333; white-space: pre-wrap; font-family: Arial, sans-serif;">
+                                            {{coverLetter}}
+                                        </div>
                                     </td>
                                 </tr>
                             </table>
-
                             <!-- Next Steps -->
                             <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 20px; background-color: #e3f2fd; border-radius: 8px; border: 1px solid #bbdefb;">
                                 <tr>
@@ -827,17 +825,16 @@ export async function sendApplicationConfirmationEmail(data: {
                                     </td>
                                 </tr>
                             </table>
-
                             <!-- Contact Information -->
                             <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 20px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
                                 <tr>
                                     <td style="padding: 18px; text-align: center;">
-                                        <h3 style="color: #333333; font-size: 16px; margin: 0 0 12px 0;">Have Questions?</h3>
+                                        <h3 style="color: #333333; font-size: 16px; margin: 0 0 12px 0;">Need to Reach Us?</h3>
                                         <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                                             <tr>
                                                 <td align="center">
-                                                    <a href="mailto:careers@digicraft.one" style="display: inline-block; padding: 10px 20px; background-color: #14b8a6; color: white; text-decoration: none; border-radius: 6px; font-size: 13px; font-weight: 500; margin: 4px;">📧 Contact HR</a>
-                                                    <a href="https://digicraft.one/careers" style="display: inline-block; padding: 10px 20px; background-color: #3b82f6; color: white; text-decoration: none; border-radius: 6px; font-size: 13px; font-weight: 500; margin: 4px;">🌐 View Openings</a>
+                                                    <a href="mailto:hello@digicraft.one" style="display: inline-block; padding: 10px 20px; background-color: #14b8a6; color: white; text-decoration: none; border-radius: 6px; font-size: 13px; font-weight: 500; margin: 4px;">📧 Contact Us</a>
+                                                    <a href="tel:+918299797516" style="display: inline-block; padding: 10px 20px; background-color: #10b981; color: white; text-decoration: none; border-radius: 6px; font-size: 13px; font-weight: 500; margin: 4px;">📞 Call Us</a>
                                                 </td>
                                             </tr>
                                         </table>
@@ -861,19 +858,18 @@ export async function sendApplicationConfirmationEmail(data: {
 </body>
 </html>`;
 
-        // Replace template variables
+        // Basic replacements
         const replacements: Record<string, string> = {
             "{{name}}": data.name,
             "{{email}}": data.email,
             "{{phone}}": data.phone,
             "{{role}}": data.role,
             "{{primarySkills}}": data.primarySkills,
-            "{{github}}": data.github,
+            "{{github}}": data.github || "",
             "{{resume}}": data.resume,
-            "{{coverLetter}}": data.coverLetter,
+            "{{coverLetter}}": data.coverLetter, // raw text
         };
 
-        // Apply all replacements
         Object.entries(replacements).forEach(([placeholder, value]) => {
             htmlTemplate = htmlTemplate.replace(
                 new RegExp(placeholder, "g"),
@@ -881,7 +877,7 @@ export async function sendApplicationConfirmationEmail(data: {
             );
         });
 
-        // Conditionally include GitHub sections only if provided
+        // Handle GitHub conditional block
         if (!data.github) {
             const githubBlockRegex = /{{#github}}[\s\S]*?{{\/github}}/g;
             htmlTemplate = htmlTemplate.replace(githubBlockRegex, "");

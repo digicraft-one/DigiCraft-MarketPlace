@@ -4,8 +4,8 @@ import ApplicationForm from "@/components/ApplicationForm";
 import EnquiryForm from "@/components/EnquiryForm";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import { useState, useEffect, Suspense } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { Suspense, useEffect, useState } from "react";
 
 // Starfield background
 const Starfield = () => (

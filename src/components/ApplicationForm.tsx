@@ -83,6 +83,7 @@ export default function ApplicationForm() {
     const [touchedSections, setTouchedSections] = useState<Set<number>>(
         new Set()
     );
+    const [showHelp, setShowHelp] = useState(false);
     const [formData, setFormData] = useState<FormData>(DEFAULT_VALUES);
 
     const handleChange = <K extends keyof FormData>(
@@ -95,18 +96,24 @@ export default function ApplicationForm() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        setTouchedSections(new Set(sections.map((_, i) => i)));
+        if (!validateSection(currentSection)) {
+            toast.error("Please complete all required fields in this section.");
+            setTouchedSections((prev) => new Set(prev).add(currentSection));
+            return;
+        }
 
-        if (!validateAllSections()) {
+        if (currentSection === sections.length - 1 && !validateAllSections()) {
             toast.error("Please complete all required fields.");
             const firstInvalid = sections.findIndex(
                 (_, i) => !validateSection(i)
             );
             if (firstInvalid !== -1) setCurrentSection(firstInvalid);
+            setTouchedSections(new Set(sections.map((_, i) => i)));
             return;
         }
 
         setLoading(true);
+        setError(null);
 
         try {
             await fetchAPI("/applications", {
@@ -116,7 +123,9 @@ export default function ApplicationForm() {
 
             toast.success("Application submitted. We'll contact you soon.");
 
+            setCurrentSection(0);
             setFormData(DEFAULT_VALUES);
+            setTouchedSections(new Set());
             router.refresh();
         } catch (err) {
             const message =
@@ -469,10 +478,33 @@ export default function ApplicationForm() {
                 <div className="relative border-b border-gray-700/30 p-8 bg-gradient-to-br from-[#1a2332]/80 to-[#0a0f1c]/80">
                     <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-64 h-[1px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent" />
 
-                    <div className="mb-6">
-                        <h2 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-300 bg-clip-text text-transparent">
-                            Join Our Awesome Team
-                        </h2>
+                    <div className="mb-6 relative">
+                        <div className="flex gap-4">
+                            <h2 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-300 bg-clip-text text-transparent">
+                                Join Our Awesome Team
+                            </h2>
+                            <button
+                                type="button"
+                                onClick={() => setShowHelp(!showHelp)}
+                                onMouseEnter={() => setShowHelp(true)}
+                                onMouseLeave={() => setShowHelp(false)}
+                                className="text-gray-400 hover:text-cyan-400 transition-colors focus:outline-none">
+                                <span className="text-lg font-bold">?</span>
+                            </button>
+                        </div>
+                        {showHelp && (
+                            <motion.div
+                                initial={{ opacity: 0, y: -10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                className="absolute top-0 left-0 mt-2 bg-[#0a0f1c] border border-gray-700/40 rounded-xl p-4 max-w-xs z-10 shadow-lg">
+                                <p className="text-gray-300 text-xs">
+                                    Register your project with us and get 50%
+                                    commission on the resale value.
+                                    <br />
+                                </p>
+                            </motion.div>
+                        )}
                         <p className="text-gray-400 text-sm mt-1">
                             Step {currentSection + 1} of {sections.length}
                         </p>
@@ -565,9 +597,12 @@ export default function ApplicationForm() {
                             <Button
                                 type="button"
                                 onClick={() => {
-                                    if (validateSection(currentSection))
+                                    if (validateSection(currentSection)) {
+                                        setTouchedSections((prev) =>
+                                            new Set(prev).add(currentSection)
+                                        );
                                         setCurrentSection(currentSection + 1);
-                                    else {
+                                    } else {
                                         toast.error(
                                             "Please fill in all required fields."
                                         );
