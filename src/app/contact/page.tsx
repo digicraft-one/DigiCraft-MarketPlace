@@ -4,7 +4,7 @@ import ApplicationForm from "@/components/ApplicationForm";
 import EnquiryForm from "@/components/EnquiryForm";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // Starfield background
@@ -72,6 +72,41 @@ const FormToggle = ({
     </motion.button>
 );
 
+const ContactFormLoading = () => (
+    <div className="relative">
+        <Navbar />
+        <main className="relative h-screen bg-[#0a0f1c] overflow-hidden flex items-center justify-center">
+            <Starfield />
+            <GeometricPattern />
+            <div className="absolute inset-0 bg-gradient-to-br from-[#0a0f1c] via-[#1a2332] to-[#0a0f1c]" />
+            <div className="relative z-10 flex items-center justify-center min-h-screen px-4 mt-12 w-screen">
+                <div className="w-full max-w-6xl flex flex-row-reverse items-start gap-12">
+                    <div className="flex-1 flex flex-col text-center md:text-left my-auto gap-6">
+                        <div className="animate-pulse">
+                            <div className="h-12 bg-gray-700 rounded mb-4"></div>
+                            <div className="h-6 bg-gray-700 rounded mb-2"></div>
+                            <div className="h-6 bg-gray-700 rounded w-3/4"></div>
+                        </div>
+                    </div>
+                    <div className="flex-1/3">
+                        <div className="bg-[#1a2332]/40 backdrop-blur-xl border border-cyan-500/20 rounded-3xl p-4 md:p-6 shadow-2xl">
+                            <div className="animate-pulse space-y-6">
+                                <div className="h-8 bg-gray-700 rounded"></div>
+                                <div className="space-y-4">
+                                    <div className="h-10 bg-gray-700 rounded"></div>
+                                    <div className="h-10 bg-gray-700 rounded"></div>
+                                    <div className="h-10 bg-gray-700 rounded"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <Footer />
+    </div>
+);
+
 // Main form component
 export default function ContactForm() {
     const [showApplication, setShowApplication] = useState(false);
@@ -117,7 +152,9 @@ export default function ContactForm() {
                                     ease: "easeInOut",
                                 }}
                                 className="w-full max-w-6xl">
-                                <EnquiryForm />
+                                <Suspense fallback={<ContactFormLoading />}>
+                                    <EnquiryForm />
+                                </Suspense>
                             </motion.div>
                         )}
                     </AnimatePresence>

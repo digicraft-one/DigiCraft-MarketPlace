@@ -144,8 +144,6 @@ export default function AdminApplicationsPage() {
         const status = formState.status[id];
         const notes = formState.notes[id];
 
-        console.log(status, notes);
-
         if (!status) return;
 
         try {
