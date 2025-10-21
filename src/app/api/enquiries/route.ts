@@ -88,7 +88,7 @@ export async function POST(req: NextRequest) {
                     link:
                         product.title === "N/A"
                             ? "#"
-                            : `marketplace.digicraft.one/marketplace/${product._id}`,
+                            : `marketplace.digicraft.one/products/${product._id}`,
                 },
                 adjustmentType: body.adjustmentType,
             });
@@ -169,7 +169,7 @@ export async function POST(req: NextRequest) {
                                 ? body.adjustmentType
                                 : "N/A",
                             productLink: product?._id
-                                ? `https://marketplace.digicraft.one/marketplace/${(
+                                ? `https://marketplace.digicraft.one/products/${(
                                       product._id as string
                                   ).toString()}`
                                 : "",
