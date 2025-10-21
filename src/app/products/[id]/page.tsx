@@ -302,7 +302,7 @@ export default function ProductDetail() {
                                 exist.
                             </p>
                             <Link
-                                href="/marketplace"
+                                href="/products"
                                 className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-teal-500 to-blue-500 rounded-full text-white font-semibold hover:shadow-lg transition-all">
                                 <ArrowLeftIcon className="w-4 h-4" />
                                 Back to Marketplace
@@ -352,7 +352,7 @@ export default function ProductDetail() {
                         {/* Breadcrumb */}
                         <div className="mb-8">
                             <Link
-                                href="/marketplace"
+                                href="/products"
                                 className="inline-flex items-center gap-2 text-gray-400 hover:text-teal-400 transition-colors">
                                 <ArrowLeftIcon className="w-4 h-4" />
                                 Back to Marketplace

@@ -238,7 +238,7 @@ export async function sendEnquiryConfirmationEmail(data: EnquiryEmailData) {
                                         <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                                             <tr>
                                                 <td style="padding-bottom: 12px;">
-                                                    <h3 style="color: #333333; font-size: 16px; margin: 0;">🛒 <a href="https://marketplace.digicraft.one/marketplace/{{productId}}" style="color: #14b8a6; text-decoration: none; font-weight: 600;">{{productTitle}}</a></h3>
+                                                    <h3 style="color: #333333; font-size: 16px; margin: 0;">🛒 <a href="https://marketplace.digicraft.one/products/{{productId}}" style="color: #14b8a6; text-decoration: none; font-weight: 600;">{{productTitle}}</a></h3>
                                                     <p style="color: #666666; font-size: 13px; margin: 4px 0 0 0;">{{productDescription}}</p>
                                                 </td>
                                             </tr>

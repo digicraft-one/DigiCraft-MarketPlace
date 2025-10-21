@@ -8,7 +8,7 @@ import { ChevronDownIcon } from "lucide-react";
 
 const navItems = [
     { name: "Home", path: "/" },
-    { name: "Marketplace", path: "/marketplace" },
+    { name: "Marketplace", path: "/products" },
     { name: "Offers", path: "/offers" },
     { name: "About", path: "/about" },
     { name: "FAQ", path: "/faq" },

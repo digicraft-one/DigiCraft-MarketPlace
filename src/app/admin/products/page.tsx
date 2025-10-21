@@ -249,7 +249,7 @@ export default function AdminProductsPage() {
                                             </Button>
                                         </Link>
                                         <Link
-                                            href={`/marketplace/${product.seo.slug}`}
+                                            href={`/products/${product.seo.slug}`}
                                             className="flex-1">
                                             <Button
                                                 variant="outline"

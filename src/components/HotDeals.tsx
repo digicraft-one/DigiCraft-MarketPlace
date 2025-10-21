@@ -113,7 +113,7 @@ const HotDealCard = ({ product, index }: HotDealCardProps) => {
         </div>
 
         <Link
-          href={`/marketplace/${product._id}`}
+          href={`/products/${product._id}`}
           className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold bg-gradient-to-r from-teal-500 to-blue-500 hover:shadow-lg transition-all w-full justify-center">
           Get This Deal
           <ArrowRightIcon className="w-4 h-4" />
