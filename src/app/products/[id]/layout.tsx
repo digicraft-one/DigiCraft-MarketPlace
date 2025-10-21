@@ -28,7 +28,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
         const seo = product.seo;
         const productUrl = `${siteUrl}/products/${resolvedParams.id}`;
-        const productImage = product.coverImage.url;
+        
+        // Ensure the image URL is properly formatted for social media
+        let productImage = product.coverImage.url;
+        let fallbackImage = `${siteUrl}/api/og-image/${resolvedParams.id}?title=${encodeURIComponent(product.title)}&description=${encodeURIComponent(product.shortDescription)}&price=${encodeURIComponent(`Starting from ₹${Math.min(...product.pricingOptions.map(option => Math.round(option.price * (1 - (option.discountPercentage || 0) / 100))))}`)}&category=${encodeURIComponent(product.category)}`;
+        
+        // If it's a Cloudinary URL, optimize it for social media
+        if (productImage.includes('cloudinary.com')) {
+            // Transform Cloudinary URL for optimal social media display
+            // This ensures the image is 1200x630 (optimal for social media)
+            productImage = productImage.replace('/upload/', '/upload/w_1200,h_630,c_fill,f_auto,q_auto/');
+        }
         
         // Get the lowest price for structured data
         const lowestPrice = Math.min(...product.pricingOptions.map(option => 
@@ -88,18 +98,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
                         type: 'image/jpeg',
                     },
                     {
-                        url: productImage,
-                        width: 800,
-                        height: 600,
+                        url: fallbackImage,
+                        width: 1200,
+                        height: 630,
                         alt: `${product.title} - ${product.shortDescription}`,
-                        type: 'image/jpeg',
-                    },
-                    {
-                        url: productImage,
-                        width: 400,
-                        height: 400,
-                        alt: `${product.title} - ${product.shortDescription}`,
-                        type: 'image/jpeg',
+                        type: 'image/png',
                     }
                 ],
             },
@@ -107,7 +110,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
                 card: 'summary_large_image',
                 title: seo.title || `${product.title} | Premium ${product.category} Website`,
                 description: seo.description || richDescription,
-                images: [productImage],
+                images: [productImage, fallbackImage],
                 creator: '@digicraft',
                 site: '@digicraft',
             },
@@ -129,16 +132,26 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
                 'product:image': productImage,
                 'product:title': product.title,
                 'product:description': product.shortDescription,
+                
+                // WhatsApp and messaging platform specific meta tags
                 'og:image:secure_url': productImage,
                 'og:image:type': 'image/jpeg',
                 'og:image:width': '1200',
                 'og:image:height': '630',
                 'og:image:alt': `${product.title} - ${product.shortDescription}`,
+                
+                // Fallback image for WhatsApp
+                'og:image:url': fallbackImage,
+                'og:image:fallback': fallbackImage,
+                
+                // Twitter specific
                 'twitter:image:alt': `${product.title} - ${product.shortDescription}`,
                 'twitter:label1': 'Price',
                 'twitter:data1': `Starting from ₹${lowestPrice}`,
                 'twitter:label2': 'Category',
                 'twitter:data2': product.category,
+                
+                // Additional SEO meta tags
                 'rating': '4.8',
                 'revisit-after': '7 days',
                 'distribution': 'global',
@@ -150,6 +163,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
                 'coverage': 'Worldwide',
                 'target': 'all',
                 'audience': 'all',
+                
+                // WhatsApp specific optimizations
+                'whatsapp:image': productImage,
+                'whatsapp:image:fallback': fallbackImage,
+                'whatsapp:title': seo.title || `${product.title} | Premium ${product.category} Website`,
+                'whatsapp:description': seo.description || richDescription,
             }
         };
     } catch (error) {
