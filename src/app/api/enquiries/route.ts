@@ -47,6 +47,7 @@ export async function POST(req: NextRequest) {
                       category: "N/A",
                       _id: null,
                       shortDescription: "N/A",
+                      seo: { slug: "" },
                   };
 
         if (!product)
@@ -88,7 +89,7 @@ export async function POST(req: NextRequest) {
                     link:
                         product.title === "N/A"
                             ? "#"
-                            : `marketplace.digicraft.one/products/${product._id}`,
+                            : `marketplace.digicraft.one/products/${product.seo.slug}`,
                 },
                 adjustmentType: body.adjustmentType,
             });
@@ -119,7 +120,7 @@ export async function POST(req: NextRequest) {
                     productDescription:
                         product?.shortDescription || product?.title,
                     adjustmentType: body.adjustmentType,
-                    productId: product._id?.toString() as string,
+                    productId: product.seo.slug,
                 });
             } else {
                 emailResult = await sendEnquiryConfirmationEmailNoProduct({
@@ -170,7 +171,7 @@ export async function POST(req: NextRequest) {
                                 : "N/A",
                             productLink: product?._id
                                 ? `https://marketplace.digicraft.one/products/${(
-                                      product._id as string
+                                      product.seo.slug as string
                                   ).toString()}`
                                 : "",
                             enquiryMessage: body.message,
