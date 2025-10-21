@@ -4,49 +4,49 @@
   <!-- Static Pages -->
   <url>
     <loc>https://marketplace.digicraft.one/</loc>
-    <lastmod>2024-12-19T00:00:00.000Z</lastmod>
+    <lastmod>2025-10-21T15:13:29.064Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://marketplace.digicraft.one/products</loc>
-    <lastmod>2024-12-19T00:00:00.000Z</lastmod>
+    <lastmod>2025-10-21T15:13:29.064Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://marketplace.digicraft.one/about</loc>
-    <lastmod>2024-12-19T00:00:00.000Z</lastmod>
+    <lastmod>2025-10-21T15:13:29.064Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://marketplace.digicraft.one/contact</loc>
-    <lastmod>2024-12-19T00:00:00.000Z</lastmod>
+    <lastmod>2025-10-21T15:13:29.064Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://marketplace.digicraft.one/faq</loc>
-    <lastmod>2024-12-19T00:00:00.000Z</lastmod>
+    <lastmod>2025-10-21T15:13:29.064Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://marketplace.digicraft.one/offers</loc>
-    <lastmod>2024-12-19T00:00:00.000Z</lastmod>
+    <lastmod>2025-10-21T15:13:29.064Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://marketplace.digicraft.one/privacy-policy</loc>
-    <lastmod>2024-12-19T00:00:00.000Z</lastmod>
+    <lastmod>2025-10-21T15:13:29.064Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://marketplace.digicraft.one/terms</loc>
-    <lastmod>2024-12-19T00:00:00.000Z</lastmod>
+    <lastmod>2025-10-21T15:13:29.064Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -54,97 +54,104 @@
   <!-- Product Pages -->
   <url>
     <loc>https://marketplace.digicraft.one/products/college-management-software</loc>
-    <lastmod>2024-12-19T00:00:00.000Z</lastmod>
+    <lastmod>2025-10-21T15:13:29.064Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://marketplace.digicraft.one/products/agency-cms-modern-animated-template</loc>
-    <lastmod>2024-12-19T00:00:00.000Z</lastmod>
+    <lastmod>2025-10-21T15:13:29.064Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://marketplace.digicraft.one/products/ultra-modern-single-page-agency-website</loc>
-    <lastmod>2024-12-19T00:00:00.000Z</lastmod>
+    <lastmod>2025-10-21T15:13:29.064Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://marketplace.digicraft.one/products/college-projects-repository</loc>
-    <lastmod>2024-12-19T00:00:00.000Z</lastmod>
+    <lastmod>2025-10-21T15:13:29.064Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://marketplace.digicraft.one/products/club-website-showcase-your-clubs-identity-online-single-page</loc>
-    <lastmod>2024-12-19T00:00:00.000Z</lastmod>
+    <lastmod>2025-10-21T15:13:29.064Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://marketplace.digicraft.one/products/college-annual-event-management-software</loc>
-    <lastmod>2024-12-19T00:00:00.000Z</lastmod>
+    <lastmod>2025-10-21T15:13:29.064Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://marketplace.digicraft.one/products/digital-poster-design</loc>
-    <lastmod>2024-12-19T00:00:00.000Z</lastmod>
+    <lastmod>2025-10-21T15:13:29.064Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://marketplace.digicraft.one/products/iot-data-management-monitoring-admin-panel</loc>
-    <lastmod>2024-12-19T00:00:00.000Z</lastmod>
+    <lastmod>2025-10-21T15:13:29.064Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://marketplace.digicraft.one/products/multi-page-business-club-website-complete-business-society-web-presence</loc>
-    <lastmod>2024-12-19T00:00:00.000Z</lastmod>
+    <lastmod>2025-10-21T15:13:29.064Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://marketplace.digicraft.one/products/standard-ecommerce-application</loc>
-    <lastmod>2024-12-19T00:00:00.000Z</lastmod>
+    <lastmod>2025-10-21T15:13:29.064Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://marketplace.digicraft.one/products/single-vendor-ecommerce-application-admin-customer-panel</loc>
-    <lastmod>2024-12-19T00:00:00.000Z</lastmod>
+    <lastmod>2025-10-21T15:13:29.064Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://marketplace.digicraft.one/products/personal-portfolio-website-showcase-your-work-identity</loc>
-    <lastmod>2024-12-19T00:00:00.000Z</lastmod>
+    <lastmod>2025-10-21T15:13:29.064Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://marketplace.digicraft.one/products/launch-screen-website-coming-soon-under-construction-page</loc>
-    <lastmod>2024-12-19T00:00:00.000Z</lastmod>
+    <lastmod>2025-10-21T15:13:29.064Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://marketplace.digicraft.one/products/restaurant-management-system-rms-admin-panel-operations-software</loc>
-    <lastmod>2024-12-19T00:00:00.000Z</lastmod>
+    <lastmod>2025-10-21T15:13:29.064Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://marketplace.digicraft.one/products/landing-page</loc>
-    <lastmod>2024-12-19T00:00:00.000Z</lastmod>
+    <lastmod>2025-10-21T15:13:29.064Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://marketplace.digicraft.one/products/multi-page-business-club-website-cms-complete-business-society-web-presence</loc>
-    <lastmod>2024-12-19T00:00:00.000Z</lastmod>
+    <lastmod>2025-10-21T15:13:29.064Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://marketplace.digicraft.one/products/travel-agency-website-luxury-cab-rental-service</loc>
+    <lastmod>2025-10-21T15:13:29.064Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
