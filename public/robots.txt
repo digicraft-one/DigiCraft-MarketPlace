@@ -1,14 +1,38 @@
-# *
+# Robots.txt for DigiCraft Marketplace
+# https://marketplace.digicraft.one
+
+# Allow all search engines to crawl the site
 User-agent: *
 Allow: /
 
-# *
-User-agent: *
-Disallow: /admin
-Disallow: /api
+# Disallow crawling of admin and API routes
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /private/
+Disallow: /temp/
 
-# Host
+# Allow specific admin pages for SEO (if needed)
+Allow: /admin/login
+
+# Crawl delay (optional - helps prevent server overload)
+Crawl-delay: 1
+
+# Host declaration
 Host: https://marketplace.digicraft.one
 
-# Sitemaps
+# Sitemap location
 Sitemap: https://marketplace.digicraft.one/sitemap.xml
+
+# Additional directives for specific bots
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 2

@@ -17,6 +17,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import SEOValidator from "@/components/SEO/SEOValidator";
 
 // Background Components
 const GradientOrbs = () => (
@@ -334,17 +335,17 @@ export default function ProductDetail() {
 
     return (
         <main className="relative">
-            {/* Background Elements */}
-            <motion.div
-                className="fixed inset-0 bg-[radial-gradient(circle_at_center,rgba(20,184,166,0.05)_0%,transparent_100%)]"
-                style={{ y }}
-            />
-            <GradientOrbs />
-            <GridBackground />
+                {/* Background Elements */}
+                <motion.div
+                    className="fixed inset-0 bg-[radial-gradient(circle_at_center,rgba(20,184,166,0.05)_0%,transparent_100%)]"
+                    style={{ y }}
+                />
+                <GradientOrbs />
+                <GridBackground />
 
-            {/* Content */}
-            <div className="relative">
-                <Navbar />
+                {/* Content */}
+                <div className="relative">
+                    <Navbar />
 
                 {/* Header */}
                 <section className="pt-32 pb-16 px-4">
@@ -613,6 +614,14 @@ export default function ProductDetail() {
 
                 <Footer />
             </div>
+            
+            {/* SEO Validator - Only show in development */}
+            {process.env.NODE_ENV === 'development' && product && (
+                <SEOValidator 
+                    product={product} 
+                    productUrl={`https://marketplace.digicraft.one/products/${params.id}`}
+                />
+            )}
         </main>
     );
 }
