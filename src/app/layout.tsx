@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 const siteUrl = 'https://marketplace.digicraft.one';
 const previewImage = `${siteUrl}/preview.png`;
-const defaultOGImage = `${siteUrl}/api/og-image/default?title=${encodeURIComponent('DigiCraft Marketplace')}&description=${encodeURIComponent('Professional pre-built software solutions including CMS, business landing pages, and custom applications')}&price=${encodeURIComponent('Starting from ₹999')}&category=${encodeURIComponent('Software Solutions')}`;
+const defaultOGImage = `${siteUrl}/api/og-image/default?title=${encodeURIComponent('Launch Before You Blink!')}&description=${encodeURIComponent('Professional pre-built software solutions including CMS, business landing pages, and custom applications')}&price=${encodeURIComponent('Starting from ₹999')}&category=${encodeURIComponent('Software Solutions')}`;
 
 export const metadata: Metadata = {
     metadataBase: new URL(siteUrl),
