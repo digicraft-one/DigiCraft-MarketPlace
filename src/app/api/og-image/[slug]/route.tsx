@@ -4,17 +4,15 @@ import { NextRequest } from 'next/server'
 export const runtime = 'edge'
 
 export async function GET(
-  request: NextRequest,
-  { params }: { params: { slug: string } }
+  request: NextRequest
 ) {
   try {
-    const { slug } = await params
     const { searchParams } = new URL(request.url)
     
     const title = searchParams.get('title') || 'DigiCraft Marketplace'
-    const description = searchParams.get('description') || 'Premium pre-built websites'
+    const description = searchParams.get('description') || 'Professional pre-built software solutions including CMS, business landing pages, e-commerce platforms, and custom applications'
     const price = searchParams.get('price') || 'Starting from ₹999'
-    const category = searchParams.get('category') || 'Website'
+    const category = searchParams.get('category') || 'Software Solutions'
 
     return new ImageResponse(
       (
@@ -64,20 +62,15 @@ export async function GET(
                 marginBottom: '40px',
               }}
             >
-              <div
+              <img
+                src="https://marketplace.digicraft.one/logo.svg"
+                alt="DigiCraft Logo"
                 style={{
                   width: '60px',
                   height: '60px',
-                  backgroundColor: '#14B8A6',
-                  borderRadius: '12px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
                   marginRight: '20px',
                 }}
-              >
-                <span style={{ color: 'white', fontSize: '24px', fontWeight: 'bold' }}>DC</span>
-              </div>
+              />
               <span
                 style={{
                   color: '#14B8A6',

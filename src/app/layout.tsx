@@ -9,32 +9,36 @@ const inter = Inter({ subsets: ['latin'] })
 
 const siteUrl = 'https://marketplace.digicraft.one';
 const previewImage = `${siteUrl}/preview.png`;
+const defaultOGImage = `${siteUrl}/api/og-image/default?title=${encodeURIComponent('DigiCraft Marketplace')}&description=${encodeURIComponent('Professional pre-built software solutions including CMS, business landing pages, and custom applications')}&price=${encodeURIComponent('Starting from ₹999')}&category=${encodeURIComponent('Software Solutions')}`;
 
 export const metadata: Metadata = {
     metadataBase: new URL(siteUrl),
     title: {
-        default: 'DigiCraft Marketplace - Ready-to-Launch Websites & Pre-built Solutions',
+        default: 'DigiCraft Marketplace - Professional Pre-built Software Solutions',
         template: '%s | DigiCraft Marketplace'
     },
-    description: 'DigiCraft Marketplace offers premium pre-built e-commerce and portfolio websites ready for immediate deployment. Save time and money with our customizable, professional website solutions.',
+    description: 'DigiCraft Marketplace offers premium pre-built software solutions including CMS, business landing pages, e-commerce platforms, and custom applications. Save time and money with our professional, ready-to-deploy software.',
     keywords: [
-        'pre-built websites',
-        'e-commerce templates',
-        'portfolio websites',
-        'ready-to-launch websites',
-        'website marketplace',
-        'customizable websites',
-        'professional website templates',
-        'business websites',
-        'online store templates',
-        'website reseller',
+        'pre-built software',
+        'CMS solutions',
+        'business landing pages',
+        'e-commerce platforms',
+        'custom applications',
+        'ready-to-deploy software',
+        'software marketplace',
+        'professional software templates',
+        'business software solutions',
+        'web applications',
         'digital products',
-        'web solutions',
-        'website packages',
-        'instant websites',
-        'website templates',
+        'software packages',
+        'instant deployment',
+        'custom software development',
         'DigiCraft Marketplace',
-        'website marketplace'
+        'software solutions',
+        'content management systems',
+        'business automation',
+        'web development',
+        'software templates'
     ],
     authors: [{ name: 'DigiCraft Team', url: siteUrl }],
     creator: 'DigiCraft',
@@ -71,23 +75,30 @@ export const metadata: Metadata = {
         locale: 'en_US',
         url: siteUrl,
         siteName: 'DigiCraft Marketplace',
-        title: 'DigiCraft Marketplace - Ready-to-Launch Websites',
-        description: 'Premium pre-built e-commerce and portfolio websites ready for immediate deployment. Save time and money with our customizable, professional website solutions.',
+        title: 'DigiCraft Marketplace - Professional Pre-built Software Solutions',
+        description: 'Premium pre-built software solutions including CMS, business landing pages, e-commerce platforms, and custom applications. Save time and money with our professional, ready-to-deploy software.',
         images: [
             {
                 url: previewImage,
                 width: 1200,
                 height: 630,
-                alt: 'DigiCraft Marketplace - Ready-to-Launch Websites',
+                alt: 'DigiCraft Marketplace - Professional Pre-built Software Solutions',
+                type: 'image/png',
+            },
+            {
+                url: defaultOGImage,
+                width: 1200,
+                height: 630,
+                alt: 'DigiCraft Marketplace - Professional Pre-built Software Solutions',
                 type: 'image/png',
             }
         ],
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'DigiCraft Marketplace - Ready-to-Launch Websites',
-        description: 'Premium pre-built e-commerce and portfolio websites ready for immediate deployment. Save time and money with our customizable, professional website solutions.',
-        images: [previewImage],
+        title: 'DigiCraft Marketplace - Professional Pre-built Software Solutions',
+        description: 'Premium pre-built software solutions including CMS, business landing pages, e-commerce platforms, and custom applications. Save time and money with our professional, ready-to-deploy software.',
+        images: [previewImage, defaultOGImage],
         creator: '@digicraft',
         site: '@digicraft',
     },
@@ -123,7 +134,17 @@ export const metadata: Metadata = {
         'apple-mobile-web-app-capable': 'yes',
         'apple-mobile-web-app-title': 'DigiCraft Marketplace',
         'apple-mobile-web-app-status-bar-style': 'black',
-        'theme-color': '#0f0f0f'
+        'theme-color': '#0f0f0f',
+        
+        // WhatsApp specific optimizations
+        'whatsapp:image': previewImage,
+        'whatsapp:image:fallback': defaultOGImage,
+        'whatsapp:title': 'DigiCraft Marketplace - Professional Pre-built Software Solutions',
+        'whatsapp:description': 'Premium pre-built software solutions including CMS, business landing pages, e-commerce platforms, and custom applications.',
+        
+        // Additional Open Graph fallbacks
+        'og:image:url': defaultOGImage,
+        'og:image:fallback': defaultOGImage,
     }
 }
 
@@ -163,11 +184,21 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 <meta property="og:image:width" content="1200" />
                 <meta property="og:image:height" content="630" />
                 <meta property="og:image:alt" content="DigiCraft Marketplace - Ready-to-Launch Websites" />
+                
+                {/* Fallback image for WhatsApp */}
+                <meta property="og:image:url" content={defaultOGImage} />
+                <meta property="og:image:fallback" content={defaultOGImage} />
 
                 {/* WhatsApp specific */}
                 <meta property="og:site_name" content="DigiCraft Marketplace" />
-                <meta property="og:title" content="DigiCraft Marketplace - Ready-to-Launch Websites" />
-                <meta property="og:description" content="Premium pre-built e-commerce and portfolio websites ready for immediate deployment." />
+                <meta property="og:title" content="DigiCraft Marketplace - Professional Pre-built Software Solutions" />
+                <meta property="og:description" content="Premium pre-built software solutions including CMS, business landing pages, e-commerce platforms, and custom applications." />
+                
+                {/* Additional WhatsApp optimizations */}
+                <meta name="whatsapp:image" content={previewImage} />
+                <meta name="whatsapp:image:fallback" content={defaultOGImage} />
+                <meta name="whatsapp:title" content="DigiCraft Marketplace - Professional Pre-built Software Solutions" />
+                <meta name="whatsapp:description" content="Premium pre-built software solutions including CMS, business landing pages, e-commerce platforms, and custom applications." />
 
                 {/* Preconnect to important domains */}
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -176,6 +207,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 {/* Preload critical assets */}
                 <link rel="preload" href="/logo.svg" as="image" type="image/svg+xml" />
                 <link rel="preload" href={previewImage} as="image" />
+                <link rel="preload" href={defaultOGImage} as="image" />
             </head>
             <body className={`${inter.className} bg-[#0f0f0f] text-white`}>
                 {children}
@@ -190,9 +222,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                             '@context': 'https://schema.org',
                             '@type': 'WebSite',
                             name: 'DigiCraft Marketplace',
-                            alternateName: 'DigiCraft Website Marketplace',
+                            alternateName: 'DigiCraft Software Marketplace',
                             url: siteUrl,
-                            description: 'Premium pre-built e-commerce and portfolio websites ready for immediate deployment',
+                            description: 'Premium pre-built software solutions including CMS, business landing pages, e-commerce platforms, and custom applications',
                             potentialAction: {
                                 '@type': 'SearchAction',
                                 target: `${siteUrl}/search?q={search_term_string}`,
@@ -211,10 +243,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                             '@context': 'https://schema.org',
                             '@type': 'Organization',
                             name: 'DigiCraft Marketplace',
-                            alternateName: 'DigiCraft Website Marketplace',
+                            alternateName: 'DigiCraft Software Marketplace',
                             url: siteUrl,
                             logo: `${siteUrl}/logo.svg`,
-                            image: previewImage,
+                            image: [previewImage, defaultOGImage],
                             sameAs: [
                                 'https://twitter.com/digicraft',
                                 'https://facebook.com/digicraft',
@@ -239,8 +271,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                         __html: JSON.stringify({
                             '@context': 'https://schema.org',
                             '@type': 'ItemList',
-                            name: 'Pre-built Website Collection',
-                            description: 'Collection of premium pre-built e-commerce and portfolio websites',
+                            name: 'Pre-built Software Collection',
+                            description: 'Collection of premium pre-built software solutions including CMS, business applications, and custom software',
                             url: siteUrl,
                             numberOfItems: 50,
                             itemListElement: [
@@ -249,9 +281,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                                     position: 1,
                                     item: {
                                         '@type': 'SoftwareApplication',
-                                        name: 'E-Commerce Store Pro',
-                                        description: 'Full-featured e-commerce website with payment integration',
-                                        applicationCategory: 'E-commerce',
+                                        name: 'E-Commerce Platform Pro',
+                                        description: 'Full-featured e-commerce software with payment integration and CMS',
+                                        applicationCategory: 'E-commerce Software',
                                         operatingSystem: 'Web Browser',
                                         offers: {
                                             '@type': 'Offer',
@@ -266,9 +298,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                                     position: 2,
                                     item: {
                                         '@type': 'SoftwareApplication',
-                                        name: 'Portfolio Showcase',
-                                        description: 'Professional portfolio website for creatives',
-                                        applicationCategory: 'Portfolio',
+                                        name: 'Business CMS Platform',
+                                        description: 'Professional content management system for businesses and organizations',
+                                        applicationCategory: 'Business Software',
                                         operatingSystem: 'Web Browser',
                                         offers: {
                                             '@type': 'Offer',
@@ -292,7 +324,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                             '@context': 'https://schema.org',
                             '@type': 'LocalBusiness',
                             name: 'DigiCraft Marketplace',
-                            image: previewImage,
+                            image: [previewImage, defaultOGImage],
                             '@id': siteUrl,
                             url: siteUrl,
                             priceRange: '$$',
@@ -307,20 +339,27 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                             },
                             hasOfferCatalog: {
                                 '@type': 'OfferCatalog',
-                                name: 'Website Templates',
+                                name: 'Software Solutions',
                                 itemListElement: [
                                     {
                                         '@type': 'Offer',
                                         itemOffered: {
                                             '@type': 'SoftwareApplication',
-                                            name: 'E-commerce Templates'
+                                            name: 'E-commerce Platforms'
                                         }
                                     },
                                     {
                                         '@type': 'Offer',
                                         itemOffered: {
                                             '@type': 'SoftwareApplication',
-                                            name: 'Portfolio Templates'
+                                            name: 'CMS Solutions'
+                                        }
+                                    },
+                                    {
+                                        '@type': 'Offer',
+                                        itemOffered: {
+                                            '@type': 'SoftwareApplication',
+                                            name: 'Business Applications'
                                         }
                                     }
                                 ]

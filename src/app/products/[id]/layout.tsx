@@ -33,32 +33,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         let productImage = product.coverImage.url;
         let fallbackImage = `${siteUrl}/api/og-image/${resolvedParams.id}?title=${encodeURIComponent(product.title)}&description=${encodeURIComponent(product.shortDescription)}&price=${encodeURIComponent(`Starting from ₹${Math.min(...product.pricingOptions.map(option => Math.round(option.price * (1 - (option.discountPercentage || 0) / 100))))}`)}&category=${encodeURIComponent(product.category)}`;
         
-        // If it's a Cloudinary URL, optimize it for social media
-        if (productImage.includes('cloudinary.com')) {
-            // Transform Cloudinary URL for optimal social media display
-            // This ensures the image is 1200x630 (optimal for social media)
-            productImage = productImage.replace('/upload/', '/upload/w_1200,h_630,c_fill,f_auto,q_auto/');
-        }
-        
         // Get the lowest price for structured data
         const lowestPrice = Math.min(...product.pricingOptions.map(option => 
             Math.round(option.price * (1 - (option.discountPercentage || 0) / 100))
         ));
         
         // Generate rich description
-        const richDescription = `${product.shortDescription} Starting from ₹${lowestPrice}. ${product.tags?.join(', ')}. Ready-to-launch ${product.category} website with ${product.features.length} key features.`;
+        const richDescription = `${product.shortDescription} Starting from ₹${lowestPrice}. ${product.tags?.join(', ')}. Professional ${product.category} software solution with ${product.features.length} key features.`;
         
         return {
             metadataBase: new URL(siteUrl),
-            title: seo.title || `${product.title} | Premium ${product.category} Website | DigiCraft Marketplace`,
+            title: seo.title || `${product.title} | Professional ${product.category} Software | DigiCraft Marketplace`,
             description: seo.description || richDescription,
             keywords: [
                 ...(seo.keywords || []),
                 product.title,
                 product.category,
-                'pre-built website',
-                'website template',
-                'ready-to-launch',
+                'pre-built software',
+                'software solution',
+                'ready-to-deploy',
                 'DigiCraft Marketplace',
                 ...(product.tags || [])
             ],
@@ -87,7 +80,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
                 locale: 'en_US',
                 url: productUrl,
                 siteName: 'DigiCraft Marketplace',
-                title: seo.title || `${product.title} | Premium ${product.category} Website`,
+                title: seo.title || `${product.title} | Professional ${product.category} Software`,
                 description: seo.description || richDescription,
                 images: [
                     {
@@ -108,7 +101,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             },
             twitter: {
                 card: 'summary_large_image',
-                title: seo.title || `${product.title} | Premium ${product.category} Website`,
+                title: seo.title || `${product.title} | Professional ${product.category} Software`,
                 description: seo.description || richDescription,
                 images: [productImage, fallbackImage],
                 creator: '@digicraft',
@@ -167,7 +160,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
                 // WhatsApp specific optimizations
                 'whatsapp:image': productImage,
                 'whatsapp:image:fallback': fallbackImage,
-                'whatsapp:title': seo.title || `${product.title} | Premium ${product.category} Website`,
+                'whatsapp:title': seo.title || `${product.title} | Professional ${product.category} Software`,
                 'whatsapp:description': seo.description || richDescription,
             }
         };
