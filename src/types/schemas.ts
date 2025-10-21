@@ -33,3 +33,13 @@ export interface OfferProductLink {
     productId: Types.ObjectId;
     offerDiscountPercentage?: number;
 }
+
+export type ApplicationRoles =
+    | "fullstack"
+    | "frontend"
+    | "backend"
+    | "app"
+    | "ai-ml"
+    | "devops";
+
+export type ExperienceLevel = "junior" | "mid" | "senior" | "lead";
