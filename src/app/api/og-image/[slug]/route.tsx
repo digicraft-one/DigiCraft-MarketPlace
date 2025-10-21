@@ -10,7 +10,7 @@ export async function GET(
     const { searchParams } = new URL(request.url)
     
     const title = searchParams.get('title') || 'DigiCraft Marketplace'
-    const description = searchParams.get('description') || 'Professional pre-built software solutions including CMS, business landing pages, e-commerce platforms, and custom applications'
+    const description = searchParams.get('description') || 'Professional pre-built software solutions including CMS, business landing pages, e-commerce platforms, and custom applications. Affordable software development and budget-friendly solutions.'
     const price = searchParams.get('price') || 'Starting from ₹999'
     const category = searchParams.get('category') || 'Software Solutions'
 

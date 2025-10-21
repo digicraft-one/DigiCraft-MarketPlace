@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         ));
         
         // Generate rich description
-        const richDescription = `${product.shortDescription} Starting from ₹${lowestPrice}. ${product.tags?.join(', ')}. Professional ${product.category} software solution with ${product.features.length} key features.`;
+        const richDescription = `${product.shortDescription} Starting from ₹${lowestPrice}. ${product.tags?.join(', ')}. Professional ${product.category} software solution with ${product.features.length} key features. Affordable software development and budget-friendly solutions.`;
         
         return {
             metadataBase: new URL(siteUrl),
@@ -53,6 +53,30 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
                 'software solution',
                 'ready-to-deploy',
                 'DigiCraft Marketplace',
+                // SEO-focused affordable keywords (hidden from users)
+                'affordable software',
+                'cheap software solution',
+                'low cost software',
+                'budget software',
+                'affordable software development',
+                'cheap software at low price',
+                'budget-friendly software',
+                'affordable software services',
+                'cheap software development',
+                'low cost software services',
+                'budget software solutions',
+                'affordable software for startups',
+                'cheap business applications',
+                'low cost web applications',
+                'budget software packages',
+                'affordable custom software',
+                'cheap software solutions',
+                'low cost digital products',
+                'budget software development',
+                'affordable software services',
+                'cheap software at low price',
+                'low cost software marketplace',
+                'budget software solutions India',
                 ...(product.tags || [])
             ],
             authors: [{ name: 'DigiCraft Team', url: siteUrl }],
@@ -193,7 +217,7 @@ export default async function ProductLayout({ params, children }: Props) {
                 '@context': 'https://schema.org',
                 '@type': 'Product',
                 name: product.title,
-                description: product.shortDescription,
+                description: `${product.shortDescription}. Affordable software development and budget-friendly solutions.`,
                 image: product.coverImage.url,
                 url: productUrl,
                 brand: {
@@ -230,12 +254,24 @@ export default async function ProductLayout({ params, children }: Props) {
                     bestRating: '5',
                     worstRating: '1'
                 },
-                additionalProperty: product.features.map((feature: any) => ({
-                    '@type': 'PropertyValue',
-                    name: feature.title,
-                    value: feature.description
-                })),
-                keywords: (product.tags || []).join(', '),
+                additionalProperty: [
+                    ...product.features.map((feature: any) => ({
+                        '@type': 'PropertyValue',
+                        name: feature.title,
+                        value: feature.description
+                    })),
+                    {
+                        '@type': 'PropertyValue',
+                        name: 'Pricing Type',
+                        value: 'Affordable Software Solutions'
+                    },
+                    {
+                        '@type': 'PropertyValue',
+                        name: 'Target Market',
+                        value: 'Budget-conscious businesses and startups'
+                    }
+                ],
+                keywords: `${(product.tags || []).join(', ')}, affordable software, cheap software development, low cost software, budget software solutions, affordable software services`,
                 datePublished: product.createdAt,
                 dateModified: product.updatedAt,
                 isRelatedTo: {
