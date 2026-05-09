@@ -1,10 +1,9 @@
 import type {
-    CategoryType,
     PricingTier,
     ProductFeature,
     Seo
 } from "@/types/schemas";
-import { Document, Model, model, models, Schema } from "mongoose";
+import { Document, Model, model, models, Schema, Types } from "mongoose";
 
 export interface ProductDocument extends Document {
     title: string;
@@ -12,7 +11,8 @@ export interface ProductDocument extends Document {
     longDescription: string;
     coverImage: { url: string; publicId: string };
     deliverables: string[];
-    category: CategoryType;
+    category: string;
+    categories: Types.ObjectId[];
     features: ProductFeature[];
     pricingOptions: PricingTier[];
     tags?: string[];
@@ -66,11 +66,14 @@ const ProductSchema = new Schema<ProductDocument>(
             publicId: { type: String, required: true },
         },
         deliverables: { type: [String], required: true },
-        category: {
-            type: String,
-            enum: ["ecommerce", "portfolio", "blog", "landing", "custom"],
-            required: true,
-        },
+        category: { type: String, default: "" },
+        categories: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Category",
+                required: true,
+            },
+        ],
         tags: [{ type: String }],
         features: [FeatureSchema],
         pricingOptions: [PricingTierSchema],

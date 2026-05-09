@@ -20,7 +20,6 @@ import {
     Feature as ProductFeature,
     Seo,
 } from "@/lib/types";
-import { CategoryType } from "@/types/schemas";
 import {
     ArrowLeft,
     DeleteIcon,
@@ -39,13 +38,11 @@ import { toast } from "sonner";
 import { ImageUploader } from "./ImageUploader";
 
 const PRICING_TIERS: PlanType[] = ["base", "plus", "pro", "ultimate"];
-const CATEGORIES: CategoryType[] = [
-    "ecommerce",
-    "portfolio",
-    "blog",
-    "landing",
-    "custom",
-];
+interface CategoryOption {
+    _id: string;
+    name: string;
+    slug: string;
+}
 
 export interface ProductFormState {
     title: string;
@@ -54,7 +51,8 @@ export interface ProductFormState {
     coverImage: { url: string; publicId: string };
     deliverables: string[];
     tags: string[];
-    category: CategoryType;
+    category: string;
+    categories: string[];
     features: ProductFeature[];
     pricingOptions: PricingTier[];
     catelogLink: string;
@@ -66,7 +64,8 @@ const DEFAULT_VALUES: ProductFormState = {
     title: "",
     shortDescription: "",
     longDescription: "",
-    category: "custom",
+    category: "",
+    categories: [],
     coverImage: {
         url: "",
         publicId: "",
@@ -113,7 +112,10 @@ export default function ProductForm({
             longDescription: productDetails.longDescription,
             coverImage: productDetails.coverImage,
             deliverables: productDetails.deliverables || [],
-            category: productDetails.category as CategoryType,
+            category: productDetails.category || "",
+            categories: (productDetails.categories || []).map((category) =>
+                typeof category === "string" ? category : category._id
+            ),
             features: productDetails.features || [],
             pricingOptions: productDetails.pricingOptions || [],
             tags: productDetails.tags || [],
@@ -134,6 +136,7 @@ export default function ProductForm({
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [categories, setCategories] = useState<CategoryOption[]>([]);
 
     // Ensure SEO object is always properly structured
     useEffect(() => {
@@ -148,6 +151,27 @@ export default function ProductForm({
                 },
             }));
         }
+    }, [formData.seo]);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await fetchAPI<CategoryOption[]>("/categories");
+                setCategories(response);
+                setFormData((prev) => {
+                    if (prev.categories.length > 0) return prev;
+                    return {
+                        ...prev,
+                        categories:
+                            response.length > 0 ? [response[0]._id] : prev.categories,
+                        category: response.length > 0 ? response[0].name : prev.category,
+                    };
+                });
+            } catch (fetchError) {
+                console.error("Failed to fetch categories:", fetchError);
+            }
+        };
+        fetchCategories();
     }, []);
 
     const handleChange = <K extends keyof ProductFormState>(
@@ -318,7 +342,7 @@ export default function ProductForm({
             "shortDescription",
             "longDescription",
             "coverImage",
-            "category",
+            "categories",
             "features",
             "pricingOptions",
             "seo",
@@ -346,9 +370,16 @@ export default function ProductForm({
 
         try {
             setLoading(true);
+            const selectedCategories = categories.filter((category) =>
+                formData.categories.includes(category._id)
+            );
+            const payload: ProductFormState = {
+                ...formData,
+                category: selectedCategories[0]?.name || formData.category,
+            };
 
-            if (!productDetails) await handleCreate(formData);
-            else await handleUpdate(productDetails._id, formData);
+            if (!productDetails) await handleCreate(payload);
+            else await handleUpdate(productDetails._id, payload);
 
             router.push("/admin/products");
         } catch (err) {
@@ -358,7 +389,7 @@ export default function ProductForm({
         } finally {
             setLoading(false);
         }
-    }, [formData, productDetails, router]);
+    }, [categories, formData, productDetails, router]);
 
     // Handle Ctrl+Enter keyboard shortcut to save
     useEffect(() => {
@@ -405,28 +436,55 @@ export default function ProductForm({
                         </div>
                         <div className="space-y-2">
                             <Label className="text-sm font-medium text-slate-700">
-                                Category
+                                Categories
                             </Label>
-                            <Select
-                                value={formData.category}
-                                onValueChange={(val) =>
-                                    handleChange(
-                                        "category",
-                                        val as CategoryType
-                                    )
-                                }>
-                                <SelectTrigger className="border-slate-200 focus:border-blue-500">
-                                    <SelectValue placeholder="Choose category" />
-                                </SelectTrigger>
-                                <SelectContent className="text-black bg-white/90">
-                                    {CATEGORIES.map((cat) => (
-                                        <SelectItem key={cat} value={cat}>
-                                            {cat.charAt(0).toUpperCase() +
-                                                cat.slice(1)}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
+                            <div className="border border-slate-200 rounded-lg p-3 space-y-2">
+                                {categories.length === 0 ? (
+                                    <p className="text-xs text-slate-500">
+                                        No categories found. Create categories from
+                                        admin categories first.
+                                    </p>
+                                ) : (
+                                    categories.map((category) => {
+                                        const isSelected = formData.categories.includes(
+                                            category._id
+                                        );
+                                        return (
+                                            <label
+                                                key={category._id}
+                                                className="flex items-center gap-2 text-sm text-slate-700">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={isSelected}
+                                                    onChange={(e) => {
+                                                        const nextCategories = e.target.checked
+                                                            ? [
+                                                                  ...formData.categories,
+                                                                  category._id,
+                                                              ]
+                                                            : formData.categories.filter(
+                                                                  (id) => id !== category._id
+                                                              );
+                                                        handleChange(
+                                                            "categories",
+                                                            nextCategories
+                                                        );
+                                                        const primaryCategoryName =
+                                                            categories.find((cat) =>
+                                                                nextCategories.includes(cat._id)
+                                                            )?.name || "";
+                                                        handleChange(
+                                                            "category",
+                                                            primaryCategoryName
+                                                        );
+                                                    }}
+                                                />
+                                                <span>{category.name}</span>
+                                            </label>
+                                        );
+                                    })
+                                )}
+                            </div>
                         </div>
                     </div>
 

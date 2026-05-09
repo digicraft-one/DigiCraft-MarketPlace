@@ -7,13 +7,25 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
     try {
         await connectToDB();
         const { id } = await params;
-        const product = await Product.findOne({ "seo.slug": id });
+        const product = await Product.findOne({ "seo.slug": id }).populate(
+            "categories",
+            "name slug"
+        );
         if (!product)
             return NextResponse.json(errorResponse("Product not found"), {
                 status: 404,
             });
 
-        return NextResponse.json(successResponse(product));
+        const plainProduct = product.toObject();
+        const primaryCategory =
+            (plainProduct.categories?.[0] as { name?: string } | undefined)
+                ?.name ||
+            plainProduct.category ||
+            "";
+
+        return NextResponse.json(
+            successResponse({ ...plainProduct, category: primaryCategory })
+        );
     } catch (err) {
         return NextResponse.json(
             errorResponse("Failed to fetch product", err as Error),

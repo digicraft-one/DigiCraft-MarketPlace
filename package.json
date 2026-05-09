@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "sitemap": "next-sitemap",
-    "lint": "next lint"
+    "lint": "next lint",
+    "migrate:categories": "node scripts/migrate-product-categories.js",
+    "migrate:categories:apply": "node scripts/migrate-product-categories.js --apply"
   },
   "dependencies": {
     "@getbrevo/brevo": "^3.0.1",

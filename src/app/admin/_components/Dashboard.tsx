@@ -80,6 +80,14 @@ export default function AdminDashboardPage() {
                         isExternal={false}
                     />
                     <QuickActionCard
+                        title="Manage Categories"
+                        description="Create and delete categories"
+                        icon={<Package className="w-6 h-6" />}
+                        href="/admin/categories"
+                        gradient="from-indigo-500 to-violet-500"
+                        isExternal={false}
+                    />
+                    <QuickActionCard
                         title="Analytics"
                         description="View performance metrics"
                         icon={<BarChart3 className="w-6 h-6" />}

@@ -28,6 +28,7 @@ export interface Product {
     coverImage: { url: string; publicId: string };
     deliverables: string[];
     category: string;
+    categories?: { _id: string; name: string; slug: string }[];
     tags: string[];
     features: Feature[];
     pricingOptions: PricingOption[];

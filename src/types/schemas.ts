@@ -1,11 +1,7 @@
 import { Types } from "mongoose";
 
 export type CategoryType =
-    | "ecommerce"
-    | "portfolio"
-    | "blog"
-    | "landing"
-    | "custom";
+    string;
 
 export type Plans = "base" | "plus" | "pro" | "ultimate";
 

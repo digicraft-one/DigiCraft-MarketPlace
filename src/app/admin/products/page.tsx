@@ -31,6 +31,7 @@ import {
     Package,
     Calendar,
     Tag,
+    Shapes,
 } from "lucide-react";
 
 export default function AdminProductsPage() {
@@ -160,6 +161,14 @@ export default function AdminProductsPage() {
                             <ArrowLeft className="w-4 h-4 mr-2" />
                             Back to Dashboard
                         </Button>
+                        <Link href="/admin/categories">
+                            <Button
+                                variant="outline"
+                                className="border-slate-200 text-slate-600 hover:bg-slate-50">
+                                <Shapes className="w-4 h-4 mr-2" />
+                                Categories
+                            </Button>
+                        </Link>
                         <Link href="/admin/products/new">
                             <Button className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-lg">
                                 <Plus className="w-4 h-4 mr-2" />
@@ -207,7 +216,7 @@ export default function AdminProductsPage() {
                                     />
                                     <div className="absolute top-3 right-3">
                                         <div className="px-2 py-1 rounded-full bg-white/90 backdrop-blur-sm text-xs font-medium text-slate-700">
-                                            {product.category}
+                                            {product.categories?.[0]?.name || product.category}
                                         </div>
                                     </div>
                                 </div>

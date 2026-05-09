@@ -14,7 +14,7 @@ export async function GET() {
     try {
         await connectToDB();
         const enquiries = await Enquiry.find({})
-            .populate("product", "title category")
+            .populate("product", "title category categories")
             .sort({ createdAt: -1 });
 
         return NextResponse.json(successResponse(enquiries));
@@ -41,7 +41,10 @@ export async function POST(req: NextRequest) {
 
         const product =
             body.product && body.product !== ""
-                ? await Product.findById(body.product)
+                ? await Product.findById(body.product).populate(
+                      "categories",
+                      "name"
+                  )
                 : {
                       title: "N/A",
                       category: "N/A",
@@ -54,6 +57,11 @@ export async function POST(req: NextRequest) {
             return NextResponse.json(errorResponse("Invalid product ID"), {
                 status: 400,
             });
+        const primaryCategory =
+            product.category ||
+            (Array.isArray(product.categories) && product.categories[0]
+                ? (product.categories[0] as { name?: string }).name || "N/A"
+                : "N/A");
 
         const newEntry: {
             name: string;
@@ -85,7 +93,7 @@ export async function POST(req: NextRequest) {
                 message: body.message,
                 product: {
                     title: product.title,
-                    category: product.category,
+                    category: primaryCategory,
                     link:
                         product.title === "N/A"
                             ? "#"
@@ -164,7 +172,7 @@ export async function POST(req: NextRequest) {
                                 ? product.title
                                 : "N/A",
                             productCategory: product?.category
-                                ? product.category
+                                ? primaryCategory
                                 : "N/A",
                             adjustmentType: body.adjustmentType
                                 ? body.adjustmentType

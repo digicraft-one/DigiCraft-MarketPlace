@@ -404,7 +404,7 @@ export default function ProductDetail() {
                             <div className="space-y-6">
                                 <div>
                                     <span className="text-sm text-teal-400 font-medium capitalize">
-                                        {product.category}
+                                        {product.categories?.[0]?.name || product.category}
                                     </span>
                                     <h1 className="text-4xl font-bold text-white mb-4 ">
                                         {product.title}

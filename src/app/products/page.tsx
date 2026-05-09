@@ -4,7 +4,6 @@ import Navbar from "@/components/Navbar";
 import { fetchAPI } from "@/lib/api";
 import { Product } from "@/lib/types";
 import type {
-    CategoryType,
     PricingTier,
     ProductFeature,
 } from "@/types/schemas";
@@ -76,14 +75,11 @@ const EmptyState = ({ onClearFilters }: { onClearFilters: () => void }) => (
     </div>
 );
 
-const categories: { value: CategoryType | "all"; label: string }[] = [
-    { value: "all", label: "All Categories" },
-    { value: "ecommerce", label: "E-commerce" },
-    { value: "portfolio", label: "Portfolio" },
-    { value: "blog", label: "Blog" },
-    { value: "landing", label: "Landing Page" },
-    { value: "custom", label: "Custom" },
-];
+interface CategoryOption {
+    _id: string;
+    name: string;
+    slug: string;
+}
 
 interface ProductCardProps {
     product: Product;
@@ -109,7 +105,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
                 <div className="mb-3">
                     <span className="text-xs text-teal-400 font-medium capitalize">
-                        {product.category}
+                        {product.categories?.[0]?.name || product.category}
                     </span>
                     <h3 className="text-lg font-bold text-white mb-1 line-clamp-2">
                         {product.title}
@@ -204,9 +200,8 @@ export default function Marketplace() {
     const [products, setProducts] = useState<Product[]>([]);
     const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
-    const [selectedCategory, setSelectedCategory] = useState<
-        CategoryType | "all"
-    >("all");
+    const [selectedCategory, setSelectedCategory] = useState<string>("all");
+    const [categories, setCategories] = useState<CategoryOption[]>([]);
     const [sortBy, setSortBy] = useState("newest");
     const [isLoading, setIsLoading] = useState(true);
     const [hasError, setHasError] = useState(false);
@@ -217,8 +212,12 @@ export default function Marketplace() {
             setHasError(false);
             try {
                 const prod = await fetchAPI<Product[]>("/products");
+                const fetchedCategories = await fetchAPI<CategoryOption[]>(
+                    "/categories"
+                );
                 setProducts(prod);
                 setFilteredProducts(prod);
+                setCategories(fetchedCategories);
             } catch (error) {
                 setHasError(true);
                 toast.error("Failed to load products");
@@ -235,7 +234,10 @@ export default function Marketplace() {
 
         if (selectedCategory !== "all")
             filtered = filtered.filter(
-                (product) => product.category === selectedCategory
+                (product) =>
+                    (product.categories || []).some(
+                        (category) => category._id === selectedCategory
+                    )
             );
 
         // Filter by search term
@@ -361,21 +363,24 @@ export default function Marketplace() {
                                 <div className="flex items-center justify-between">
                                     {/* Category Filter */}
                                     <div className="flex gap-2 overflow-x-auto pb-1">
-                                        {categories.map((category) => (
+                                        {[
+                                            { _id: "all", name: "All Categories", slug: "all" },
+                                            ...categories,
+                                        ].map((category) => (
                                             <button
-                                                key={category.value}
+                                                key={category._id}
                                                 onClick={() =>
                                                     setSelectedCategory(
-                                                        category.value
+                                                        category._id
                                                     )
                                                 }
                                                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${
                                                     selectedCategory ===
-                                                    category.value
+                                                    category._id
                                                         ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white"
                                                         : "bg-slate-900/50 border border-teal-500/20 text-gray-400 hover:border-teal-500/40"
                                                 }`}>
-                                                {category.label}
+                                                {category.name}
                                             </button>
                                         ))}
                                     </div>
