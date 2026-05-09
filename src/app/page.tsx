@@ -1,4 +1,5 @@
 "use client";
+import CategoryDealShortcuts from "@/components/CategoryDealShortcuts";
 import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
 import HotDeals from "@/components/HotDeals";
@@ -46,6 +47,7 @@ export default function Home() {
                 <Navbar />
                 <div className="relative">
                     <Hero />
+                    <CategoryDealShortcuts />
                     <HotDeals />
                     <TopPicks />
                     <Platforms />

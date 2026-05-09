@@ -168,7 +168,7 @@ const HotDeals = () => {
 
   if (loading) {
     return (
-      <section className="py-20 px-4 relative overflow-hidden">
+      <section className="relative overflow-hidden bg-black px-4 pt-12 pb-20 md:pt-14 md:pb-20">
         <div className="absolute inset-0 bg-gradient-to-b from-black to-slate-900/50 pointer-events-none" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(20,184,166,0.05)_0%,transparent_100%)]" />
         
@@ -209,7 +209,7 @@ const HotDeals = () => {
 
   if (error) {
     return (
-      <section className="py-20 px-4 relative overflow-hidden">
+      <section className="relative overflow-hidden bg-black px-4 pt-12 pb-20 md:pt-14 md:pb-20">
         <div className="absolute inset-0 bg-gradient-to-b from-black to-slate-900/50 pointer-events-none" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(20,184,166,0.05)_0%,transparent_100%)]" />
         
@@ -231,7 +231,7 @@ const HotDeals = () => {
   // If no products with discounts found
   if (products.length === 0) {
     return (
-      <section className="py-20 px-4 relative overflow-hidden">
+      <section className="relative overflow-hidden bg-black px-4 pt-12 pb-20 md:pt-14 md:pb-20">
         <div className="absolute inset-0 bg-gradient-to-b from-black to-slate-900/50 pointer-events-none" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(20,184,166,0.05)_0%,transparent_100%)]" />
         
@@ -258,7 +258,7 @@ const HotDeals = () => {
   }
 
   return (
-    <section className="py-20 px-4 relative overflow-hidden">
+    <section className="relative overflow-hidden bg-black px-4 pt-12 pb-20 md:pt-14 md:pb-20">
       {/* Background Elements */}
       <div className="absolute inset-0 bg-gradient-to-b from-black to-slate-900/50 pointer-events-none" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(20,184,166,0.05)_0%,transparent_100%)]" />
