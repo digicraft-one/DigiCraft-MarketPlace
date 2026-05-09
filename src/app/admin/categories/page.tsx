@@ -202,10 +202,10 @@ function CategoriesPageInner() {
 
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
                     <div className="lg:col-span-2 space-y-6">
-                        <Card className="rounded-xl border-0 shadow-lg bg-white/80 backdrop-blur-sm">
+                        <Card className="rounded-xl border-0 shadow-lg bg-white/95 backdrop-blur-sm text-neutral-950">
                             <CardHeader>
-                                <CardTitle className="flex items-center gap-2 text-slate-900">
-                                    <Shapes className="w-5 h-5" />
+                                <CardTitle className="flex items-center gap-2 text-neutral-950">
+                                    <Shapes className="w-5 h-5 text-indigo-600" />
                                     Add category
                                 </CardTitle>
                             </CardHeader>
@@ -214,12 +214,12 @@ function CategoriesPageInner() {
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
                                     placeholder="Category name"
-                                    className="border-slate-200"
+                                    className="border-slate-300 bg-white font-medium text-neutral-950 placeholder:text-slate-500"
                                 />
                                 <Button
                                     onClick={handleCreate}
                                     disabled={loading}
-                                    className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shrink-0">
+                                    className="shrink-0 bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700">
                                     Create
                                 </Button>
                             </CardContent>
@@ -294,9 +294,9 @@ function CategoriesPageInner() {
                     </div>
 
                     <div className="lg:col-span-3">
-                        <Card className="rounded-xl border-0 shadow-lg bg-white/80 backdrop-blur-sm min-h-[320px]">
+                        <Card className="rounded-xl border-0 shadow-lg bg-white/95 backdrop-blur-sm min-h-[320px] text-neutral-950">
                             <CardHeader>
-                                <CardTitle className="text-slate-900">
+                                <CardTitle className="text-neutral-950">
                                     {selected
                                         ? "Edit category"
                                         : "Select a category"}
@@ -309,7 +309,7 @@ function CategoriesPageInner() {
                                     </p>
                                 )}
                             </CardHeader>
-                            <CardContent className="space-y-6">
+                            <CardContent className="space-y-6 text-neutral-950">
                                 {selected ? (
                                     <>
                                         <div className="flex flex-wrap gap-2">
@@ -318,7 +318,7 @@ function CategoriesPageInner() {
                                                 variant="outline"
                                                 size="sm"
                                                 onClick={copyShareUrl}
-                                                className="border-slate-200">
+                                                className="border-slate-300 bg-white text-neutral-950 hover:bg-slate-100 hover:text-neutral-950 [&_svg]:text-neutral-800">
                                                 <Copy className="w-4 h-4 mr-2" />
                                                 Copy storefront link
                                             </Button>
@@ -330,7 +330,7 @@ function CategoriesPageInner() {
                                                     type="button"
                                                     variant="outline"
                                                     size="sm"
-                                                    className="border-slate-200">
+                                                    className="border-slate-300 bg-white text-neutral-950 hover:bg-slate-100 hover:text-neutral-950 [&_svg]:text-neutral-800">
                                                     <ExternalLink className="w-4 h-4 mr-2" />
                                                     Open marketplace
                                                 </Button>
@@ -354,7 +354,9 @@ function CategoriesPageInner() {
                                             </p>
                                         </div>
                                         <div className="space-y-2">
-                                            <Label htmlFor="edit-name">
+                                            <Label
+                                                htmlFor="edit-name"
+                                                className="text-neutral-950">
                                                 Name
                                             </Label>
                                             <Input
@@ -363,11 +365,13 @@ function CategoriesPageInner() {
                                                 onChange={(e) =>
                                                     setEditName(e.target.value)
                                                 }
-                                                className="border-slate-200"
+                                                className="border-slate-300 bg-white font-medium text-neutral-950 placeholder:text-slate-500"
                                             />
                                         </div>
                                         <div className="space-y-2">
-                                            <Label htmlFor="edit-slug">
+                                            <Label
+                                                htmlFor="edit-slug"
+                                                className="text-neutral-950">
                                                 URL slug
                                             </Label>
                                             <Input
@@ -376,7 +380,7 @@ function CategoriesPageInner() {
                                                 onChange={(e) =>
                                                     setEditSlug(e.target.value)
                                                 }
-                                                className="border-slate-200 font-mono text-sm"
+                                                className="border-slate-300 bg-white font-mono text-sm font-medium text-neutral-950 placeholder:text-slate-500"
                                             />
                                             <p className="text-xs text-slate-500">
                                                 Used in share links: /products?q=
@@ -387,7 +391,7 @@ function CategoriesPageInner() {
                                             <Button
                                                 onClick={handleSaveEdit}
                                                 disabled={loading}
-                                                className="bg-gradient-to-r from-blue-600 to-indigo-600">
+                                                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700">
                                                 Save changes
                                             </Button>
                                             <Button
@@ -396,7 +400,7 @@ function CategoriesPageInner() {
                                                 onClick={() =>
                                                     setCategoryQuery(null)
                                                 }
-                                                className="border-slate-200">
+                                                className="border-slate-300 bg-white text-neutral-950 hover:bg-slate-100 hover:text-neutral-950">
                                                 Close
                                             </Button>
                                             <Button
@@ -406,7 +410,7 @@ function CategoriesPageInner() {
                                                 onClick={() =>
                                                     handleDelete(selected._id)
                                                 }
-                                                className="border-red-200 text-red-600 hover:bg-red-50 ml-auto">
+                                                className="ml-auto border-red-300 bg-white text-red-700 hover:bg-red-50 hover:text-red-800 [&_svg]:text-red-600">
                                                 <Trash2 className="w-4 h-4 mr-2" />
                                                 Delete
                                             </Button>
