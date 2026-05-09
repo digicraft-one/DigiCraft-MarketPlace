@@ -2,22 +2,40 @@ import { errorResponse, successResponse } from "@/lib/apiResponse";
 import { authOptions } from "@/lib/auth/options";
 import { connectToDB } from "@/lib/db/mongoose";
 import { Category } from "@/schemas/Category";
+import { Product } from "@/schemas/Product";
+import { slugify } from "@/lib/categorySlug";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
+import { Types } from "mongoose";
 
-const slugify = (value: string) =>
-    value
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9\s-]/g, "")
-        .replace(/\s+/g, "-")
-        .replace(/-+/g, "-");
-
-export async function GET() {
+export async function GET(req: Request) {
     try {
         await connectToDB();
-        const categories = await Category.find({}).sort({ name: 1 });
-        return NextResponse.json(successResponse(categories));
+        const { searchParams } = new URL(req.url);
+        const withCounts = searchParams.get("counts") === "true";
+
+        const categories = await Category.find({}).sort({ name: 1 }).lean();
+
+        if (!withCounts) {
+            return NextResponse.json(successResponse(categories));
+        }
+
+        const countRows = await Product.aggregate<{ _id: Types.ObjectId; productCount: number }>([
+            { $match: { categories: { $exists: true, $ne: [] } } },
+            { $unwind: "$categories" },
+            { $group: { _id: "$categories", productCount: { $sum: 1 } } },
+        ]);
+
+        const countMap = new Map(
+            countRows.map((row) => [String(row._id), row.productCount])
+        );
+
+        const withCountsList = categories.map((cat) => ({
+            ...cat,
+            productCount: countMap.get(String(cat._id)) ?? 0,
+        }));
+
+        return NextResponse.json(successResponse(withCountsList));
     } catch (err) {
         return NextResponse.json(
             errorResponse("Failed to fetch categories", err as Error),

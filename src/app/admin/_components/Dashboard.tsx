@@ -8,7 +8,9 @@ import { OfferDocument } from "@/schemas/Offer";
 import { ProductDocument } from "@/schemas/Product";
 import {
     BarChart3,
+    ChevronRight,
     FileUser,
+    FolderTree,
     MessageSquare,
     Package,
     Tag,
@@ -43,6 +45,10 @@ export default function AdminDashboardPage() {
                 {/* Stats Grid */}
                 <Suspense fallback={<DashboardSkeleton />}>
                     <DashboardStats />
+                </Suspense>
+
+                <Suspense fallback={<CategoryOverviewSkeleton />}>
+                    <DashboardCategoryOverview />
                 </Suspense>
 
                 {/* Quick Actions */}
@@ -81,8 +87,8 @@ export default function AdminDashboardPage() {
                     />
                     <QuickActionCard
                         title="Manage Categories"
-                        description="Create and delete categories"
-                        icon={<Package className="w-6 h-6" />}
+                        description="Create, edit, delete, and view product counts"
+                        icon={<FolderTree className="w-6 h-6" />}
                         href="/admin/categories"
                         gradient="from-indigo-500 to-violet-500"
                         isExternal={false}
@@ -239,6 +245,19 @@ function QuickActionCard({
     );
 }
 
+function CategoryOverviewSkeleton() {
+    return (
+        <Card className="rounded-xl border-0 shadow-lg bg-white/80 backdrop-blur-sm p-6 space-y-4">
+            <Skeleton className="h-6 w-48" />
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {[1, 2, 3].map((i) => (
+                    <Skeleton key={i} className="h-20 rounded-lg" />
+                ))}
+            </div>
+        </Card>
+    );
+}
+
 function DashboardSkeleton() {
     return (
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
@@ -258,6 +277,143 @@ function DashboardSkeleton() {
             ))}
         </div>
     );
+}
+
+interface CategoryWithCount {
+    _id: string;
+    name: string;
+    slug: string;
+    productCount: number;
+}
+
+async function DashboardCategoryOverview() {
+    try {
+        const categories = await fetchAPI<CategoryWithCount[]>(
+            "/categories?counts=true"
+        );
+
+        if (categories.length === 0) {
+            return (
+                <Card className="rounded-xl border-0 shadow-lg bg-white/80 backdrop-blur-sm">
+                    <CardHeader className="flex flex-row items-center justify-between">
+                        <CardTitle className="flex items-center gap-2 text-slate-900">
+                            <FolderTree className="w-5 h-5 text-indigo-600" />
+                            Categories
+                        </CardTitle>
+                        <Link href="/admin/categories">
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                className="border-indigo-200 text-indigo-700 hover:bg-indigo-50">
+                                Open categories
+                                <ChevronRight className="w-4 h-4 ml-1" />
+                            </Button>
+                        </Link>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="text-sm text-slate-600">
+                            No categories yet. Create one to organize products.
+                        </p>
+                    </CardContent>
+                </Card>
+            );
+        }
+
+        const totalAssigned = categories.reduce(
+            (sum, c) => sum + c.productCount,
+            0
+        );
+
+        return (
+            <Card className="rounded-xl border-0 shadow-lg bg-white/80 backdrop-blur-sm overflow-hidden">
+                <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-slate-100/80">
+                    <div>
+                        <CardTitle className="flex items-center gap-2 text-slate-900">
+                            <FolderTree className="w-5 h-5 text-indigo-600" />
+                            Categories overview
+                        </CardTitle>
+                        <p className="text-sm text-slate-500 mt-1">
+                            {categories.length} categories · {totalAssigned}{" "}
+                            product assignments
+                        </p>
+                    </div>
+                    <Link href="/admin/categories">
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            className="border-indigo-200 text-indigo-700 hover:bg-indigo-50">
+                            Manage all
+                            <ChevronRight className="w-4 h-4 ml-1" />
+                        </Button>
+                    </Link>
+                </CardHeader>
+                <CardContent className="pt-6">
+                    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                        {categories.map((cat) => (
+                            <div
+                                key={cat._id}
+                                className="group rounded-xl border border-slate-200 bg-white p-4 shadow-sm hover:border-indigo-200 hover:shadow-md transition-all">
+                                <div className="flex items-start justify-between gap-2">
+                                    <div className="min-w-0">
+                                        <p className="font-semibold text-slate-900 truncate">
+                                            {cat.name}
+                                        </p>
+                                        <p className="text-xs text-slate-500 truncate">
+                                            /{cat.slug}
+                                        </p>
+                                    </div>
+                                    <span className="shrink-0 text-xs font-bold tabular-nums px-2 py-1 rounded-full bg-indigo-50 text-indigo-700">
+                                        {cat.productCount}
+                                    </span>
+                                </div>
+                                <div className="mt-4 flex flex-wrap gap-2">
+                                    <Link
+                                        href={`/admin/categories?category=${cat._id}`}
+                                        className="inline-flex">
+                                        <Button
+                                            variant="secondary"
+                                            size="sm"
+                                            className="h-8 text-xs">
+                                            Edit
+                                        </Button>
+                                    </Link>
+                                    <Link
+                                        href={`/products?q=${encodeURIComponent(cat.slug)}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex">
+                                        <Button
+                                            variant="outline"
+                                            size="sm"
+                                            className="h-8 text-xs">
+                                            Storefront URL
+                                        </Button>
+                                    </Link>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </CardContent>
+            </Card>
+        );
+    } catch {
+        return (
+            <Card className="rounded-xl border border-amber-200 bg-amber-50/90">
+                <CardContent className="p-4 flex items-center gap-3 text-sm text-amber-900">
+                    <FolderTree className="w-5 h-5 shrink-0" />
+                    <span>
+                        Category overview could not be loaded. Open{" "}
+                        <Link
+                            href="/admin/categories"
+                            className="underline font-medium">
+                            Categories
+                        </Link>{" "}
+                        to manage them.
+                    </span>
+                </CardContent>
+            </Card>
+        );
+    }
 }
 
 async function DashboardStats() {

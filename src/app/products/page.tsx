@@ -16,7 +16,14 @@ import {
 import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import {
+    Suspense,
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
 import { toast } from "sonner";
 
 // Background Components
@@ -194,7 +201,27 @@ const ProductCard = ({ product }: ProductCardProps) => {
     );
 };
 
-export default function Marketplace() {
+function resolveCategorySelection(
+    list: CategoryOption[],
+    raw: string | null
+): string {
+    if (!raw || raw === "all") return "all";
+    const byId = list.find((category) => category._id === raw);
+    if (byId) return byId._id;
+    try {
+        const decoded = decodeURIComponent(raw);
+        const bySlug = list.find((category) => category.slug === decoded);
+        if (bySlug) return bySlug._id;
+    } catch {
+        /* ignore */
+    }
+    return "all";
+}
+
+function MarketplaceInner() {
+    const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
     const { scrollYProgress } = useScroll();
     const y = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
     const [products, setProducts] = useState<Product[]>([]);
@@ -205,6 +232,44 @@ export default function Marketplace() {
     const [sortBy, setSortBy] = useState("newest");
     const [isLoading, setIsLoading] = useState(true);
     const [hasError, setHasError] = useState(false);
+    const lastCategoryPushedRef = useRef<string | null>(null);
+
+    const syncCategoryUrl = useCallback(
+        (nextId: string) => {
+            lastCategoryPushedRef.current = nextId;
+            setSelectedCategory(nextId);
+            const params = new URLSearchParams(searchParams.toString());
+            params.delete("q");
+            params.delete("category");
+
+            if (nextId !== "all") {
+                const categoryDoc = categories.find((c) => c._id === nextId);
+                if (categoryDoc) {
+                    params.set("q", categoryDoc.slug);
+                }
+            }
+
+            const query = params.toString();
+            router.replace(query ? `${pathname}?${query}` : pathname, {
+                scroll: false,
+            });
+        },
+        [categories, pathname, router, searchParams]
+    );
+
+    useEffect(() => {
+        if (categories.length === 0 || isLoading) return;
+        const raw =
+            searchParams.get("q") ?? searchParams.get("category") ?? null;
+        const resolved = resolveCategorySelection(categories, raw);
+        if (lastCategoryPushedRef.current !== null) {
+            if (lastCategoryPushedRef.current === resolved) {
+                lastCategoryPushedRef.current = null;
+            }
+            return;
+        }
+        setSelectedCategory(resolved);
+    }, [categories, searchParams, isLoading]);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -298,8 +363,8 @@ export default function Marketplace() {
 
     const handleClearFilters = () => {
         setSearchTerm("");
-        setSelectedCategory("all");
         setSortBy("newest");
+        syncCategoryUrl("all");
     };
 
     return (
@@ -370,7 +435,7 @@ export default function Marketplace() {
                                             <button
                                                 key={category._id}
                                                 onClick={() =>
-                                                    setSelectedCategory(
+                                                    syncCategoryUrl(
                                                         category._id
                                                     )
                                                 }
@@ -439,5 +504,13 @@ export default function Marketplace() {
                 <Footer />
             </div>
         </main>
+    );
+}
+
+export default function Marketplace() {
+    return (
+        <Suspense fallback={<LoadingState />}>
+            <MarketplaceInner />
+        </Suspense>
     );
 }
